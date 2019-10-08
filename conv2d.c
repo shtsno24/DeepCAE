@@ -1,8 +1,7 @@
 #include <stdint.h>
 #include "conv2d.h"
 
-uint8_t conv2d(uint16_t filters, 
-uint16_t kernel_depth, uint16_t kernel_height, uint16_t kernel_width, int16_t kernel[kernel_depth][kernel_height][kernel_depth],
+uint8_t conv2d(uint16_t kernel_depth, uint16_t kernel_height, uint16_t kernel_width, int16_t kernel[kernel_depth][kernel_height][kernel_depth],
 uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_depth],
 uint16_t bias_depth, int16_t bias[bias_depth],
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_depth],
