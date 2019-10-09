@@ -78,8 +78,8 @@ if __name__ == "__main__":
                 print("bias", param_b.shape, len(param_b.shape))
                 write_weight_Conv2D(param_w, 
                                     param_b, 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2)) + ".h", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2)) + "_w", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2)) + "_b")
+                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + ".h", 
+                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_w", 
+                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_b")
             else:
                 print("This Layer has no Parameter")
