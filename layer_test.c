@@ -5,8 +5,8 @@
 #include "layers/padding2d.h"
 #include "layers/up_sampling2d.h"
 
-#define array_size_h 4
-#define array_size_w 4
+#define array_size_h 6
+#define array_size_w 6
 #define pad_h 1
 #define pad_w 1
 #define depth 3
@@ -61,9 +61,9 @@ int main(void){
         }
     }
 
-    // padding2d_test(pad_h, pad_w,
-    // depth, array_size_h, array_size_w, input_array,
-    // array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, output_array);
+    padding2d_test(pad_h, pad_w,
+    depth, array_size_h, array_size_w, input_array,
+    array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, output_array);
 
     up_sampling2d_test(kernel,
     depth, array_size_h, array_size_w, input_array,
