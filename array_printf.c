@@ -37,3 +37,15 @@ int16_t input[input_depth][input_height][input_width]){
     }
     printf("]");
 }
+
+void array_printf_4D(uint16_t output_depth, uint16_t input_depth, uint16_t input_height, uint16_t input_width, 
+int16_t input[output_depth][input_depth][input_height][input_width]){
+    printf("[");
+    for(uint16_t depth = 0; depth < output_depth; depth++){
+        array_printf_3D(input_depth, input_height, input_width, input[depth]);
+        if(depth < output_depth - 1){
+            printf("\r\n\r\n");
+        }
+    }
+    printf("]");
+}
