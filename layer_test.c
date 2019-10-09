@@ -108,7 +108,7 @@ int main(void){
         for(int i = 0; i < depth; i++){
             for(int j = 0; j < kernel_s_conv; j++){
                 for(int k = 0; k < kernel_s_conv; k++){
-                    kernel_array_conv[l][i][j][k] = ((-l - 1) * (-l + 1));
+                    kernel_array_conv[l][i][j][k] = (i + 1);
                 }
             }
         }
@@ -123,7 +123,7 @@ int main(void){
     }
 
     for(int i = 0; i < depth * 2; i++){
-        bias_array_conv[i] = i;
+        bias_array_conv[i] = 0;
     }
 
     padding2d_test(pad_h, pad_w,
