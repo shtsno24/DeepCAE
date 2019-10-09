@@ -16,7 +16,7 @@
 #define kernel_s_conv 3
 
 int16_t input_array[depth][array_size_h][array_size_w];
-// int16_t output_array_pad[depth][array_size_h + 2 * pad_h][array_size_w + 2 * pad_w];
+int16_t output_array_pad[depth][array_size_h + 2 * pad_h][array_size_w + 2 * pad_w];
 int16_t output_array[depth][array_size_h * 2][array_size_w * 2];
 
 int16_t input_array_conv[depth][array_size_h][array_size_w];
@@ -34,8 +34,9 @@ uint16_t output_height, uint16_t output_width, int16_t output[input_depth][outpu
             input_depth, input_height, input_width, input,
             output_height, output_width, output);
     
+    printf("\r\n=== padding2d_test ===\r\n=== input ===\r\n");
     array_printf_3D(input_depth, input_height, input_width, input);
-    printf("\r\n\r\n");
+    printf("\r\n\r\n=== output ===\r\n");
     array_printf_3D(input_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
@@ -47,8 +48,9 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
     input_depth, input_height, input_width, input,
     output_depth, output_height, output_width, output);
 
+    printf("\r\n=== up_sampling2d_test ===\r\n=== input ===\r\n");
     array_printf_3D(input_depth, input_height, input_width, input);
-    printf("\r\n\r\n");
+    printf("\r\n\r\n=== output ===\r\n");
     array_printf_3D(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
@@ -61,8 +63,9 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
     input_depth, input_height, input_width, input,
     output_depth, output_height, output_width, output);
 
+    printf("\r\n=== max_pooling2d_test ===\r\n=== input ===\r\n");
     array_printf_3D(input_depth, input_height, input_width, input);
-    printf("\r\n\r\n");
+    printf("\r\n\r\n=== output ===\r\n");
     array_printf_3D(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 
@@ -79,7 +82,7 @@ uint8_t relu){
             kernel_height, kernel_width, kernel,
             relu);
     
-    printf("=== kernel ===\r\n");
+    printf("\r\n=== conv2d_test ===\r\n=== kernel ===\r\n");
     array_printf_4D(output_depth, input_depth, kernel_height, kernel_width, kernel);
     printf("\r\n\r\n=== input ===\r\n");
     array_printf_3D(input_depth, input_height, input_width, input);
@@ -138,61 +141,61 @@ int main(void){
      *  test padding2d
      */
 
-    // for(int i = 0; i < depth; i++){
-    //     for(int j = 0; j < array_size_h; j++){
-    //         for(int k = 0; k < array_size_w; k++){
-    //             input_array[i][j][k] = (j + 1) * (k + 1);
-    //         }
-    //     }
-    // }
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h; j++){
+            for(int k = 0; k < array_size_w; k++){
+                input_array[i][j][k] = (j + 1) * (k + 1);
+            }
+        }
+    }
 
-    // for(int i = 0; i < depth; i++){
-    //     for(int j = 0; j < array_size_h + 2 * pad_h; j++){
-    //         for(int k = 0; k < array_size_w + 2 * pad_w; k++){
-    //             output_array_pad[i][j][k] = j + 1;
-    //         }
-    //     }
-    // }
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h + 2 * pad_h; j++){
+            for(int k = 0; k < array_size_w + 2 * pad_w; k++){
+                output_array_pad[i][j][k] = j + 1;
+            }
+        }
+    }
 
-    // padding2d_test(pad_h, pad_w,
-    // depth, array_size_h, array_size_w, input_array,
-    // array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, output_array_pad);
+    padding2d_test(pad_h, pad_w,
+    depth, array_size_h, array_size_w, input_array,
+    array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, output_array_pad);
 
     /*
      *  test up_sampling2d and max_pooling2d
      */
 
-    // for(int i = 0; i < depth; i++){
-    //     for(int j = 0; j < array_size_h; j++){
-    //         for(int k = 0; k < array_size_w; k++){
-    //             input_array[i][j][k] = (j + 1) * (k + 1);
-    //         }
-    //     }
-    // }
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h; j++){
+            for(int k = 0; k < array_size_w; k++){
+                input_array[i][j][k] = (j + 1) * (k + 1);
+            }
+        }
+    }
 
-    // for(int i = 0; i < depth; i++){
-    //     for(int j = 0; j < array_size_h * 2; j++){
-    //         for(int k = 0; k < array_size_w * 2; k++){
-    //             output_array[i][j][k] = j + 1;
-    //         }
-    //     }
-    // }
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h * 2; j++){
+            for(int k = 0; k < array_size_w * 2; k++){
+                output_array[i][j][k] = j + 1;
+            }
+        }
+    }
 
-    // up_sampling2d_test(kernel_s,
-    // depth, array_size_h, array_size_w, input_array,
-    // depth, array_size_h * 2, array_size_w * 2, output_array);
+    up_sampling2d_test(kernel_s,
+    depth, array_size_h, array_size_w, input_array,
+    depth, array_size_h * 2, array_size_w * 2, output_array);
 
-    // for(int i = 0; i < depth; i++){
-    //     for(int j = 0; j < array_size_h; j++){
-    //         for(int k = 0; k < array_size_w; k++){
-    //             input_array[i][j][k] = 0;
-    //         }
-    //     }
-    // }
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h; j++){
+            for(int k = 0; k < array_size_w; k++){
+                input_array[i][j][k] = 0;
+            }
+        }
+    }
 
-    // max_pooling2d_test(kernel_s,
-    // depth, array_size_h * 2, array_size_w * 2, output_array,
-    // depth, array_size_h, array_size_w, input_array);
+    max_pooling2d_test(kernel_s,
+    depth, array_size_h * 2, array_size_w * 2, output_array,
+    depth, array_size_h, array_size_w, input_array);
 
     return(0);
 }
