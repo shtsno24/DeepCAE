@@ -4,6 +4,7 @@
 #include "array_printf.h"
 #include "layers/padding2d.h"
 #include "layers/up_sampling2d.h"
+#include "layers/max_pooling2d.h"
 
 #define array_size_h 6
 #define array_size_w 6
@@ -39,10 +40,24 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
 
     array_printf_3D(input_depth, input_height, input_width, input);
     printf("\r\n\r\n");
-    array_printf_3D(input_depth, output_height, output_width, output);
+    array_printf_3D(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
 
+void max_pooling2d_test(uint16_t kernel_size,
+uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
+uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width]){
+
+    max_pooling2d(kernel_size,
+    input_depth, input_height, input_width, input,
+    output_depth, output_height, output_width, output);
+
+    array_printf_3D(input_depth, input_height, input_width, input);
+    printf("\r\n\r\n");
+    array_printf_3D(output_depth, output_height, output_width, output);
+    printf("\r\n\r\n");
+
+}
 int main(void){
 
     for(int i = 0; i < depth; i++){
@@ -68,6 +83,18 @@ int main(void){
     up_sampling2d_test(kernel,
     depth, array_size_h, array_size_w, input_array,
     depth, array_size_h * 2, array_size_w * 2, output_array);
+
+    for(int i = 0; i < depth; i++){
+        for(int j = 0; j < array_size_h; j++){
+            for(int k = 0; k < array_size_w; k++){
+                input_array[i][j][k] = 0;
+            }
+        }
+    }
+
+    max_pooling2d_test(kernel,
+    depth, array_size_h * 2, array_size_w * 2, output_array,
+    depth, array_size_h, array_size_w, input_array);
 
     return(0);
 }
