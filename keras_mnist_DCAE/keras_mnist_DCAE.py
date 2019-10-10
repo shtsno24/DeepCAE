@@ -1,4 +1,5 @@
 from __future__ import print_function
+import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
@@ -7,9 +8,9 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img, array_to_img
 
-batch_size = 8
+batch_size = 32
 # num_classes = 10
-epochs = 32
+epochs = 1
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -29,10 +30,12 @@ else:
 
 print("image_data_format : " + K.image_data_format())
 
+# x_train = x_train.astype('uint8')
+# x_test = x_test.astype('uint8')
 x_train = x_train.astype('float32')
 x_test = x_test.astype('float32')
-x_train /= 255
-x_test /= 255
+# x_train /= 255
+# x_test /= 255
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
@@ -76,7 +79,7 @@ model.add(Conv2D(1, kernel_size=(3, 3),
                  input_shape=input_shape,
                  padding='same'))
 
-# model.compile(loss=keras.losses.categorical_crossentropy,
+# model.compile(loss=keras.losses.categological_crossentropy,
 #               optimizer=keras.optimizers.Adadelta(),
 #               metrics=['accuracy'])
 # model.compile(loss=keras.losses.binary_crossentropy,
@@ -100,8 +103,23 @@ model.save("keras_mnist_DCAE.h5")
 model.save_weights("keras_mnist_DCAE_weight.h5")
 model_json = model.to_json()
 with open("keras_mnist_DCAE.json", "w") as f:
-   f.write(model_json)
+    f.write(model_json)
 
+def representative_dataset_gen():
+    for i in range(10):
+        yield [x_train[i: i + 1]]
+
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+# converter.optimizations = [tf.lite.Optimize.DEFAULT]
+converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+converter.representative_dataset = representative_dataset_gen
+converter.target_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+
+tflite_model = converter.convert()
+with open("tflite_mnist_DCAE.tflite", "wb") as f:
+    f.write(tflite_model)
+
+# x_test = x_test.astype('uint8')
 input_img = x_test[0:1]
 predict_img = model.predict(x_test[0:1])
 input_img = input_img[0]
