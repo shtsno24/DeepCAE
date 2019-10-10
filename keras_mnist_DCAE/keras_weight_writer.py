@@ -5,6 +5,13 @@ import json
 import datetime
 
 
+def float2fixed(fractal_width, fval):
+    if(fval > 0):
+        return int(fval * (2 ** fractal_width) + 0.5)
+    else:
+        return int(fval * (2 ** fractal_width) - 0.5)
+
+
 def write_array_1D(array, f):
     f.write("{")
     for length in range(array.shape[0]):
