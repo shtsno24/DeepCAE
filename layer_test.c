@@ -26,11 +26,11 @@ int16_t bias_array_conv[depth * 2];
 int16_t output_array_conv[depth * 2][array_size_h][array_size_w];
 
 
-void padding2d_test(uint16_t padding_height, uint16_t padding_width,
+void padding2d_fix16_test(uint16_t padding_height, uint16_t padding_width,
 uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
 uint16_t output_height, uint16_t output_width, int16_t output[input_depth][output_height][output_width]){
     
-    padding2d(padding_height, padding_width,
+    padding2d_fix16(padding_height, padding_width,
             input_depth, input_height, input_width, input,
             output_height, output_width, output);
     
@@ -41,10 +41,10 @@ uint16_t output_height, uint16_t output_width, int16_t output[input_depth][outpu
     printf("\r\n\r\n");
 }
 
-void up_sampling2d_test(uint16_t kernel_size,
+void up_sampling2d_fix16_test(uint16_t kernel_size,
 uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width]){
-    up_sampling2d(kernel_size,
+    up_sampling2d_fix16(kernel_size,
     input_depth, input_height, input_width, input,
     output_depth, output_height, output_width, output);
 
@@ -55,11 +55,11 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
     printf("\r\n\r\n");
 }
 
-void max_pooling2d_test(uint16_t kernel_size,
+void max_pooling2d_fix16_test(uint16_t kernel_size,
 uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width]){
 
-    max_pooling2d(kernel_size,
+    max_pooling2d_fix16(kernel_size,
     input_depth, input_height, input_width, input,
     output_depth, output_height, output_width, output);
 
@@ -71,12 +71,12 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
 
 }
 
-void conv2d_test(uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
+void conv2d_fix16_test(uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t input[input_depth][input_height][input_width],
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width],
 int16_t bias[output_depth],
 uint16_t kernel_height, uint16_t kernel_width, int16_t kernel[output_depth][input_depth][kernel_height][kernel_width],
 uint8_t relu){
-    conv2d(input_depth, input_height, input_width, input,
+    conv2d_fix16(input_depth, input_height, input_width, input,
             output_depth, output_height, output_width, output,
             bias,
             kernel_height, kernel_width, kernel,
@@ -126,12 +126,12 @@ int main(void){
         bias_array_conv[i] = 0;
     }
 
-    padding2d_test(pad_h, pad_w,
+    padding2d_fix16_test(pad_h, pad_w,
     depth, array_size_h, array_size_w, input_array_conv,
     array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, input_array_conv_pad);
 
 
-    conv2d_test(depth, array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, input_array_conv_pad,
+    conv2d_fix16_test(depth, array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, input_array_conv_pad,
     2 * depth, array_size_h, array_size_w, output_array_conv,
     bias_array_conv,
     kernel_s_conv, kernel_s_conv, kernel_array_conv,
@@ -157,7 +157,7 @@ int main(void){
         }
     }
 
-    padding2d_test(pad_h, pad_w,
+    padding2d_fix16_test(pad_h, pad_w,
     depth, array_size_h, array_size_w, input_array,
     array_size_h + 2 * pad_h, array_size_w + 2 * pad_w, output_array_pad);
 
@@ -181,7 +181,7 @@ int main(void){
         }
     }
 
-    up_sampling2d_test(kernel_s,
+    up_sampling2d_fix16_test(kernel_s,
     depth, array_size_h, array_size_w, input_array,
     depth, array_size_h * 2, array_size_w * 2, output_array);
 
@@ -193,7 +193,7 @@ int main(void){
         }
     }
 
-    max_pooling2d_test(kernel_s,
+    max_pooling2d_fix16_test(kernel_s,
     depth, array_size_h * 2, array_size_w * 2, output_array,
     depth, array_size_h, array_size_w, input_array);
 
