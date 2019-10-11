@@ -56,7 +56,7 @@ def float2fixed_array(array_type, fractal_width, farray):
     return iarray
 
 
-def fixed2floar_array(array_type, fractal_width, iarray):
+def fixed2float_array(array_type, fractal_width, iarray):
     farray = (iarray.astype(array_type) / (2.0 ** fractal_width))
     return farray
 
@@ -73,6 +73,6 @@ if __name__ == "__main__":
     print(np.vectorize(np.binary_repr)(int_array, width=8))
 
     del(float_array)
-    float_array = fixed2floar_array(np.float32, 8, int_array)
+    float_array = fixed2float_array(np.float32, 8, int_array)
     print(float_array.dtype, float_array.shape)
     print(float_array)
