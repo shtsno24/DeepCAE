@@ -75,12 +75,12 @@ void conv2d_fix16_test(uint16_t input_depth, uint16_t input_height, uint16_t inp
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width],
 int16_t bias[output_depth],
 uint16_t kernel_height, uint16_t kernel_width, int16_t kernel[output_depth][input_depth][kernel_height][kernel_width],
-uint8_t relu){
+uint8_t relu, uint8_t fractal_width){
     conv2d_fix16(input_depth, input_height, input_width, input,
             output_depth, output_height, output_width, output,
             bias,
             kernel_height, kernel_width, kernel,
-            relu);
+            relu, fractal_width);
     
     printf("\r\n=== conv2d_test ===\r\n=== kernel ===\r\n");
     array_printf_4D(output_depth, input_depth, kernel_height, kernel_width, kernel);
@@ -135,7 +135,7 @@ int main(void){
     2 * depth, array_size_h, array_size_w, output_array_conv,
     bias_array_conv,
     kernel_s_conv, kernel_s_conv, kernel_array_conv,
-    0);
+    0, 0);
 
     /*
      *  test padding2d
