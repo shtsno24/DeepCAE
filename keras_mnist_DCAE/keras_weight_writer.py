@@ -52,7 +52,6 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
             f.write(str(" * array_type : {}\r\n").format(weight.dtype))
             f.write(str(" * fractal_width : {} bit\r\n").format(fractal_width))
             f.write(str(" * bit_width : {} bit\r\n").format(str(8 * np.dtype(array_type).itemsize)))
-
         f.write(" *\n */\n")
 
         # include <stdint.h>
@@ -63,24 +62,24 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
         if isFixed == True:
             f.write(str("#define data_width_{} {}\r\n").format(str(weight_array_name[:-2]), str(8 * np.dtype(array_type).itemsize)))
             f.write(str("#define fractal_width_{} {}\r\n\r\n").format(str(weight_array_name[:-2]), str(fractal_width)))
-        
+
         # weights
         f.write(str("const uint16_t shape_{}_w[] = ").format(str(weight_array_name[:-2])))
         f.write("{%d, %d, %d, %d};\r\n" % (weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
 
         f.write("const " + type_name + " " + weight_array_name)
         f.write(str("[{}][{}][{}][{}] =\r\n").format(weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
-        
+
         write_array_ND(weight, f)
         f.write(";")
         f.write("\r\n\r\n")
 
         # bias
         f.write(str("const uint16_t shape_{}_b = {};\r\n").format(str(weight_array_name[:-2]), bias.shape[0]))
-        
+
         f.write("const " + type_name + " " + bias_array_name)
         f.write("[%d] = " % bias.shape)
-        
+
         write_array_ND(bias, f)
         f.write(";")
         f.write("\r\n")
@@ -93,6 +92,8 @@ if __name__ == "__main__":
         model_weights_itr = model.get_weights()
         model_layers_itr = json.load(jfile, object_pairs_hook=OrderedDict)
 
+        params_header_name_fix = []
+        params_header_name_float = []
         itr_counter = 0
         for layers in model_layers_itr["config"]["layers"]:
             print()
@@ -103,17 +104,45 @@ if __name__ == "__main__":
                 itr_counter += 2
                 print("weight", param_w.shape, len(param_w.shape))
                 print("bias", param_b.shape, len(param_b.shape))
-                write_weight_Conv2D(param_w, 
-                                    param_b, 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + ".h", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_w", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_b",
+                write_weight_Conv2D(param_w,
+                                    param_b,
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h",
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_w",
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_b",
                                     "float")
-                write_weight_Conv2D(param_w, 
-                                    param_b, 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_fixed16.h", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_w", 
-                                    layers["class_name"] + "_" + str(int(itr_counter/2) - 1) + "_b",
-                                    "int16_t",isFixed=True, fractal_width=8, array_type=np.int16)
+                params_header_name_float.append(layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h")
+                write_weight_Conv2D(param_w,
+                                    param_b,
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h",
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_w",
+                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_b",
+                                    "int16_t", isFixed=True, fractal_width=8, array_type=np.int16)
+                params_header_name_fix.append(layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h")
             else:
                 print("This Layer has no Parameter")
+
+    with open("keras_mnist_DCAE_params_float.h", "w") as f:
+        print(params_header_name_float)
+
+        # headers
+        todaytime = str(datetime.datetime.today())
+        f.write("/*\r\n")
+        f.write(" * author : shtsno24\r\n")
+        f.write(" * Date : " + todaytime + "\r\n")
+        f.write(" *\n */\n")
+
+        for name in params_header_name_float:
+            f.write('#include "' + name + '"\r\n')
+
+    with open("keras_mnist_DCAE_params_fixed.h", "w") as f:
+        print(params_header_name_fix)
+
+        # headers
+        todaytime = str(datetime.datetime.today())
+        f.write("/*\r\n")
+        f.write(" * author : shtsno24\r\n")
+        f.write(" * Date : " + todaytime + "\r\n")
+        f.write(" *\n */\n")
+
+        for name in params_header_name_fix:
+            f.write('#include "' + name + '"\r\n')
