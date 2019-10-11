@@ -1,12 +1,54 @@
 import numpy as np
 
+def float2fixed_norm(max_val, min_val, fractal_width, fval):
+    """
+        max_val, min_val : float
+    """
+    if(fval > max_val):
+        fval = max_val
+    elif(fval < min_val):
+        fval = min_val
 
-def float2fixed(fractal_width, f):
-    return int(f * (2**fractal_width))
+    inorm = (fval - min_val)/(max_val - min_val) * (2 ** fractal_width)
+    return int(inorm)
 
 
-def fixed2float(fractal_width, i):
-    return float(i / (2**fractal_width))
+def fixed2float_norm(max_val, min_val, fractal_width, inorm): 
+    
+    """
+        max_val, min_val : float
+    """
+    fval = (float(inorm) / (2.0 ** fractal_width)) * float(max_val - min_val)
+    return fval
+
+
+def float2fixed_norm_array(max_val, min_val, array_type, fractal_width, farray):
+    """
+        max_val, min_val    : float
+        array_type          : target type
+    """
+    farray[farray > max_val] = max_val
+    farray[farray < min_val] = min_val
+    
+    iarray = (farray - min_val)/(max_val - min_val) * (2 ** fractal_width)
+    return iarray
+
+
+def fixed2floar_norm_array(max_val, min_val, array_type, fractal_width, iarray):
+    """
+        max_val, min_val    : float
+        array_type          : target type
+    """
+    farray = (iarray.astype(array_type) / (2.0 ** fractal_width)) * float(max_val - min_val)
+    return farray
+
+
+def float2fixed(fractal_width, fval):
+    return int(fval * (2 ** fractal_width))
+
+
+def fixed2float(fractal_width, ival):
+    return float(ival) / (2.0 ** fractal_width)
 
 
 def float2fixed_array(array_type, fractal_width, farray):
@@ -15,7 +57,7 @@ def float2fixed_array(array_type, fractal_width, farray):
 
 
 def fixed2floar_array(array_type, fractal_width, iarray):
-    farray = (iarray.astype(array_type) / (2 ** fractal_width))
+    farray = (iarray.astype(array_type) / (2.0 ** fractal_width))
     return farray
 
 
