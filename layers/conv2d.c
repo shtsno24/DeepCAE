@@ -6,7 +6,7 @@ uint8_t conv2d_fix16(uint16_t input_depth, uint16_t input_height, uint16_t input
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t output[output_depth][output_height][output_width],
 int16_t bias[output_depth],
 uint16_t kernel_height, uint16_t kernel_width, int16_t kernel[output_depth][input_depth][kernel_height][kernel_width],
-uint8_t relu){
+uint8_t relu, uint8_t fractal_width){
     // uint16_t output_hight = (input_shape.height + 2 * pad - kernel_shape.height) / stride + 1;
     // uint16_t output_width = (input_shape.width + 2 * pad - kernel_shape.width) / stride + 1;
     
@@ -22,8 +22,8 @@ uint8_t relu){
                     for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
                         for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
                             output[out_d][out_h][out_w] += 
-                                input[in_d][out_h + k_h][out_w + k_w] * 
-                                kernel[out_d][in_d][k_h][k_w];
+                                (int16_t)(((int32_t)input[in_d][out_h + k_h][out_w + k_w] * 
+                                (int32_t)kernel[out_d][in_d][k_h][k_w]) >> fractal_width);
                         }
                     }
                 }
