@@ -56,22 +56,31 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
         f.write(" *\n */\n")
 
         # include <stdint.h>
+        f.write(str("#pragma once\r\n"))
+        f.write(str("#include <stdint.h>\r\n\r\n"))
+
+        # define data_width
         if isFixed == True:
-            f.write(str("#pragma once\r\n"))
-            f.write(str("#include <stdint.h>\r\n\r\n"))
             f.write(str("#define data_width_{} {}\r\n").format(str(weight_array_name[:-2]), str(8 * np.dtype(array_type).itemsize)))
             f.write(str("#define fractal_width_{} {}\r\n\r\n").format(str(weight_array_name[:-2]), str(fractal_width)))
         
         # weights
+        f.write(str("const uint16_t shape_{}_w[] = ").format(str(weight_array_name[:-2])))
+        f.write("{%d, %d, %d, %d};\r\n" % (weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
+
         f.write("const " + type_name + " " + weight_array_name)
         f.write(str("[{}][{}][{}][{}] =\r\n").format(weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
+        
         write_array_ND(weight, f)
         f.write(";")
         f.write("\r\n\r\n")
 
         # bias
+        f.write(str("const uint16_t shape_{}_b = {};\r\n").format(str(weight_array_name[:-2]), bias.shape[0]))
+        
         f.write("const " + type_name + " " + bias_array_name)
         f.write("[%d] = " % bias.shape)
+        
         write_array_ND(bias, f)
         f.write(";")
         f.write("\r\n")

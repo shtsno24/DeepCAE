@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-11 14:59:05.169303
+ * Date : 2019-10-11 15:30:13.749011
  * array_type : int16
  * fractal_width : 8 bit
  * bit_width : 16 bit
@@ -12,6 +12,7 @@
 #define data_width_Conv2D_1 16
 #define fractal_width_Conv2D_1 8
 
+const uint16_t shape_Conv2D_1_w[] = {8, 16, 3, 3};
 const int16_t Conv2D_1_w[8][16][3][3] =
 {{{{33, 13, -9},
 {-29, -30, -19},
@@ -525,4 +526,5 @@ const int16_t Conv2D_1_w[8][16][3][3] =
 {-17, -41, 30},
 {2, 41, 3}}}};
 
+const uint16_t shape_Conv2D_1_b = 8;
 const int16_t Conv2D_1_b[8] = {1, 1, 0, 1, 1, 0, 1, 0};
