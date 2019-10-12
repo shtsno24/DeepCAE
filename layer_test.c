@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "array_printf.h"
+#include "array_printf_int16.h"
 #include "layers/padding2d.h"
 #include "layers/up_sampling2d.h"
 #include "layers/max_pooling2d.h"
@@ -35,9 +35,9 @@ uint16_t output_height, uint16_t output_width, int16_t output[input_depth][outpu
             output_height, output_width, output);
     
     printf("\r\n=== padding2d_test ===\r\n=== input ===\r\n");
-    array_printf_3D(input_depth, input_height, input_width, input);
+    array_printf_3D_int16(input_depth, input_height, input_width, input);
     printf("\r\n\r\n=== output ===\r\n");
-    array_printf_3D(input_depth, output_height, output_width, output);
+    array_printf_3D_int16(input_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
 
@@ -49,9 +49,9 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
     output_depth, output_height, output_width, output);
 
     printf("\r\n=== up_sampling2d_test ===\r\n=== input ===\r\n");
-    array_printf_3D(input_depth, input_height, input_width, input);
+    array_printf_3D_int16(input_depth, input_height, input_width, input);
     printf("\r\n\r\n=== output ===\r\n");
-    array_printf_3D(output_depth, output_height, output_width, output);
+    array_printf_3D_int16(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
 
@@ -64,9 +64,9 @@ uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t ou
     output_depth, output_height, output_width, output);
 
     printf("\r\n=== max_pooling2d_test ===\r\n=== input ===\r\n");
-    array_printf_3D(input_depth, input_height, input_width, input);
+    array_printf_3D_int16(input_depth, input_height, input_width, input);
     printf("\r\n\r\n=== output ===\r\n");
-    array_printf_3D(output_depth, output_height, output_width, output);
+    array_printf_3D_int16(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 
 }
@@ -83,11 +83,11 @@ uint8_t relu, uint8_t fractal_width){
             relu, fractal_width);
     
     printf("\r\n=== conv2d_test ===\r\n=== kernel ===\r\n");
-    array_printf_4D(output_depth, input_depth, kernel_height, kernel_width, kernel);
+    array_printf_4D_int16(output_depth, input_depth, kernel_height, kernel_width, kernel);
     printf("\r\n\r\n=== input ===\r\n");
-    array_printf_3D(input_depth, input_height, input_width, input);
+    array_printf_3D_int16(input_depth, input_height, input_width, input);
     printf("\r\n\r\n=== output ===\r\n");
-    array_printf_3D(output_depth, output_height, output_width, output);
+    array_printf_3D_int16(output_depth, output_height, output_width, output);
     printf("\r\n\r\n");
 }
 

@@ -3,10 +3,9 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 from tensorflow.keras import backend as K
-from tensorflow.keras.preprocessing.image import save_img, array_to_img
+from tensorflow.keras.preprocessing.image import save_img
 
 batch_size = 32
 # num_classes = 10
@@ -34,15 +33,15 @@ print("image_data_format : " + K.image_data_format())
 # x_test = x_test.astype('uint8')
 x_train = x_train.astype('float32')
 x_test = x_test.astype('float32')
-# x_train /= 255
-# x_test /= 255
+x_train /= 255
+x_test /= 255
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
-#y_train = keras.utils.to_categorical(y_train, num_classes)
-#y_test = keras.utils.to_categorical(y_test, num_classes)
+# y_train = keras.utils.to_categorical(y_train, num_classes)
+# y_test = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
 # model.add(Conv2D(32, kernel_size=(3, 3),
@@ -67,13 +66,13 @@ model.add(Conv2D(8, kernel_size=(3, 3),
                  padding='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(UpSampling2D(size=(2,2)))
+model.add(UpSampling2D(size=(2, 2)))
 model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
 
-model.add(UpSampling2D(size=(2,2)))
+model.add(UpSampling2D(size=(2, 2)))
 model.add(Conv2D(1, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
@@ -105,9 +104,11 @@ model_json = model.to_json()
 with open("keras_mnist_DCAE.json", "w") as f:
     f.write(model_json)
 
+
 def representative_dataset_gen():
     for i in range(10):
         yield [x_train[i: i + 1]]
+
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 # converter.optimizations = [tf.lite.Optimize.DEFAULT]
