@@ -10,7 +10,7 @@ import float2fixed
 def write_array_1D(array, f):
     f.write("{")
     for length in range(array.shape[0]):
-        f.write(str(array[length]))
+        f.write(str("{0:.20f}").format(array[length]))
         if length < array.shape[0] - 1:
             f.write(", ")
     f.write("}")
