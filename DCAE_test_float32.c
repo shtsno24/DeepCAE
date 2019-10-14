@@ -79,7 +79,7 @@ int main(void){
 
     // array_printf_3D_float32(input_0_depth, input_0_height, input_0_width, input_0_array);
 
-    FILE* fp = fopen("DCAE_input.tsv", "w");
+    FILE* fp = fopen("DCAE_input_float32.tsv", "w");
     array_fprintf_2D_float32(input_0_height, input_0_width, input_0_array[0], '\t', fp);
     fclose(fp);
 
@@ -159,7 +159,7 @@ int main(void){
 
     // array_printf_3D_float32(Conv2d_3_depth, Conv2D_3_height, Conv2D_3_width, Conv2D_3_array);
 
-    fp = fopen("DCAE_output.tsv", "w");
+    fp = fopen("DCAE_output_float32.tsv", "w");
     array_fprintf_2D_float32(Conv2D_3_height, Conv2D_3_width, Conv2D_3_array[0], '\t', fp);
     fclose(fp);
 
