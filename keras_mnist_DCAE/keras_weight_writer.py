@@ -6,7 +6,7 @@ import datetime
 import numpy as np
 import float2fixed
 
-fractal = 16 - 7
+fractal = 16 - 2
 
 def write_array_1D(array, f):
     f.write("{")

@@ -1,7 +1,7 @@
 #include <stdint.h>
 
-#define float2fixed(val, fractal_width) (int)(val * (float)(2 << fractal_width) + 0.5)
-#define fixed2float(val, fractal_width) (float)val / (float)(2 << fractal_width)
+#define float2fixed(val, fractal_width) (int)(val * (float)((2 << fractal_width) - 1))
+#define fixed2float(val, fractal_width) (float)val / (float)((2 << fractal_width) -1)
 
 void array_printf_1D_fix16(uint16_t input_length, 
 int16_t input[input_length], uint16_t fractal);

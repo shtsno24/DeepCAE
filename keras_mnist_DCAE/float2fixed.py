@@ -44,20 +44,20 @@ def fixed2floar_norm_array(max_val, min_val, array_type, fractal_width, iarray):
 
 
 def float2fixed(fractal_width, fval):
-    return int(fval * (2 ** fractal_width) + 0.5)
+    return int(fval * ((2 ** fractal_width)-1))
 
 
 def fixed2float(fractal_width, ival):
-    return float(ival) / (2.0 ** fractal_width)
+    return float(ival) / ((2.0 ** fractal_width) - 1)
 
 
 def float2fixed_array(array_type, fractal_width, farray):
-    iarray = (farray * (2 ** fractal_width) + 0.5).astype(array_type)
+    iarray = (farray * ((2 ** fractal_width) - 1)).astype(array_type)
     return iarray
 
 
 def fixed2float_array(array_type, fractal_width, iarray):
-    farray = (iarray.astype(array_type) / (2.0 ** fractal_width))
+    farray = (iarray.astype(array_type) / (2.0 ** fractal_width-1))
     return farray
 
 

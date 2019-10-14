@@ -42,6 +42,8 @@ model.summary()
 
 # x_test = x_test.astype('uint8')
 input_img = np.array([[x for x in range(28)] for y in range(28)], dtype=np.float32).reshape(x_test[0:1].shape)
+input_img /= 28.0
+# input_img = x_test[0:1]
 predict_img = model.predict(input_img)
 print(input_img[0].transpose(2, 0, 1))
 print(predict_img[0].transpose(2, 0, 1))

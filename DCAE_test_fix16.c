@@ -17,7 +17,7 @@ int main(void){
     for(uint16_t depth=0; depth<input_0_depth; depth++){
         for(uint16_t height=0; height<input_0_height; height++){
             for(uint16_t width=0; width<input_0_width; width++){
-                input_0_array[depth][height][width] = float2fixed((float)width, fractal_width_Conv2D_0);
+                input_0_array[depth][height][width] = float2fixed((float)width / (float)input_0_width, fractal_width_Conv2D_0);
                 // printf("%d ", float2fixed((float)width, fractal_width_Conv2D_0));
             }
             // printf("\r\n");
