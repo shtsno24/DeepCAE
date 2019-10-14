@@ -20,7 +20,7 @@ int main(void){
                 input_0_array[depth][height][width] = float2fixed((float)width, fractal_width_Conv2D_0);
                 // printf("%d ", float2fixed((float)width, fractal_width_Conv2D_0));
             }
-            printf("\r\n");
+            // printf("\r\n");
         }
     }
 

@@ -6,6 +6,7 @@ import datetime
 import numpy as np
 import float2fixed
 
+fractal = 16 - 7
 
 def write_array_1D(array, f):
     f.write("{")
@@ -116,7 +117,7 @@ if __name__ == "__main__":
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_w",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_b",
-                                    "int16_t", isFixed=True, fractal_width=8, array_type=np.int16)
+                                    "int16_t", isFixed=True, fractal_width=fractal, array_type=np.int16)
                 params_header_name_fix.append(layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h")
             else:
                 print("This Layer has no Parameter")
