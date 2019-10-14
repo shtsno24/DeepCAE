@@ -52,6 +52,7 @@ input_img = input_img[0]
 predict_img = predict_img[0]
 save_img("keras_mnist_DCAE_input.png", input_img)
 save_img("keras_mnist_DCAE_output.png", predict_img)
-print(predict_img.shape)
-np.savetxt("keras_mnist_DCAE_input.tsv", input_img[:, :, 0], delimiter='\t', fmt="%10.6f")
-np.savetxt("keras_mnist_DCAE_output.tsv", predict_img[:, :, 0], delimiter='\t', fmt="%10.6f")
+input_img = input_img.transpose(2, 0, 1)
+predict_img = predict_img.transpose(2, 0, 1)
+np.savetxt("keras_mnist_DCAE_input.tsv", input_img[0, :, :], delimiter='\t', fmt="%10.6f")
+np.savetxt("keras_mnist_DCAE_output.tsv", predict_img[0, :, :], delimiter='\t', fmt="%10.6f")
