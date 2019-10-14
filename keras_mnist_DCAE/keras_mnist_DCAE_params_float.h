@@ -1,9 +1,9 @@
-/*
- * author : shtsno24
- * Date : 2019-10-14 18:33:03.003132
+/*
+ * author : shtsno24
+ * Date : 2019-10-14 20:19:03.109670
  *
  */
-#include "Conv2D_0.h"
-#include "Conv2D_1.h"
-#include "Conv2D_2.h"
-#include "Conv2D_3.h"
+#include "weights/Conv2D_0.h"
+#include "weights/Conv2D_1.h"
+#include "weights/Conv2D_2.h"
+#include "weights/Conv2D_3.h"

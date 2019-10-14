@@ -5,8 +5,11 @@ import json
 import datetime
 import numpy as np
 import float2fixed
+import os
+
 
 fractal = 16 - 2
+
 
 def write_array_1D(array, f):
     f.write("{")
@@ -87,6 +90,9 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
 
 
 if __name__ == "__main__":
+    if os.path.isdir("./weights") is False:
+        os.mkdir("./weights")
+
     with open("keras_mnist_DCAE.json") as jfile:
         model = load_model("keras_mnist_DCAE.h5")
         model.summary()
@@ -107,18 +113,18 @@ if __name__ == "__main__":
                 print("bias", param_b.shape, len(param_b.shape))
                 write_weight_Conv2D(param_w,
                                     param_b,
-                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h",
+                                    "weights/" + layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_w",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_b",
                                     "float")
-                params_header_name_float.append(layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h")
+                params_header_name_float.append("weights/" + layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + ".h")
                 write_weight_Conv2D(param_w,
                                     param_b,
-                                    layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h",
+                                    "weights/" + layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_w",
                                     layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_b",
                                     "int16_t", isFixed=True, fractal_width=fractal, array_type=np.int16)
-                params_header_name_fix.append(layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h")
+                params_header_name_fix.append("weights/" + layers["class_name"] + "_" + str(int(itr_counter / 2) - 1) + "_fixed16.h")
             else:
                 print("This Layer has no Parameter")
 
