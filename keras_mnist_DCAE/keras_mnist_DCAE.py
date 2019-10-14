@@ -6,8 +6,9 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img
+import numpy as np
 
-batch_size = 32
+batch_size = 128
 # num_classes = 10
 epochs = 1
 
@@ -121,10 +122,15 @@ with open("tflite_mnist_DCAE.tflite", "wb") as f:
     f.write(tflite_model)
 
 # x_test = x_test.astype('uint8')
+input_img = np.array([[x for x in range(28)] for y in range(28)], dtype=np.float32).reshape(x_test[0:1].shape)
+predict_img = model.predict(input_img)
+# print(input_img[0].transpose(2, 0, 1))
+# print(predict_img[0].transpose(2, 0, 1))
+
 input_img = x_test[0:1]
-predict_img = model.predict(x_test[0:1])
+predict_img = model.predict(input_img)
 input_img = input_img[0]
 predict_img = predict_img[0]
 # print(array_to_img(input_img).shape, array_to_img(predict_img).shape)
-save_img("input.png", input_img)
-save_img("predict.png", predict_img)
+# save_img("input.png", input_img)
+# save_img("predict.png", predict_img)

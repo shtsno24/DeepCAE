@@ -6,7 +6,7 @@ void array_printf_1D_float32(uint16_t input_length,
 float input[input_length]){
     printf("[");
     for(uint16_t length = 0; length < input_length; length++){
-        printf("% 4.3f", input[length]);
+        printf("% 6.5f", input[length]);
         if(length < input_length - 1){
             printf(" ");    
         }
@@ -48,4 +48,24 @@ float input[output_depth][input_depth][input_height][input_width]){
         }
     }
     printf("]");
+}
+
+void array_fprintf_1D_float32(uint16_t input_length, 
+float input[input_length], char delimiter, FILE* fp){
+    for(uint16_t length = 0; length < input_length; length++){
+        fprintf(fp, "%f", input[length]);
+        if(length < input_length - 1){
+            fprintf(fp, "%c", delimiter);    
+        }
+    }
+}
+
+void array_fprintf_2D_float32(uint16_t input_height, uint16_t input_width, 
+float input[input_height][input_width], char delimiter, FILE* fp){
+    for(uint16_t height = 0; height < input_height; height++){
+        array_fprintf_1D_float32(input_width, input[height], delimiter, fp);
+        if(height < input_height - 1){
+            fprintf(fp, "\r\n");
+        }
+    }
 }
