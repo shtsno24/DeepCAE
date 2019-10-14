@@ -105,7 +105,9 @@ if __name__ == "__main__":
         for layers in model_layers_itr["config"]["layers"]:
             print()
             print(layers["class_name"])
-            if(layers["class_name"].find("UpSampling") == -1 and layers["class_name"].find("MaxPooling2D") == -1):
+            if(layers["class_name"].find("UpSampling") == -1 and layers["class_name"].find("MaxPooling2D") == -1 and layers["class_name"].find("UpSampling2D") == -1):
+                print(layers["config"]["batch_input_shape"])
+                print(layers["config"]["filters"])
                 param_w = model_weights_itr[itr_counter]
                 param_b = model_weights_itr[itr_counter + 1]
                 itr_counter += 2
@@ -129,7 +131,7 @@ if __name__ == "__main__":
                 print("This Layer has no Parameter")
 
     with open("keras_mnist_DCAE_params_float.h", "w") as f:
-        print(params_header_name_float)
+        # print(params_header_name_float)
 
         # headers
         todaytime = str(datetime.datetime.today())
@@ -142,7 +144,7 @@ if __name__ == "__main__":
             f.write('#include "' + name + '"\r\n')
 
     with open("keras_mnist_DCAE_params_fixed.h", "w") as f:
-        print(params_header_name_fix)
+        # print(params_header_name_fix)
 
         # headers
         todaytime = str(datetime.datetime.today())
