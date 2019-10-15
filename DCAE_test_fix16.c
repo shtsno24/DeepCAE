@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "array_printf_fix16.h"
+#include "arrays/arrays_fix16.h"
 #include "layers/layers.h"
 #include "weights/weights_fix16.h"
 
@@ -22,29 +23,29 @@ int main(void){
     }
 
     // Conv2D_0 layer
-    uint16_t Padding_0_depth = 1, Padding_0_height = 30, Padding_0_width = 30;
-    int16_t Padding_0_array[Padding_0_depth][Padding_0_height][Padding_0_width];
+    // uint16_t Padding_0_depth = 1, Padding_0_height = 30, Padding_0_width = 30;
+    // int16_t Padding_0_array[Padding_0_depth][Padding_0_height][Padding_0_width];
 
-    uint16_t Conv2d_0_depth = 16, Conv2D_0_height = 28, Conv2D_0_width = 28;
-    int16_t Conv2D_0_array[Conv2d_0_depth][Conv2D_0_height][Conv2D_0_width];
+    // uint16_t Conv2d_0_depth = 16, Conv2D_0_height = 28, Conv2D_0_width = 28;
+    // int16_t Conv2D_0_array[Conv2d_0_depth][Conv2D_0_height][Conv2D_0_width];
 
 
     // MaxPool_0 layer
-    uint16_t MaxPool_0_depth = 16, MaxPool_0_height = 14, MaxPool_0_width = 14;
-    int16_t MaxPool_0_array[MaxPool_0_depth][MaxPool_0_height][MaxPool_0_width];
+    // uint16_t MaxPool_0_depth = 16, MaxPool_0_height = 14, MaxPool_0_width = 14;
+    // int16_t MaxPool_0_array[MaxPool_0_depth][MaxPool_0_height][MaxPool_0_width];
 
 
     // Conv2D_1 layer
-    uint16_t Padding_1_depth = 16, Padding_1_height = 16, Padding_1_width = 16;
-    int16_t Padding_1_array[Padding_1_depth][Padding_1_height][Padding_1_width];
+    // uint16_t Padding_1_depth = 16, Padding_1_height = 16, Padding_1_width = 16;
+    // int16_t Padding_1_array[Padding_1_depth][Padding_1_height][Padding_1_width];
 
-    uint16_t Conv2d_1_depth = 16, Conv2D_1_height = 14, Conv2D_1_width = 14;
-    int16_t Conv2D_1_array[Conv2d_1_depth][Conv2D_1_height][Conv2D_1_width];
+    // uint16_t Conv2d_1_depth = 8, Conv2D_1_height = 14, Conv2D_1_width = 14;
+    // int16_t Conv2D_1_array[Conv2d_1_depth][Conv2D_1_height][Conv2D_1_width];
 
 
     // MaxPool_1 layer
-    uint16_t MaxPool_1_depth = 8, MaxPool_1_height = 7, MaxPool_1_width = 7;
-    int16_t MaxPool_1_array[MaxPool_1_depth][MaxPool_1_height][MaxPool_1_width];
+    // uint16_t MaxPool_1_depth = 8, MaxPool_1_height = 7, MaxPool_1_width = 7;
+    // int16_t MaxPool_1_array[MaxPool_1_depth][MaxPool_1_height][MaxPool_1_width];
 
 
     // Upsampling_0 layer
@@ -86,44 +87,44 @@ int main(void){
 
     padding2d_fix16(1, 1, 
     input_0_depth, input_0_height, input_0_width, input_0_array,
-    Padding_0_height, Padding_0_width, Padding_0_array);
+    Padding2D_0_height, Padding2D_0_width, Padding2D_0_array);
 
-    // array_printf_3D_int16_t32(Padding_0_depth, Padding_0_height, Padding_0_width, Padding_0_array);
+    // array_printf_3D_int16_t32(Padding2D_0_depth, Padding2D_0_height, Padding2D_0_width, Padding2D_0_array);
 
-    conv2d_fix16(Padding_0_depth, Padding_0_height, Padding_0_width, Padding_0_array,
-    Conv2d_0_depth, Conv2D_0_height, Conv2D_0_width, Conv2D_0_array,
+    conv2d_fix16(Padding2D_0_depth, Padding2D_0_depth, Padding2D_0_height, Padding2D_0_array,
+    Conv2D_0_depth, Conv2D_0_height, Conv2D_0_width, Conv2D_0_array,
     Conv2D_0_b,
     3, 3, Conv2D_0_w, 1, fractal_width_Conv2D_0);
 
     // array_printf_3D_int16(Conv2d_0_depth, Conv2D_0_height, Conv2D_0_width, Conv2D_0_array);
 
     max_pooling2d_fix16(2,
-    Conv2d_0_depth, Conv2D_0_height, Conv2D_0_width, Conv2D_0_array,
-    MaxPool_0_depth, MaxPool_0_height, MaxPool_0_width, MaxPool_0_array);
+    Conv2D_0_depth, Conv2D_0_height, Conv2D_0_width, Conv2D_0_array,
+    MaxPooling2D_0_depth, MaxPooling2D_0_height, MaxPooling2D_0_width, MaxPooling2D_0_array);
 
     // array_printf_3D_int16(MaxPool_0_depth, MaxPool_0_height, MaxPool_0_width, MaxPool_0_array);
 
     padding2d_fix16(1, 1,
-    MaxPool_0_depth, MaxPool_0_height, MaxPool_0_width, MaxPool_0_array,
-    Padding_1_height, Padding_1_width, Padding_1_array);
+    MaxPooling2D_0_depth, MaxPooling2D_0_height, MaxPooling2D_0_width, MaxPooling2D_0_array,
+    Padding2D_1_height, Padding2D_1_width, Padding2D_1_array);
 
     // array_printf_3D_int16(Padding_1_depth, Padding_1_height, Padding_1_width, Padding_1_array);
 
-    conv2d_fix16(Padding_1_depth, Padding_1_height, Padding_1_width, Padding_1_array,
-    Conv2d_1_depth, Conv2D_1_height, Conv2D_1_width, Conv2D_1_array,
+    conv2d_fix16(Padding2D_1_depth, Padding2D_1_height, Padding2D_1_width, Padding2D_1_array,
+    Conv2D_1_depth, Conv2D_1_height, Conv2D_1_width, Conv2D_1_array,
     Conv2D_1_b,
     3, 3, Conv2D_1_w, 1, fractal_width_Conv2D_1);
 
     // array_printf_3D_int16(Conv2d_1_depth, Conv2D_1_height, Conv2D_1_width, Conv2D_1_array);
 
     max_pooling2d_fix16(2,
-    Conv2d_1_depth, Conv2D_1_height, Conv2D_1_width, Conv2D_1_array,
-    MaxPool_1_depth, MaxPool_1_height, MaxPool_1_width, MaxPool_1_array);
+    Conv2D_1_depth, Conv2D_1_height, Conv2D_1_width, Conv2D_1_array,
+    MaxPooling2D_1_depth, MaxPooling2D_1_height, MaxPooling2D_1_width, MaxPooling2D_1_array);
 
     // array_printf_3D_int16(MaxPool_1_depth, MaxPool_1_height, MaxPool_1_width, MaxPool_1_array);
 
     up_sampling2d_fix16(2,
-    MaxPool_1_depth, MaxPool_1_height, MaxPool_1_width, MaxPool_1_array,
+    MaxPooling2D_1_depth, MaxPooling2D_1_height, MaxPooling2D_1_width, MaxPooling2D_1_array,
     UpSampling_0_depth, UpSampling_0_height, UpSampling_0_width, UpSampling_0_array);
 
     // array_printf_3D_int16(MaxPool_1_depth, MaxPool_1_height, MaxPool_1_width, MaxPool_1_array);

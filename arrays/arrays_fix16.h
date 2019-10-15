@@ -1,13 +1,13 @@
 /*
  * author : shtsno24
- * Date : 2019-10-15 14:13:12.875436
+ * Date : 2019-10-15 14:53:47.645173
  *
  */
 #pragma once
 #include <stdint.h>
 
-uint16_t Padding2D_0_depth = 0, Padding2D_0_height = 30, Padding2D_0_width = 30;
-int16_t Padding2D_0_array[0][30][30];
+uint16_t Padding2D_0_depth = 1, Padding2D_0_height = 30, Padding2D_0_width = 30;
+int16_t Padding2D_0_array[1][30][30];
 
 uint16_t Conv2D_0_depth = 16, Conv2D_0_height = 28, Conv2D_0_width = 28;
 int16_t Conv2D_0_array[16][28][28];

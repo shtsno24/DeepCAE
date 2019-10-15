@@ -42,8 +42,10 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         elif layers["class_name"].find("Conv2D") != -1:
             if itr_counter["Conv2D"] == 0:
                 input_shapes = (layers["config"]["batch_input_shape"])[1:3]
+                input_depth = (layers["config"]["batch_input_shape"])[3]
             else:
                 input_shapes = array_shapes[1:3]
+                input_depth = array_shapes[0]
             kernel_shapes = (layers["config"]["kernel_size"])[:]
             strides = (layers["config"]["strides"])[:]
             if layers["config"]["padding"] == "same":
@@ -58,15 +60,15 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
                 # print(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};").format(itr_counter["Padding2D"], array_shapes[0], itr_counter["Padding2D"], array_shapes[1], itr_counter["Padding2D"], array_shapes[2]))
                 # print(str("float " + layer_name + "_array[{}][{}][{}];\r\n").format(array_shapes[0], out_shapes_height + padding[0], out_shapes_height + padding[1]))
-                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], array_shapes[0], itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
-                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], array_shapes[0], int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
+                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
+                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
 
                 # write to fix16.c file
 
                 # print(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};").format(itr_counter["Padding2D"], array_shapes[0], itr_counter["Padding2D"], array_shapes[1], itr_counter["Padding2D"], array_shapes[2]))
                 # print(str("int16_t " + layer_name + "_array[{}][{}][{}];\r\n").format(array_shapes[0], out_shapes_height + padding[0], out_shapes_height + padding[1]))
-                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], array_shapes[0], itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
-                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], array_shapes[0], int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
+                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
+                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
 
                 itr_counter["Padding2D"] += 1
 
