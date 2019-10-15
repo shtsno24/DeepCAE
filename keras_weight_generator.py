@@ -14,7 +14,10 @@ fractal = 16 - 2
 def write_array_1D(array, f):
     f.write("{")
     for length in range(array.shape[0]):
-        f.write(str("{0:.20f}").format(array[length]))
+        if(str(array.dtype).find("float") == -1):
+            f.write(str("{}").format(int(array[length])))
+        else:
+            f.write(str("{0:.20f}").format(array[length]))
         if length < array.shape[0] - 1:
             f.write(", ")
     f.write("}")
@@ -43,7 +46,7 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
 
         # reshape weight array
         weight = weight.transpose(3, 2, 0, 1)
-        if isFixed == True:
+        if isFixed is True:
             weight = float2fixed.float2fixed_array(array_type, fractal_width, weight)
             bias = float2fixed.float2fixed_array(array_type, fractal_width, bias)
 
@@ -52,7 +55,7 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
         f.write("/*\r\n")
         f.write(" * author : shtsno24\r\n")
         f.write(" * Date : " + todaytime + "\r\n")
-        if isFixed == True:
+        if isFixed is True:
             f.write(str(" * array_type : {}\r\n").format(weight.dtype))
             f.write(str(" * fractal_width : {} bit\r\n").format(fractal_width))
             f.write(str(" * bit_width : {} bit\r\n").format(str(8 * np.dtype(array_type).itemsize)))
@@ -63,7 +66,7 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
         f.write(str("#include <stdint.h>\r\n\r\n"))
 
         # define data_width
-        if isFixed == True:
+        if isFixed is True:
             f.write(str("#define data_width_{} {}\r\n").format(str(weight_array_name[:-2]), str(8 * np.dtype(array_type).itemsize)))
             f.write(str("#define fractal_width_{} {}\r\n\r\n").format(str(weight_array_name[:-2]), str(fractal_width)))
 
