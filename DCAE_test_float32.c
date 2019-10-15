@@ -4,7 +4,7 @@
 
 #include "array_printf_float32.h"
 #include "layers/layers.h"
-#include "keras_mnist_DCAE/keras_mnist_DCAE_params_float.h"
+#include "weights/weights_float32.h"
 
 int main(void){
     // Input_0 layer

@@ -3,8 +3,7 @@
 
 #include "array_printf_fix16.h"
 #include "layers/layers.h"
-#include "keras_mnist_DCAE/keras_mnist_DCAE_params_fixed.h"
-
+#include "weights/weights_fix16.h"
 
 
 int main(void){
