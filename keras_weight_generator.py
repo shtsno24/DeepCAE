@@ -15,7 +15,7 @@ def write_array_1D(array, f):
     f.write("{")
     for length in range(array.shape[0]):
         if(str(array.dtype).find("float") == -1):
-            f.write(str("{}").format(int(array[length])))
+            f.write(str("{:5d}").format(int(array[length])))
         else:
             f.write(str("{0:.20f}").format(array[length]))
         if length < array.shape[0] - 1:

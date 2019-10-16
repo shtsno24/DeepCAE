@@ -40,9 +40,9 @@ model = load_model("keras_mnist_DCAE.h5")
 model.summary()
 
 # x_test = x_test.astype('uint8')
-input_img = np.zeros(x_test[0:1].shape)
-input_img /= 28.0
-# input_img = x_test[0:1]
+# input_img = np.zeros(x_test[0:1].shape)
+input_img = x_test[0:1]
+
 predict_img = model.predict(input_img)
 print(input_img[0].transpose(2, 0, 1))
 print(predict_img[0].transpose(2, 0, 1))
