@@ -73,12 +73,12 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
                 # generate padding layers
                 # write to float32.c file
-                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
-                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
+                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
+                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
 
                 # write to fix16.c file
-                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\r\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
-                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\r\n\r\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
+                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_height + padding[1])))
+                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_height + padding[1])))
 
                 layer_params_fix16_dict = {"layer_name": str("Padding2D_{}").format(itr_counter["Padding2D"]),
                                            "depth": input_depth, "height": int(out_shapes_height + padding[0]), "width": int(out_shapes_width + padding[1]),
@@ -105,63 +105,63 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             print("This Layer is not available OTL")
 
         # write to float32.c file
-        arrays_float32.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\r\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
-        arrays_float32.append(str("float " + layer_name + "_array[{}][{}][{}];\r\n\r\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_float32.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_float32.append(str("float " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
 
         # write to fix16.c file
-        arrays_fix16.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\r\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
-        arrays_fix16.append(str("int16_t " + layer_name + "_array[{}][{}][{}];\r\n\r\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_fix16.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_fix16.append(str("int16_t " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
 
         layer_params_fix16.append(layer_params_fix16_dict)
 
     with open(output_file_array_float32, "w") as f:
         todaytime = str(datetime.datetime.today())
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
-        f.write(" *\r\n")
-        f.write(" */\r\n")
-        f.write("#pragma once\r\n")
-        f.write("#include <stdint.h>\r\n\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
+        f.write(" *\n")
+        f.write(" */\n")
+        f.write("#pragma once\n")
+        f.write("#include <stdint.h>\n\n")
         for i in arrays_float32:
             f.write(i)
 
     with open(output_file_array_fix16, "w") as f:
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
-        f.write(" *\r\n")
-        f.write(" */\r\n")
-        f.write("#pragma once\r\n")
-        f.write("#include <stdint.h>\r\n\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
+        f.write(" *\n")
+        f.write(" */\n")
+        f.write("#pragma once\n")
+        f.write("#include <stdint.h>\n\n")
         for i in arrays_fix16:
             f.write(i)
 
     with open(output_file_template_fix16, "w") as f:
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
-        f.write(" *\r\n")
-        f.write(" */\r\n")
-        f.write("#pragma once\r\n")
-        f.write("#include <stdint.h>\r\n")
-        f.write("#include <stdio.h>\r\n\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
+        f.write(" *\n")
+        f.write(" */\n")
+        f.write("#pragma once\n")
+        f.write("#include <stdint.h>\n")
+        f.write("#include <stdio.h>\n\n")
 
-        f.write('#include "array_printf_fix16.h"\r\n')
-        f.write('#include "arrays/arrays_fix16.h"\r\n')
-        f.write('#include "layers/layers.h"\r\n')
-        f.write('#include "weights/weights_fix16.h"\r\n\r\n')
+        f.write('#include "array_printf_fix16.h"\n')
+        f.write('#include "arrays/arrays_fix16.h"\n')
+        f.write('#include "layers/layers.h"\n')
+        f.write('#include "weights/weights_fix16.h"\n\n')
 
         f.write("int main(void){\n")
         for i in layer_params_fix16:
             print(i)
             if i["layer_name"].find("input") != -1:
-                f.write(str("\tuint16_t " + i["layer_name"] + "_depth = {}, " + i["layer_name"] + "_height = {}, " + i["layer_name"] + "_width = {};\r\n").format(i["depth"], i["height"], i["width"]))
-                f.write(str("\tint16_t " + i["layer_name"] + "_array[{}][{}][{}];\r\n\r\n").format(i["depth"], i["height"], i["width"]))
+                f.write(str("\tuint16_t " + i["layer_name"] + "_depth = {}, " + i["layer_name"] + "_height = {}, " + i["layer_name"] + "_width = {};\n").format(i["depth"], i["height"], i["width"]))
+                f.write(str("\tint16_t " + i["layer_name"] + "_array[{}][{}][{}];\n\n").format(i["depth"], i["height"], i["width"]))
             elif i["layer_name"].find("Padding2D") != -1:
-                f.write(str("\tpadding2d_fix16({}, {},\r\n\t").format(i["padding_h"], i["padding_w"]))
-                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\r\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height ,{0}_width ,{0}_array);\r\n").format(i["layer_name"]))
+                f.write(str("\tpadding2d_fix16({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_height ,{0}_width ,{0}_array);\n").format(i["layer_name"]))
 
             i_old = i.copy()
         f.write("\treturn(0);\n")
