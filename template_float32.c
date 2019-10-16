@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-16 15:53:43.025819
+ * Date : 2019-10-16 16:29:12.296039
  *
  */
 #include <stdint.h>
@@ -15,14 +15,6 @@
 int main(void){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
 	float input_0_array[1][28][28];
-
-	for(int depth = 0; depth < input_0_depth; depth++){
-		for(int height = 0; height < input_0_height; height++){
-			for(int width = 0; width < input_0_width; width++){
-				input_0_array[depth][height][width] = test_input_float32[depth][height][width];
-			}
-		}
-	}
 
 	FILE* fp = fopen("template_input_float32.tsv", "w");
 	array_fprintf_2D_float32(input_0_height, input_0_width, input_0_array[0], '\t', fp);
