@@ -67,6 +67,12 @@ model.add(Conv2D(8, kernel_size=(3, 3),
                  padding='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
+#remove this layer if the code won't work
+model.add(Conv2D(8, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape,
+                 padding='same'))
+
 model.add(UpSampling2D(size=(2, 2)))
 model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',

@@ -7,7 +7,6 @@ from collections import OrderedDict
 import json
 import datetime
 import numpy as np
-import keras_weight_writer
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -41,7 +40,7 @@ model = load_model("keras_mnist_DCAE.h5")
 model.summary()
 
 # x_test = x_test.astype('uint8')
-input_img = np.array([[x for x in range(28)] for y in range(28)], dtype=np.float32).reshape(x_test[0:1].shape)
+input_img = np.zeros(x_test[0:1].shape)
 input_img /= 28.0
 # input_img = x_test[0:1]
 predict_img = model.predict(input_img)
