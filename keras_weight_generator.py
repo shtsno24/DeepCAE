@@ -29,9 +29,9 @@ def write_array_ND(array, f):
         for length in range(array.shape[0]):
             write_array_ND(array[length], f)
             if length < array.shape[0] - 1:
-                f.write(",\r\n")
+                f.write(",\n")
                 if len(array.shape) % 3 == 0 or len(array.shape) % 4 == 0:
-                    f.write("\r\n")
+                    f.write("\n")
         f.write("}")
 
     else:
@@ -52,44 +52,44 @@ def write_weight_Conv2D(weight, bias, file_name, weight_array_name, bias_array_n
 
         # headers
         todaytime = str(datetime.datetime.today())
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
         if isFixed is True:
-            f.write(str(" * array_type : {}\r\n").format(weight.dtype))
-            f.write(str(" * fractal_width : {} bit\r\n").format(fractal_width))
-            f.write(str(" * bit_width : {} bit\r\n").format(str(8 * np.dtype(array_type).itemsize)))
+            f.write(str(" * array_type : {}\n").format(weight.dtype))
+            f.write(str(" * fractal_width : {} bit\n").format(fractal_width))
+            f.write(str(" * bit_width : {} bit\n").format(str(8 * np.dtype(array_type).itemsize)))
         f.write(" *\n */\n")
 
         # include <stdint.h>
-        f.write(str("#pragma once\r\n"))
-        f.write(str("#include <stdint.h>\r\n\r\n"))
+        f.write(str("#pragma once\n"))
+        f.write(str("#include <stdint.h>\n\n"))
 
         # define data_width
         if isFixed is True:
-            f.write(str("#define data_width_{} {}\r\n").format(str(weight_array_name[:-2]), str(8 * np.dtype(array_type).itemsize)))
-            f.write(str("#define fractal_width_{} {}\r\n\r\n").format(str(weight_array_name[:-2]), str(fractal_width)))
+            f.write(str("#define data_width_{} {}\n").format(str(weight_array_name[:-2]), str(8 * np.dtype(array_type).itemsize)))
+            f.write(str("#define fractal_width_{} {}\n\n").format(str(weight_array_name[:-2]), str(fractal_width)))
 
         # weights
         f.write(str("const uint16_t shape_{}_w[] = ").format(str(weight_array_name[:-2])))
-        f.write("{%d, %d, %d, %d};\r\n" % (weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
+        f.write("{%d, %d, %d, %d};\n" % (weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
 
         f.write("const " + type_name + " " + weight_array_name)
-        f.write(str("[{}][{}][{}][{}] =\r\n").format(weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
+        f.write(str("[{}][{}][{}][{}] =\n").format(weight.shape[0],weight.shape[1],weight.shape[2],weight.shape[3]))
 
         write_array_ND(weight, f)
         f.write(";")
-        f.write("\r\n\r\n")
+        f.write("\n\n")
 
         # bias
-        f.write(str("const uint16_t shape_{}_b = {};\r\n").format(str(weight_array_name[:-2]), bias.shape[0]))
+        f.write(str("const uint16_t shape_{}_b = {};\n").format(str(weight_array_name[:-2]), bias.shape[0]))
 
         f.write("const " + type_name + " " + bias_array_name)
         f.write("[%d] = " % bias.shape)
 
         write_array_ND(bias, f)
         f.write(";")
-        f.write("\r\n")
+        f.write("\n")
 
 
 if __name__ == "__main__":
@@ -140,23 +140,23 @@ if __name__ == "__main__":
 
         # headers
         todaytime = str(datetime.datetime.today())
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
         f.write(" *\n */\n")
 
         for name in params_header_name_float:
-            f.write('#include "' + name + '"\r\n')
+            f.write('#include "' + name + '"\n')
 
     with open("./weights/weights_fix16.h", "w") as f:
         # print(params_header_name_fix)
 
         # headers
         todaytime = str(datetime.datetime.today())
-        f.write("/*\r\n")
-        f.write(" * author : shtsno24\r\n")
-        f.write(" * Date : " + todaytime + "\r\n")
+        f.write("/*\n")
+        f.write(" * author : shtsno24\n")
+        f.write(" * Date : " + todaytime + "\n")
         f.write(" *\n */\n")
 
         for name in params_header_name_fix:
-            f.write('#include "' + name + '"\r\n')
+            f.write('#include "' + name + '"\n')

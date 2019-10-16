@@ -6,7 +6,6 @@ import datetime
 import numpy as np
 import os
 
-fractal = 16 - 2
 output_file_array_float32 = "./arrays/arrays_float32.h"
 output_file_array_fix16 = "./arrays/arrays_fix16.h"
 output_file_template_float32 = "template_float32.c"
@@ -97,7 +96,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             layer_params_fix16_dict = {"layer_name": layer_name,
                                        "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
                                        "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
-                                       "bias_length": array_shapes[0], "activation": layers["config"]["activation"], "fractal": fractal}
+                                       "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
 
             itr_counter["Conv2D"] += 1
 
@@ -143,7 +142,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write(" * Date : " + todaytime + "\n")
         f.write(" *\n")
         f.write(" */\n")
-        f.write("#pragma once\n")
+        # f.write("#pragma once\n")
         f.write("#include <stdint.h>\n")
         f.write("#include <stdio.h>\n\n")
 
@@ -152,17 +151,45 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write('#include "layers/layers.h"\n')
         f.write('#include "weights/weights_fix16.h"\n\n')
 
+
+
         f.write("int main(void){\n")
         for i in layer_params_fix16:
             print(i)
             if i["layer_name"].find("input") != -1:
                 f.write(str("\tuint16_t " + i["layer_name"] + "_depth = {}, " + i["layer_name"] + "_height = {}, " + i["layer_name"] + "_width = {};\n").format(i["depth"], i["height"], i["width"]))
                 f.write(str("\tint16_t " + i["layer_name"] + "_array[{}][{}][{}];\n\n").format(i["depth"], i["height"], i["width"]))
+
+                f.write('\tFILE* fp = fopen("template_input_fix16.tsv", "w");\n\t')
+                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_Conv2D_0);\n\t")
+                f.write("fclose(fp);\n\n")
             elif i["layer_name"].find("Padding2D") != -1:
                 f.write(str("\tpadding2d_fix16({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
                 f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height ,{0}_width ,{0}_array);\n").format(i["layer_name"]))
-
+                f.write(str("{0}_height ,{0}_width ,{0}_array);\n\n").format(i["layer_name"]))
+            elif i["layer_name"].find("MaxPooling2D") != -1:
+                f.write(str("\tmax_pooling2d_fix16({},\n\t").format(i["ksize_h"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array);\n\n").format(i["layer_name"]))
+            elif i["layer_name"].find("UpSampling2D") != -1:
+                f.write(str("\tup_sampling2d_fix16({},\n\t").format(i["ksize_h"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array);\n\n").format(i["layer_name"]))
+            elif i["layer_name"].find("Conv2D") != -1:
+                if i["activation"] == "relu":
+                    relu_flag = 1
+                else:
+                    relu_flag = 0
+                f.write(str("\tconv2d_fix16({0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth ,{0}_height ,{0}_width ,{0}_array,\n\t").format(i["layer_name"]))
+                f.write(str("{}_b,\n\t").format(i["layer_name"]))
+                f.write(str("{0}, {1}, {2}_w, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
+            
             i_old = i.copy()
+
+        f.write('\tfp = fopen("template_output_fix16.tsv", "w");\n\t')
+        f.write(str("array_fprintf_2D_fix16({0}_height, {0}_width, {0}_array[0], '\\t', fp, fractal_width_{0});\n\t").format(i_old["layer_name"]))
+        f.write("fclose(fp);\n\n")
+        
         f.write("\treturn(0);\n")
         f.write("}\n")
