@@ -146,7 +146,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write('#include "test_data/test_data.h"\n')
         f.write('#include "array_printf_fix16.h"\n')
         f.write('#include "arrays/arrays_fix16.h"\n')
-        f.write('#include "layers/layers.h"\n')
+        f.write('#include "layers_C/layers.h"\n')
         f.write('#include "weights/weights_fix16.h"\n\n')
 
         f.write("int main(void){\n")
@@ -202,7 +202,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write('#include "test_data/test_data.h"\n')
         f.write('#include "array_printf_float32.h"\n')
         f.write('#include "arrays/arrays_float32.h"\n')
-        f.write('#include "layers/layers.h"\n')
+        f.write('#include "layers_C/layers.h"\n')
         f.write('#include "weights/weights_float32.h"\n\n')
 
         f.write("int main(void){\n")
