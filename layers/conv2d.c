@@ -22,8 +22,8 @@ uint8_t relu, uint8_t fractal_width){
                     for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
                         for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
                             output[out_d][out_h][out_w] += 
-                                (int16_t)(((int32_t)input[in_d][out_h + k_h][out_w + k_w] * 
-                                (int32_t)kernel[out_d][in_d][k_h][k_w]) >> fractal_width);
+                                (int16_t)(((int32_t)(input[in_d][out_h + k_h][out_w + k_w]) * (int32_t)(kernel[out_d][in_d][k_h][k_w]))
+                                >> fractal_width);
                         }
                     }
                 }
