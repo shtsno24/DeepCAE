@@ -9,7 +9,7 @@
 
 #include "./../test_data/test_data.h"
 #include "./../arrays/arrays_fix16.h"
-#include "./../layers/layers.h"
+#include "./../layers_C/layers.h"
 #include "./../weights/weights_fix16.h"
 
 #include "./../array_printf_fix16.h"
