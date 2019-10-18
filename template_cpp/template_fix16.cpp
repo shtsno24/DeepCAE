@@ -1,16 +1,16 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 16:32:03.102893
+ * Date : 2019-10-18 16:49:00.537420
  *
  */
 #include <cstdint>
 #include <vector>
 
-#include "test_data/test_data.h"
-#include "layers_cpp/array_printf_fix16.h"
-#include "arrays_cpp/arrays_fix16.h"
-#include "layers_cpp/layers.h"
-#include "weights/weights_fix16.h"
+#include "./../test_data/test_data.h"
+#include "./../layers_cpp/array_printf_fix16.h"
+#include "./../arrays_cpp/arrays_fix16.h"
+#include "./../layers_cpp/layers.h"
+#include "./../weights/weights_fix16.h"
 
 using namespace std;
 
