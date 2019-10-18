@@ -5,6 +5,7 @@
         "keras_mnist_dcae_params_float.h": "c",
         "conv2d_0.h": "c",
         "stdio.h": "c",
-        "test_data.h": "c"
+        "test_data.h": "c",
+        "iosfwd": "cpp"
     }
 }

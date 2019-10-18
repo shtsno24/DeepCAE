@@ -7,12 +7,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "./../layers_Cpp/layers.h"
 #include "./../test_data/test_data.h"
-#include "./../arrays/arrays_fix16.h"
-#include "./../layers_C/layers.h"
+#include "./../arrays_Cpp/arrays_fix16.h"
 #include "./../weights/weights_fix16.h"
 
-#include "./../array_printf_fix16.h"
+#include "./../layers_Cpp/array_printf_fix16.h"
+
+using namespace std;
 
 int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
@@ -26,9 +28,9 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 		}
 	}
 
-	FILE* fp = fopen("template_input_fix16.tsv", "w");
+	ofstream fp("template_input_fix16.tsv");
 	array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\t', fp, fractal_width_Conv2D_0);
-	fclose(fp);
+	fp.close();
 
 	padding2d_fix16(1, 1,
 	input_0_depth ,input_0_height ,input_0_width ,input_0_array,
@@ -91,9 +93,10 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	Conv2D_4_b,
 	3, 3, Conv2D_4_w, 1, fractal_width_Conv2D_4);
 
-	fp = fopen("template_output_fix16.tsv", "w");
+	// fp = fopen("template_output_fix16.tsv", "w");
+	fp.open("template_output_fix16.tsv");
 	array_fprintf_2D_fix16(Conv2D_4_height, Conv2D_4_width, Conv2D_4_array[0], '\t', fp, fractal_width_Conv2D_4);
-	fclose(fp);
+	fp.close();
 
 	return(0);
 }

@@ -1,13 +1,13 @@
 /*
  * author : shtsno24
- * Date : 2019-10-17 22:38:50.974247
+ * Date : 2019-10-18 10:48:00.215675
  *
  */
 #include <stdint.h>
 #include <stdio.h>
 
 #include "test_data/test_data.h"
-#include "array_printf_float32.h"
+#include "layers_C/array_printf_float32.h"
 #include "arrays/arrays_float32.h"
 #include "layers_C/layers.h"
 #include "weights/weights_float32.h"

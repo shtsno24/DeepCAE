@@ -7,9 +7,9 @@
 #include <stdio.h>
 
 #include "test_data/test_data.h"
-#include "array_printf_fix16.h"
+#include "layers_C/array_printf_fix16.h"
 #include "arrays/arrays_fix16.h"
-#include "layers/layers.h"
+#include "layers_C/max_pooling2d.h"
 #include "weights/weights_fix16.h"
 
 int main(void){

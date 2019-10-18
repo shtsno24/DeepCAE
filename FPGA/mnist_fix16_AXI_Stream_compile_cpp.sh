@@ -1,1 +1,1 @@
-g++ -o mnist_fix16_AXI_Stream_Cpp mnist_fix16_AXI_Stream.cpp ./../array_printf_fix16.c ./../layers_C/conv2d.c ./../layers_C/max_pooling2d.c ./../layers_C/padding2d.c ./../layers_C/up_sampling2d.c
+g++ -std=gnu++11 -o mnist_fix16_AXI_Stream_Cpp mnist_fix16_AXI_Stream.cpp ./../layers_Cpp/array_printf_fix16.cpp ./../layers_Cpp/conv2d.cpp ./../layers_Cpp/max_pooling2d.cpp ./../layers_Cpp/padding2d.cpp ./../layers_Cpp/up_sampling2d.cpp

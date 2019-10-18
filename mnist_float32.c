@@ -7,9 +7,9 @@
 #include <stdio.h>
 
 #include "test_data/test_data.h"
-#include "array_printf_float32.h"
+#include "layers_C/array_printf_float32.h"
 #include "arrays/arrays_float32.h"
-#include "layers/layers.h"
+#include "layers_C/layers.h"
 #include "weights/weights_float32.h"
 
 int main(void){
