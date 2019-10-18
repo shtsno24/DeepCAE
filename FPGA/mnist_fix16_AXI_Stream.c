@@ -10,7 +10,7 @@
 #include "./../test_data/test_data.h"
 #include "./../arrays_c/arrays_fix16.h"
 #include "./../layers_c/layers.h"
-#include "./../weights/weights_fix16.h"
+#include "./../weights_c/weights_fix16.h"
 
 #include "./../layers_c/array_printf_fix16.h"
 
@@ -91,7 +91,7 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	Conv2D_4_b,
 	3, 3, Conv2D_4_w, 1, fractal_width_Conv2D_4);
 
-	fp = fopen("template_output_fix16.tsv", "w");
+	fp = fopen("template_output_fix16_c.tsv", "w");
 	array_fprintf_2D_fix16(Conv2D_4_height, Conv2D_4_width, Conv2D_4_array[0], '\t', fp, fractal_width_Conv2D_4);
 	fclose(fp);
 
@@ -100,5 +100,15 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 
 int main(void){
 	int16_t output_buffer[1*28*28];
-	network(test_input_fix16, output_buffer);
+	int16_t input_buffer[1*28*28];
+
+	for(int depth = 0; depth < 1; depth++){
+		for(int height = 0; height < 28; height++){
+			for(int width = 0; width < 28; width++){
+				input_buffer[depth * 28 * 28 + height * 28 + width] = test_input_fix16[depth][height][width];
+			}
+		}
+	}
+
+	network(input_buffer, output_buffer);
 }

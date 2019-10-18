@@ -323,7 +323,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                 i_old = i.copy()
 
             f.write('\tfp.open("template_output_fix16.tsv");\n\t')
-            f.write(str("array_fprintf_2D_fix16({0}_height, {0}_width, {0}_array[0], '\t', fp, fractal_width_{0});\n\t").format(i_old["layer_name"]))
+            f.write(str("array_fprintf_2D_fix16({0}_height, {0}_width, {0}_array[0], '\\t', fp, fractal_width_{0});\n\t").format(i_old["layer_name"]))
             f.write("fp.close();\n\n")
             
             f.write("\treturn(0);\n")

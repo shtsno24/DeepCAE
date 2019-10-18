@@ -1,13 +1,16 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 18:11:00.546505
+ * Date : 2019-10-18 18:11:00.549827
  *
  */
 #pragma once
-#include <stdint.h>
+#include <cstdint>
+#include <vector>
 
-const uint16_t shape_Conv2D_4_w[] = {1, 16, 3, 3};
-const float Conv2D_4_w[1][16][3][3] =
+using namespace std;
+
+const vector< uint16_t> shape_Conv2D_4_w = {1, 16, 3, 3};
+const vector< vector< vector< vector< float> > > > Conv2D_4_w =
 {{{{0.15626037120819091797, -0.00481355888769030571, -0.10210493206977844238},
 {0.07400342822074890137, 0.17804531753063201904, 0.06173520535230636597},
 {-0.06887719035148620605, 0.08764950931072235107, 0.19512625038623809814}},
@@ -73,4 +76,4 @@ const float Conv2D_4_w[1][16][3][3] =
 {0.05881049856543540955, -0.21067352592945098877, -0.11602280288934707642}}}};
 
 const uint16_t shape_Conv2D_4_b = 1;
-const float Conv2D_4_b[1] = {-0.07751876860857009888};
+const vector< float> Conv2D_4_b = {-0.07751876860857009888};

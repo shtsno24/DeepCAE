@@ -1,19 +1,22 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 18:11:00.547678
+ * Date : 2019-10-18 18:11:00.548764
  * array_type : int16
  * fractal_width : 14 bit
  * bit_width : 16 bit
  *
  */
 #pragma once
-#include <stdint.h>
+#include <cstdint>
+#include <vector>
+
+using namespace std;
 
 #define data_width_Conv2D_4 16
 #define fractal_width_Conv2D_4 14
 
-const uint16_t shape_Conv2D_4_w[] = {1, 16, 3, 3};
-const int16_t Conv2D_4_w[1][16][3][3] =
+const vector< uint16_t> shape_Conv2D_4_w = {1, 16, 3, 3};
+const vector< vector< vector< vector< int16_t> > > > Conv2D_4_w =
 {{{{ 2560,   -78, -1672},
 { 1212,  2916,  1011},
 {-1128,  1435,  3196}},
@@ -79,4 +82,4 @@ const int16_t Conv2D_4_w[1][16][3][3] =
 {  963, -3451, -1900}}}};
 
 const uint16_t shape_Conv2D_4_b = 1;
-const int16_t Conv2D_4_b[1] = {-1269};
+const vector< int16_t> Conv2D_4_b = {-1269};
