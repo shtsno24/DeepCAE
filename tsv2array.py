@@ -19,7 +19,7 @@ with open("test_data/test_data.h", "w") as f:
     f.write(str("int16_t test_input_fix16[{}][{}][{}] = ").format(tsv_array_fix16.shape[0], tsv_array_fix16.shape[1], tsv_array_fix16.shape[2]))
     keras_weight_generator.write_array_ND(tsv_array_fix16, f)
     f.write(";\n\n")
-    
+
     f.write(str("float test_input_float32[{}][{}][{}] = ").format(tsv_array.shape[0], tsv_array.shape[1], tsv_array.shape[2]))
     keras_weight_generator.write_array_ND(tsv_array, f)
     f.write(";\n\n")
