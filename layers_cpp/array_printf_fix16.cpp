@@ -64,10 +64,10 @@ vector< int16_t>& input, char delimiter, ofstream& fp, uint16_t fractal){
         // fprintf(fp, "%25.20f", fixed2float(input[length], fractal));
         fp << fixed;
         fp << setprecision(20) << fixed2float(input[length], fractal);
-        // if(length < input_length - 1){
-        //     fprintf(fp, "%c", delimiter);    
-        // }
-        fp << delimiter;
+        if(length < input_length - 1){
+            fp << delimiter;
+        }
+
     }
 }
 
