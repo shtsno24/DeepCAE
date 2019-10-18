@@ -164,7 +164,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write('#include "layers_c/array_printf_fix16.h"\n')
         f.write('#include "arrays_c/arrays_fix16.h"\n')
         f.write('#include "layers_c/layers.h"\n')
-        f.write('#include "weights/weights_fix16.h"\n\n')
+        f.write('#include "weights_c/weights_fix16.h"\n\n')
 
         f.write("int main(void){\n")
         for i in layer_params:
@@ -220,7 +220,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write('#include "layers_c/array_printf_float32.h"\n')
         f.write('#include "arrays_c/arrays_float32.h"\n')
         f.write('#include "layers_c/layers.h"\n')
-        f.write('#include "weights/weights_float32.h"\n\n')
+        f.write('#include "weights_c/weights_float32.h"\n\n')
 
         f.write("int main(void){\n")
         for i in layer_params:
@@ -276,7 +276,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             f.write('#include "./../layers_cpp/array_printf_fix16.h"\n')
             f.write('#include "./../arrays_cpp/arrays_fix16.h"\n')
             f.write('#include "./../layers_cpp/layers.h"\n')
-            f.write('#include "./../weights/weights_fix16.h"\n\n')
+            f.write('#include "./../weights_cpp/weights_fix16.h"\n\n')
             f.write('using namespace std;\n\n')
 
 
@@ -358,7 +358,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             f.write('#include "./../layers_cpp/array_printf_float32.h"\n')
             f.write('#include "./../arrays_cpp/arrays_float32.h"\n')
             f.write('#include "./../layers_cpp/layers.h"\n')
-            f.write('#include "./../weights/weights_float32.h"\n\n')
+            f.write('#include "./../weights_cpp/weights_float32.h"\n\n')
             f.write('using namespace std;\n\n')
 
 

@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-16 16:29:26.733505
+ * Date : 2019-10-18 17:22:59.853352
  * array_type : int16
  * fractal_width : 14 bit
  * bit_width : 16 bit

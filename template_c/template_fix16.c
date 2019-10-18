@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 17:09:19.218475
+ * Date : 2019-10-18 17:15:19.603661
  *
  */
 #include <stdint.h>
@@ -10,7 +10,7 @@
 #include "layers_c/array_printf_fix16.h"
 #include "arrays_c/arrays_fix16.h"
 #include "layers_c/layers.h"
-#include "weights/weights_fix16.h"
+#include "weights_c/weights_fix16.h"
 
 int main(void){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;

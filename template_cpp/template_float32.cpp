@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 17:09:19.218475
+ * Date : 2019-10-18 17:15:19.603661
  *
  */
 #include <cstdint>
@@ -10,7 +10,7 @@
 #include "./../layers_cpp/array_printf_float32.h"
 #include "./../arrays_cpp/arrays_float32.h"
 #include "./../layers_cpp/layers.h"
-#include "./../weights/weights_float32.h"
+#include "./../weights_cpp/weights_float32.h"
 
 using namespace std;
 
