@@ -6,13 +6,13 @@ import datetime
 import numpy as np
 import os
 
-output_file_C_array_float32 = "./arrays_C/arrays_float32.h"
-output_file_C_array_fix16 = "./arrays_C/arrays_fix16.h"
+output_file_C_array_float32 = "./arrays_c/arrays_float32.h"
+output_file_C_array_fix16 = "./arrays_c/arrays_fix16.h"
 output_file_C_template_float32 = "template_float32.c"
 output_file_C_template_fix16 = "template_fix16.c"
 
-output_languages = ["C", "Cpp"]
-output_files = ["template", "array"]
+output_languages = ["c", "cpp"]
+output_files = ["template", "arrays"]
 output_precision = ["fix16", "float32"]
 
 with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
@@ -117,6 +117,16 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
         layer_params.append(layer_params_dict)
 
+    for langs in  output_languages:
+        for files in output_files:
+            for precise in output_precision:
+                # "./arrays_C/arrays_float32.h"
+                if files == "arrays":
+                    buff_name = str("./{0}_{1}/{0}_{2}.h").format(files, langs, precise)
+                else:
+                    buff_name = str("./{0}_{1}/{0}_{2}.{1}").format(files, langs, precise)
+                print(buff_name)
+
     with open(output_file_C_array_float32, "w") as f:
         todaytime = str(datetime.datetime.today())
         f.write("/*\n")
@@ -150,9 +160,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write("#include <stdio.h>\n\n")
 
         f.write('#include "test_data/test_data.h"\n')
-        f.write('#include "layers_C/array_printf_fix16.h"\n')
-        f.write('#include "arrays_C/arrays_fix16.h"\n')
-        f.write('#include "layers_C/layers.h"\n')
+        f.write('#include "layers_c/array_printf_fix16.h"\n')
+        f.write('#include "arrays_c/arrays_fix16.h"\n')
+        f.write('#include "layers_c/layers.h"\n')
         f.write('#include "weights/weights_fix16.h"\n\n')
 
         f.write("int main(void){\n")
@@ -206,9 +216,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write("#include <stdio.h>\n\n")
 
         f.write('#include "test_data/test_data.h"\n')
-        f.write('#include "layers_C/array_printf_float32.h"\n')
-        f.write('#include "arrays_C/arrays_float32.h"\n')
-        f.write('#include "layers_C/layers.h"\n')
+        f.write('#include "layers_c/array_printf_float32.h"\n')
+        f.write('#include "arrays_c/arrays_float32.h"\n')
+        f.write('#include "layers_c/layers.h"\n')
         f.write('#include "weights/weights_float32.h"\n\n')
 
         f.write("int main(void){\n")

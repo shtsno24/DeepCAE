@@ -1,15 +1,15 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 15:01:24.941321
+ * Date : 2019-10-18 15:37:11.797258
  *
  */
 #include <stdint.h>
 #include <stdio.h>
 
 #include "test_data/test_data.h"
-#include "layers_C/array_printf_float32.h"
-#include "arrays_C/arrays_float32.h"
-#include "layers_C/layers.h"
+#include "layers_c/array_printf_float32.h"
+#include "arrays_c/arrays_float32.h"
+#include "layers_c/layers.h"
 #include "weights/weights_float32.h"
 
 int main(void){

@@ -7,12 +7,12 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "./../layers_Cpp/layers.h"
+#include "./../layers_cpp/layers.h"
 #include "./../test_data/test_data.h"
-#include "./../arrays_Cpp/arrays_fix16.h"
+#include "./../arrays_cpp/arrays_fix16.h"
 #include "./../weights/weights_fix16.h"
 
-#include "./../layers_Cpp/array_printf_fix16.h"
+#include "./../layers_cpp/array_printf_fix16.h"
 
 using namespace std;
 
