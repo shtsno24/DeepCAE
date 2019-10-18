@@ -22,7 +22,7 @@ void array_printf_4D_fix16(uint16_t output_depth, uint16_t input_depth, uint16_t
 vector< vector< vector< vector< int16_t> > > >& input, uint16_t fractal);
 
 void array_fprintf_1D_fix16(uint16_t input_length, 
-vector< int16_t>& input, char delimiter, ofstream fp, uint16_t fractal);
+vector< int16_t>& input, char delimiter, ofstream& fp, uint16_t fractal);
 
 void array_fprintf_2D_fix16(uint16_t input_height, uint16_t input_width, 
-vector< vector< int16_t> >& input, char delimiter, ofstream fp, uint16_t fractal);
+vector< vector< int16_t> >& input, char delimiter, ofstream& fp, uint16_t fractal);

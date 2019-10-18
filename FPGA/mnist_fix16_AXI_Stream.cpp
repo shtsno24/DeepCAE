@@ -18,7 +18,8 @@ using namespace std;
 
 int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
-	int16_t input_0_array[1][28][28];
+	// int16_t input_0_array[1][28][28];
+	vector< vector< vector< int16_t> > > input_0_array(input_0_depth, vector< vector < int16_t> >(input_0_height, vector< int16_t>(input_0_width)));
 
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){

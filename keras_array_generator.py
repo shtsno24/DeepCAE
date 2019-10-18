@@ -6,14 +6,20 @@ import datetime
 import numpy as np
 import os
 
-output_file_array_float32 = "./arrays/arrays_float32.h"
-output_file_array_fix16 = "./arrays/arrays_fix16.h"
-output_file_template_float32 = "template_float32.c"
-output_file_template_fix16 = "template_fix16.c"
+output_file_C_array_float32 = "./arrays_C/arrays_float32.h"
+output_file_C_array_fix16 = "./arrays_C/arrays_fix16.h"
+output_file_C_template_float32 = "template_float32.c"
+output_file_C_template_fix16 = "template_fix16.c"
+
+output_languages = ["C", "Cpp"]
+output_files = ["template", "array"]
+output_precision = ["fix16", "float32"]
 
 with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
-    if os.path.isdir("./arrays") is False:
-        os.mkdir("./arrays")
+    
+    for lang in output_languages:
+        if os.path.isdir("./arrays_" + lang) is False:
+            os.mkdir("./arrays_" + lang)
 
     model = load_model("keras_mnist_DCAE/keras_mnist_DCAE.h5")
     model.summary()
@@ -111,7 +117,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
         layer_params.append(layer_params_dict)
 
-    with open(output_file_array_float32, "w") as f:
+    with open(output_file_C_array_float32, "w") as f:
         todaytime = str(datetime.datetime.today())
         f.write("/*\n")
         f.write(" * author : shtsno24\n")
@@ -123,7 +129,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         for i in arrays_float32:
             f.write(i)
 
-    with open(output_file_array_fix16, "w") as f:
+    with open(output_file_C_array_fix16, "w") as f:
         f.write("/*\n")
         f.write(" * author : shtsno24\n")
         f.write(" * Date : " + todaytime + "\n")
@@ -134,7 +140,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         for i in arrays_fix16:
             f.write(i)
 
-    with open(output_file_template_fix16, "w") as f:
+    with open(output_file_C_template_fix16, "w") as f:
         f.write("/*\n")
         f.write(" * author : shtsno24\n")
         f.write(" * Date : " + todaytime + "\n")
@@ -190,7 +196,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         f.write("\treturn(0);\n")
         f.write("}\n")
 
-    with open(output_file_template_float32, "w") as f:
+    with open(output_file_C_template_float32, "w") as f:
         f.write("/*\n")
         f.write(" * author : shtsno24\n")
         f.write(" * Date : " + todaytime + "\n")

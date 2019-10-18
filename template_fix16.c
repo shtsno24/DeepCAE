@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-10-18 10:48:00.215675
+ * Date : 2019-10-18 15:01:24.941321
  *
  */
 #include <stdint.h>
@@ -8,7 +8,7 @@
 
 #include "test_data/test_data.h"
 #include "layers_C/array_printf_fix16.h"
-#include "arrays/arrays_fix16.h"
+#include "arrays_C/arrays_fix16.h"
 #include "layers_C/layers.h"
 #include "weights/weights_fix16.h"
 

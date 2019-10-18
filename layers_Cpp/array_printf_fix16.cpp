@@ -59,7 +59,7 @@ vector< vector< vector< vector< int16_t> > > >& input, uint16_t fractal){
 }
 
 void array_fprintf_1D_fix16(uint16_t input_length, 
-vector< int16_t>& input, char delimiter, ofstream fp, uint16_t fractal){
+vector< int16_t>& input, char delimiter, ofstream& fp, uint16_t fractal){
     for(uint16_t length = 0; length < input_length; length++){
         // fprintf(fp, "%25.20f", fixed2float(input[length], fractal));
         fp << fixed;
@@ -72,7 +72,7 @@ vector< int16_t>& input, char delimiter, ofstream fp, uint16_t fractal){
 }
 
 void array_fprintf_2D_fix16(uint16_t input_height, uint16_t input_width, 
-vector< vector< int16_t> >& input, char delimiter, ofstream fp, uint16_t fractal){
+vector< vector< int16_t> >& input, char delimiter, ofstream& fp, uint16_t fractal){
     for(uint16_t height = 0; height < input_height; height++){
         array_fprintf_1D_fix16(input_width, input[height], delimiter, fp, fractal);
         if(height < input_height - 1){
