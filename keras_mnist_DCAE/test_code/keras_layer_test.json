@@ -1,0 +1,56 @@
+{
+    "backend": "tensorflow",
+    "class_name": "Sequential",
+    "config": {
+        "layers": [
+            {
+                "class_name": "DepthwiseConv2D",
+                "config": {
+                    "activation": "relu",
+                    "activity_regularizer": null,
+                    "batch_input_shape": [
+                        null,
+                        16,
+                        12,
+                        6
+                    ],
+                    "bias_constraint": null,
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "bias_regularizer": null,
+                    "data_format": "channels_last",
+                    "depth_multiplier": 1,
+                    "depthwise_constraint": null,
+                    "depthwise_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "depthwise_regularizer": null,
+                    "dilation_rate": [
+                        1,
+                        1
+                    ],
+                    "dtype": "float32",
+                    "kernel_size": [
+                        3,
+                        5
+                    ],
+                    "name": "depthwise_conv2d",
+                    "padding": "valid",
+                    "strides": [
+                        1,
+                        1
+                    ],
+                    "trainable": true,
+                    "use_bias": true
+                }
+            }
+        ],
+        "name": "sequential"
+    },
+    "keras_version": "2.2.4-tf"
+}
