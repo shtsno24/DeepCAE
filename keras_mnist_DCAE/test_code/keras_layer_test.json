@@ -10,9 +10,9 @@
                     "activity_regularizer": null,
                     "batch_input_shape": [
                         null,
-                        16,
-                        12,
-                        6
+                        7,
+                        7,
+                        3
                     ],
                     "bias_constraint": null,
                     "bias_initializer": {
@@ -37,10 +37,10 @@
                     "dtype": "float32",
                     "kernel_size": [
                         3,
-                        5
+                        3
                     ],
                     "name": "depthwise_conv2d",
-                    "padding": "valid",
+                    "padding": "same",
                     "strides": [
                         1,
                         1

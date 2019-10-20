@@ -10,16 +10,16 @@ import numpy as np
 import json
 
 # input image dimensions
-img_h, img_w = 16, 12
+img_h, img_w = 7, 7
 
 # the data, split between train and test sets
-input_shape = (6, img_h, img_w)
-input_shape_keras = (img_h, img_w, 6)
+input_shape = (3, img_h, img_w)
+input_shape_keras = (img_h, img_w, 3)
 
 model = Sequential()
-model.add(DepthwiseConv2D(kernel_size=(3, 5),
+model.add(DepthwiseConv2D(kernel_size=(3, 3),
                           activation='relu',
-                          padding='valid',
+                          padding='same',
                           input_shape=input_shape_keras))
 
 model.build()
@@ -36,16 +36,16 @@ input_img = np.zeros(input_shape)
 
 conv_w = conv_w.transpose(3, 2, 0, 1)  # from(height, width, in_depth, out_depth) to (out_depth, in_depth, height, width)
 for o_d in range(1):
-    for i_d in range(6):
-        for h in range(2):
-            for w in range(1):
+    for i_d in range(3):
+        for h in range(3):
+            for w in range(3):
                 conv_w[o_d][i_d][h][w] = (w + 1)
 conv_w = conv_w.transpose(2, 3, 1, 0)
 
-for l in range(3):
-    for i in range(8):
-        for j in range(6):
-            input_img[l][i][j] = (i + 1) * (j + 1)
+for d in range(3):
+    for h in range(7):
+        for w in range(7):
+            input_img[d][h][w] = (h + 1) * (w + 1)
 
 input_img_keras = input_img.transpose(1, 2, 0)
 input_img_keras = input_img_keras.reshape((1,) + input_shape_keras)
@@ -62,10 +62,10 @@ model.set_weights(test_weights)
 output_img_keras = model.predict(input_img_keras)
 output_img = output_img_keras.transpose(0, 3, 1, 2)
 
-# print(input_img)
-# print(input_img_keras)
-# print(output_img_keras)
-# print(output_img)
+print(input_img)
+print(input_img_keras)
+print(output_img_keras)
+print(output_img)
 
 print("output_img_keras.shape", output_img_keras.shape)
 print("output_img.shape : ", output_img.shape)

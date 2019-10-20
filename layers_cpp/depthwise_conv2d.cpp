@@ -4,7 +4,7 @@
 
 using namespace std;
 
-uint8_t conv2d_fix16(uint16_t input_depth, uint16_t input_height, uint16_t input_width, vector< vector< vector< int16_t> > >& input,
+uint8_t depthwise_conv2d_fix16(uint16_t input_depth, uint16_t input_height, uint16_t input_width, vector< vector< vector< int16_t> > >& input,
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, vector< vector< vector< int16_t> > >& output,
 const vector< int16_t >& bias,
 uint16_t kernel_height, uint16_t kernel_width, const vector< vector< vector< vector< int16_t> > > >& kernel,
@@ -20,13 +20,11 @@ uint8_t relu, uint8_t fractal_width){
         for(uint16_t out_h = 0; out_h < output_height; out_h++){
             for(uint16_t out_w = 0; out_w < output_width; out_w++){
                 output[out_d][out_h][out_w] = 0;
-                for(uint16_t in_d = 0; in_d < input_depth; in_d++){
-                    for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
-                        for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
-                            output[out_d][out_h][out_w] += 
-                                (int16_t)(((int32_t)(input[in_d][out_h + k_h][out_w + k_w]) * (int32_t)(kernel[out_d][in_d][k_h][k_w]))
-                                >> fractal_width);
-                        }
+                for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
+                    for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
+                        output[out_d][out_h][out_w] += 
+                            (int16_t)(((int32_t)(input[out_d][out_h + k_h][out_w + k_w]) * (int32_t)(kernel[1][out_d][k_h][k_w]))
+                            >> fractal_width);
                     }
                 }
                 output[out_d][out_h][out_w] += bias[out_d];
@@ -42,7 +40,7 @@ uint8_t relu, uint8_t fractal_width){
     return(0);
 }
 
-uint8_t conv2d_float32(uint16_t input_depth, uint16_t input_height, uint16_t input_width,  vector< vector< vector< float> > >& input,
+uint8_t depthwise_conv2d_float32(uint16_t input_depth, uint16_t input_height, uint16_t input_width,  vector< vector< vector< float> > >& input,
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, vector< vector< vector< float> > >& output,
 const vector< float >& bias,
 uint16_t kernel_height, uint16_t kernel_width, const vector< vector< vector< vector< float> > > >& kernel,
@@ -58,13 +56,11 @@ uint8_t relu){
         for(uint16_t out_h = 0; out_h < output_height; out_h++){
             for(uint16_t out_w = 0; out_w < output_width; out_w++){
                 output[out_d][out_h][out_w] = 0;
-                for(uint16_t in_d = 0; in_d < input_depth; in_d++){
-                    for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
-                        for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
-                            output[out_d][out_h][out_w] += 
-                                input[in_d][out_h + k_h][out_w + k_w] * 
-                                kernel[out_d][in_d][k_h][k_w];
-                        }
+                for(uint16_t k_h = 0; k_h < kernel_height; k_h++){
+                    for(uint16_t k_w = 0; k_w < kernel_width; k_w++){
+                        output[out_d][out_h][out_w] += 
+                            input[out_d][out_h + k_h][out_w + k_w] * 
+                            kernel[0][out_d][k_h][k_w];
                     }
                 }
                 output[out_d][out_h][out_w] += bias[out_d];
