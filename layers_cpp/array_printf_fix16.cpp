@@ -19,7 +19,7 @@ vector< int16_t>& input, uint16_t fractal){
             cout << " ";    
         }
     }
-    cout << "[";
+    cout << "]";
 }
 
 void array_printf_2D_fix16(uint16_t input_height, uint16_t input_width, 
@@ -52,10 +52,10 @@ vector< vector< vector< vector< int16_t> > > >& input, uint16_t fractal){
     for(uint16_t depth = 0; depth < output_depth; depth++){
         array_printf_3D_fix16(input_depth, input_height, input_width, input[depth], fractal);
         if(depth < output_depth - 1){
-            printf("\r\n\r\n");
+            cout << "\r\n\r\n";
         }
     }
-    printf("]");
+    cout << "]";
 }
 
 void array_fprintf_1D_fix16(uint16_t input_length, 
