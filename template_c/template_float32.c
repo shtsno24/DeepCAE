@@ -1,16 +1,16 @@
 /*
  * author : shtsno24
- * Date : 2019-10-21 21:33:21.936387
+ * Date : 2019-10-21 22:02:57.224627
  *
  */
 #include <stdint.h>
 #include <stdio.h>
 
 #include "test_data/test_data.h"
-#include "layers_cpp/array_printf_float32.h"
-#include "arrays_cpp/arrays_float32.h"
-#include "layers_cpp/layers.h"
-#include "weights_cpp/weights_float32.h"
+#include "layers_c/array_printf_float32.h"
+#include "arrays_c/arrays_float32.h"
+#include "layers_c/layers.h"
+#include "weights_c/weights_float32.h"
 
 int network(float input_data[1*28*28], float output_data[1*28*28]){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
