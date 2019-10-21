@@ -15,7 +15,7 @@ vector< float>& input){
             cout << " ";    
         }
     }
-    cout << "[";
+    cout << "]";
 }
 
 void array_printf_2D_float32(uint16_t input_height, uint16_t input_width, 
@@ -48,7 +48,7 @@ vector< vector< vector< vector< float> > > >& input){
     for(uint16_t depth = 0; depth < output_depth; depth++){
         array_printf_3D_float32(input_depth, input_height, input_width, input[depth]);
         if(depth < output_depth - 1){
-            printf("\r\n\r\n");
+            cout << "\r\n\r\n";
         }
     }
     printf("]");
