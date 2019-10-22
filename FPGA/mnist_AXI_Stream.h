@@ -4,6 +4,11 @@
  *
  */
 
+#include "hls_stream.h"
+#include "ap_int.h"
+#include "ap_axi_sdata.h"
+
+
 using namespace std;
 
 typedef hls::stream< ap_axis<32, 1, 1, 1> > axis;

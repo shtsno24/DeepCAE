@@ -11,9 +11,9 @@
 #include "ap_int.h"
 #include "ap_axi_sdata.h"
 
-#include "./test_data/test_data.h"
-#include "./layers_cpp/array_printf_fix16.h"
-#include "mnist_fix16_AXI_Stream.h"
+#include "./../test_data/test_data.h"
+#include "./../layers_cpp/array_printf_fix16.h"
+#include "mnist_AXI_Stream.h"
 
 using namespace std;
 
