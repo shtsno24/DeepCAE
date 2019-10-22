@@ -3,7 +3,7 @@ from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, DepthwiseConv2D
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, DepthwiseConv2D, SeparableConv2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img, array_to_img
 import numpy as np
@@ -17,7 +17,7 @@ input_shape = (3, img_h, img_w)
 input_shape_keras = (img_h, img_w, 3)
 
 model = Sequential()
-model.add(DepthwiseConv2D(kernel_size=(3, 3),
+model.add(SeparableConv2D(6, kernel_size=(3, 3),
                           activation='relu',
                           padding='same',
                           input_shape=input_shape_keras))
@@ -30,17 +30,31 @@ model.build()
 model.summary()
 
 weights = model.get_weights()
-conv_w = np.ones(weights[0].shape)
-conv_b = np.zeros(weights[1].shape)
+for w in weights:
+    print(w.shape, w.dtype)
+conv_w_0 = np.ones(weights[0].shape)
+conv_w_1 = np.ones(weights[1].shape)
+conv_b = np.zeros(weights[2].shape)
 input_img = np.zeros(input_shape)
 
-conv_w = conv_w.transpose(3, 2, 0, 1)  # from(height, width, in_depth, out_depth) to (out_depth, in_depth, height, width)
+conv_w_0 = conv_w_0.transpose(3, 2, 0, 1)  # from(height, width, in_depth, out_depth) to (out_depth, in_depth, height, width)
 for o_d in range(1):
     for i_d in range(3):
         for h in range(3):
             for w in range(3):
-                conv_w[o_d][i_d][h][w] = (w + 1)
-conv_w = conv_w.transpose(2, 3, 1, 0)
+                conv_w_0[o_d][i_d][h][w] = (w + 1)
+conv_w_0 = conv_w_0.transpose(2, 3, 1, 0)
+
+conv_w_1 = conv_w_1.transpose(3, 2, 0, 1)
+for o_d in range(6):
+    for i_d in range(3):
+        for h in range(1):
+            for w in range(1):
+                conv_w_1[o_d][i_d][h][w] = (w + 1)
+conv_w_1 = conv_w_1.transpose(2, 3, 1, 0)
+
+for length in range(6):
+    conv_b[length] = length
 
 for d in range(3):
     for h in range(7):
@@ -55,7 +69,8 @@ print("input_img.shape : ", input_img.shape)
 print("input_img_keras.shape : ", input_img_keras.shape)
 
 test_weights = []
-test_weights.append(conv_w)
+test_weights.append(conv_w_0)
+test_weights.append(conv_w_1)
 test_weights.append(conv_b)
 model.set_weights(test_weights)
 
@@ -84,7 +99,8 @@ with open("keras_layer_test.json", "r") as f:
         print("padding : ", mj["config"]["padding"])
         print("stride : ", mj["config"]["strides"])
         print("kernel_size : ", mj["config"]["kernel_size"])
-        print("depth_multiplier : ", mj["config"]["depth_multiplier"])
+        print("activation : ", mj["config"]["activation"])
+        print("filters : ", mj["config"]["filters"])
 
 
 with open("keras_layer_test.json", "w") as f:

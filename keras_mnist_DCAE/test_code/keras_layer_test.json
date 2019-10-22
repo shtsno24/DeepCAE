@@ -4,7 +4,7 @@
     "config": {
         "layers": [
             {
-                "class_name": "DepthwiseConv2D",
+                "class_name": "SeparableConv2D",
                 "config": {
                     "activation": "relu",
                     "activity_regularizer": null,
@@ -35,12 +35,29 @@
                         1
                     ],
                     "dtype": "float32",
+                    "filters": 6,
+                    "kernel_constraint": null,
+                    "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "kernel_regularizer": null,
                     "kernel_size": [
                         3,
                         3
                     ],
-                    "name": "depthwise_conv2d",
+                    "name": "separable_conv2d",
                     "padding": "same",
+                    "pointwise_constraint": null,
+                    "pointwise_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "pointwise_regularizer": null,
                     "strides": [
                         1,
                         1

@@ -1,4 +1,4 @@
-# DepthwiseConv2D
+# pointwiseConv2D
 
 ## Output Layer Data and array shapes
 
@@ -32,7 +32,6 @@
     padding : Same as Conv2D
     stride : Same as Conv2D
     kernel_size : Same as Conv2D
-    activation : Same as Conv2D
     depth_multiplier : output_depth can be expressed as input_depth * depth_multiplier.  
     To make the netowork generate simple, it would be fine to limit depth_multiplier to 1.  
 

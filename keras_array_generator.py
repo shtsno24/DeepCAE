@@ -196,6 +196,8 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                 f.write(str("\tup_sampling2d_fix16({},\n\t").format(i["ksize_h"]))
                 f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
                 f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
+            elif i["layer_name"].find("DepthwiseConv2D") != -1:
+                pass
             elif i["layer_name"].find("Conv2D") != -1:
                 if i["activation"] == "relu":
                     relu_flag = 1
