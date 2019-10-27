@@ -8,6 +8,7 @@ import json
 import datetime
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -44,13 +45,22 @@ model.summary()
 # input_img = np.zeros(x_test[0:1].shape)
 input_img = x_test[0:1]
 
-start_time = time.time()
-predict_img = model.predict(input_img)
-end_time = time.time() - start_time
+times = 1000
+time_array = np.zeros((times,))
 
-print("end_time : ", end_time)
-print(input_img[0].transpose(2, 0, 1))
-print(predict_img[0].transpose(2, 0, 1))
+for i in range(times):
+    start_time = time.perf_counter()
+    predict_img = model.predict(input_img)
+    end_time = time.perf_counter() - start_time
+    time_array[i] = end_time
+
+print("end_time : ", np.sum(time_array) / times)
+y = time_array
+x = np.linspace(0, times, times)
+plt.plot(x, y)
+plt.show()
+# print(input_img[0].transpose(2, 0, 1))
+# print(predict_img[0].transpose(2, 0, 1))
 
 # input_img = x_test[0:1]
 # predict_img = model.predict(input_img)
