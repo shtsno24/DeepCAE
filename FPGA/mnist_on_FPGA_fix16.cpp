@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <sys/time.h>
 
 #include "./../layers_c/layers.h"
 #include "./../test_data/test_data.h"
@@ -15,6 +16,12 @@
 #include "./../layers_cpp/array_printf_fix16.h"
 
 using namespace std;
+
+double gettimeofday_sec(){
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+    return tv.tv_sec + tv.tv_usec * 1e-6;
+}
 
 int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
@@ -116,6 +123,7 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 int main(void){
 	int16_t output_buffer[1*28*28];
 	int16_t input_buffer[1*28*28];
+	double start, end;
 
 	for(int depth = 0; depth < 1; depth++){
 		for(int height = 0; height < 28; height++){
@@ -125,5 +133,8 @@ int main(void){
 		}
 	}
 
+	start = gettimeofday_sec();
 	network(input_buffer, output_buffer);
+	end = gettimeofday_sec();
+	cout << "end_time_fix16_cpp : " << end - start << endl;
 }
