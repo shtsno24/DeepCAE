@@ -7,6 +7,7 @@ from collections import OrderedDict
 import json
 import datetime
 import numpy as np
+import time
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -43,7 +44,11 @@ model.summary()
 # input_img = np.zeros(x_test[0:1].shape)
 input_img = x_test[0:1]
 
+start_time = time.time()
 predict_img = model.predict(input_img)
+end_time = time.time() - start_time
+
+print("end_time : ", end_time)
 print(input_img[0].transpose(2, 0, 1))
 print(predict_img[0].transpose(2, 0, 1))
 
