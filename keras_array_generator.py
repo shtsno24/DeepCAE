@@ -145,9 +145,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             array_shapes = np.array([layers["config"]["filters"], out_shapes_height, out_shapes_width], dtype=np.uint16)
 
             layer_params_dict = {"layer_name": layer_name,
-                                       "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
-                                       "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
-                                       "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
+                                 "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
+                                 "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
+                                 "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
 
             itr_counter["Conv2D"] += 1
 
