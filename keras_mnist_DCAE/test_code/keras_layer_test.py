@@ -65,6 +65,7 @@ input_img_keras = input_img.transpose(1, 2, 0)
 input_img_keras = input_img_keras.reshape((1,) + input_shape_keras)
 print("weights[0].shape : ", weights[0].shape)
 print("weights[1].shape : ", weights[1].shape)
+print("weights[2].shape : ", weights[2].shape)
 print("input_img.shape : ", input_img.shape)
 print("input_img_keras.shape : ", input_img_keras.shape)
 
