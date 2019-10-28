@@ -109,7 +109,9 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 int main(void){
 	int16_t output_buffer[1*28*28];
 	int16_t input_buffer[1*28*28];
-	double start, end;
+	double start, end, sum_time = 0, time_array[1000];
+	int32_t times = 1000;
+	FILE* fp;
 
 	for(int depth = 0; depth < 1; depth++){
 		for(int height = 0; height < 28; height++){
@@ -118,9 +120,14 @@ int main(void){
 			}
 		}
 	}
-
-	start = gettimeofday_sec();
-	network(input_buffer, output_buffer);
-	end = gettimeofday_sec();
-	printf("end_time_fix16_c : %lf\r\n", end- start);
+	fp = fopen("time_output_fix16_c.tsv", "w");
+	for(int32_t i = 0; i < times; i++){
+		start = gettimeofday_sec();
+		network(input_buffer, output_buffer);
+		end = gettimeofday_sec();
+		fprintf(fp, "%lf\t\n", end - start);
+		sum_time += end - start;
+	}
+	printf("end_time_fix16_c : %lf [s]\r\n", sum_time / (double)times);
+	fclose(fp);
 }

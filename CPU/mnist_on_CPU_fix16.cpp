@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <sys/time.h>
 
@@ -123,7 +124,8 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 int main(void){
 	int16_t output_buffer[1*28*28];
 	int16_t input_buffer[1*28*28];
-	double start, end;
+	double start, end, sum_time = 0, time_array[1000];
+	int32_t times = 1000;
 
 	for(int depth = 0; depth < 1; depth++){
 		for(int height = 0; height < 28; height++){
@@ -133,8 +135,15 @@ int main(void){
 		}
 	}
 
-	start = gettimeofday_sec();
-	network(input_buffer, output_buffer);
-	end = gettimeofday_sec();
-	cout << "end_time_fix16_cpp : " << end - start << endl;
+	ofstream time_file("time_output_fix16_cpp.tsv");
+	for(int32_t i = 0; i < times; i++){
+		start = gettimeofday_sec();
+		network(input_buffer, output_buffer);
+		end = gettimeofday_sec();
+		// cout << "end_time_fix16_cpp : " << end - start << endl;
+		time_file << end - start << endl;
+		sum_time += end - start;
+	}
+	cout << "end_time_fix16_cpp : " << sum_time / (double)times << " [s]" << endl;
+	time_file.close();
 }
