@@ -3,3 +3,4 @@
 #include "max_pooling2d.h"
 #include "conv2d.h"
 #include "depthwise_conv2d.h"
+#include "separable_conv2d.h"
