@@ -138,7 +138,6 @@ int main(void){
 		start = gettimeofday_sec();
 		network(input_buffer, output_buffer);
 		end = gettimeofday_sec();
-		// cout << "end_time_fix16_cpp : " << end - start << endl;
 		time_file << end - start << endl;
 		sum_time += end - start;
 	}

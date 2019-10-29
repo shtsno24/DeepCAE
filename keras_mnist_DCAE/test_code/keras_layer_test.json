@@ -1,1 +1,73 @@
-{"class_name": "Sequential", "config": {"name": "sequential", "layers": [{"class_name": "DepthwiseConv2D", "config": {"name": "depthwise_conv2d", "trainable": true, "batch_input_shape": [null, 7, 7, 3], "dtype": "float32", "kernel_size": [3, 3], "strides": [1, 1], "padding": "same", "data_format": "channels_last", "dilation_rate": [1, 1], "activation": "relu", "use_bias": true, "bias_initializer": {"class_name": "Zeros", "config": {}}, "bias_regularizer": null, "activity_regularizer": null, "bias_constraint": null, "depth_multiplier": 1, "depthwise_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "depthwise_regularizer": null, "depthwise_constraint": null}}, {"class_name": "Conv2D", "config": {"name": "conv2d", "trainable": true, "batch_input_shape": [null, 7, 7, 3], "dtype": "float32", "filters": 6, "kernel_size": [1, 1], "strides": [1, 1], "padding": "same", "data_format": "channels_last", "dilation_rate": [1, 1], "activation": "relu", "use_bias": true, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "bias_constraint": null}}]}, "keras_version": "2.2.4-tf", "backend": "tensorflow"}
+{
+    "backend": "tensorflow",
+    "class_name": "Sequential",
+    "config": {
+        "layers": [
+            {
+                "class_name": "SeparableConv2D",
+                "config": {
+                    "activation": "relu",
+                    "activity_regularizer": null,
+                    "batch_input_shape": [
+                        null,
+                        7,
+                        7,
+                        3
+                    ],
+                    "bias_constraint": null,
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "bias_regularizer": null,
+                    "data_format": "channels_last",
+                    "depth_multiplier": 1,
+                    "depthwise_constraint": null,
+                    "depthwise_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "depthwise_regularizer": null,
+                    "dilation_rate": [
+                        1,
+                        1
+                    ],
+                    "dtype": "float32",
+                    "filters": 6,
+                    "kernel_constraint": null,
+                    "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "kernel_regularizer": null,
+                    "kernel_size": [
+                        3,
+                        3
+                    ],
+                    "name": "separable_conv2d",
+                    "padding": "same",
+                    "pointwise_constraint": null,
+                    "pointwise_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                            "seed": null
+                        }
+                    },
+                    "pointwise_regularizer": null,
+                    "strides": [
+                        1,
+                        1
+                    ],
+                    "trainable": true,
+                    "use_bias": true
+                }
+            }
+        ],
+        "name": "sequential"
+    },
+    "keras_version": "2.2.4-tf"
+}

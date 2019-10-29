@@ -17,19 +17,19 @@ input_shape = (3, img_h, img_w)
 input_shape_keras = (img_h, img_w, 3)
 
 model = Sequential()
-# model.add(SeparableConv2D(6, kernel_size=(3, 3),
-#                           activation='relu',
-#                           padding='same',
-#                           input_shape=input_shape_keras))
-
-model.add(DepthwiseConv2D(kernel_size=(3, 3),
+model.add(SeparableConv2D(6, kernel_size=(3, 3),
                           activation='relu',
                           padding='same',
                           input_shape=input_shape_keras))
-model.add(Conv2D(6, kernel_size=(1, 1),
-                 activation='relu',
-                 padding='same',
-                 input_shape=input_shape_keras))
+
+# model.add(DepthwiseConv2D(kernel_size=(3, 3),
+#                           activation='relu',
+#                           padding='same',
+#                           input_shape=input_shape_keras))
+# model.add(Conv2D(6, kernel_size=(1, 1),
+#                  activation='relu',
+#                  padding='same',
+#                  input_shape=input_shape_keras))
 
 model.build()
 # model.compile(loss=keras.losses.mean_squared_error,
@@ -42,9 +42,9 @@ weights = model.get_weights()
 for w in weights:
     print(w.shape, w.dtype)
 conv_w_0 = np.ones(weights[0].shape)
-conv_b_0 = np.zeros(weights[1].shape)
-conv_w_1 = np.ones(weights[2].shape)
-conv_b_1 = np.zeros(weights[3].shape)
+conv_w_1 = np.ones(weights[1].shape)
+conv_b_0 = np.zeros(weights[2].shape)
+
 input_img = np.zeros(input_shape)
 
 conv_w_0 = conv_w_0.transpose(3, 2, 0, 1)  # from(height, width, in_depth, out_depth) to (out_depth, in_depth, height, width)
@@ -52,7 +52,7 @@ for o_d in range(1):
     for i_d in range(3):
         for h in range(3):
             for w in range(3):
-                conv_w_0[o_d][i_d][h][w] = (w + 1)
+                conv_w_0[o_d][i_d][h][w] = (w + 1) * (h - 3)
 conv_w_0 = conv_w_0.transpose(2, 3, 1, 0)
 
 conv_w_1 = conv_w_1.transpose(3, 2, 0, 1)
@@ -60,13 +60,13 @@ for o_d in range(6):
     for i_d in range(3):
         for h in range(1):
             for w in range(1):
-                conv_w_1[o_d][i_d][h][w] = (w + 1)
+                conv_w_1[o_d][i_d][h][w] = (w + 1) * (h - 3) 
 conv_w_1 = conv_w_1.transpose(2, 3, 1, 0)
 
 for length in range(6):
-    conv_b_1[length] = length
-for length in range(3):
-    conv_b_0[length] = 0
+    conv_b_0[length] = length
+# for length in range(3):
+#     conv_b_0[length] = 0
 
 for d in range(3):
     for h in range(7):
@@ -78,15 +78,13 @@ input_img_keras = input_img_keras.reshape((1,) + input_shape_keras)
 print("weights[0].shape : ", weights[0].shape)
 print("weights[1].shape : ", weights[1].shape)
 print("weights[2].shape : ", weights[2].shape)
-print("weights[3].shape : ", weights[3].shape)
 print("input_img.shape : ", input_img.shape)
 print("input_img_keras.shape : ", input_img_keras.shape)
 
 test_weights = []
 test_weights.append(conv_w_0)
-test_weights.append(conv_b_0)
 test_weights.append(conv_w_1)
-test_weights.append(conv_b_1)
+test_weights.append(conv_b_0)
 model.set_weights(test_weights)
 
 output_img_keras = model.predict(input_img_keras)
