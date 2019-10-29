@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, SeparableConv2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img
 import numpy as np
