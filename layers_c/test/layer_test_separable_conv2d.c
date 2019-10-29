@@ -5,22 +5,26 @@
 #include "./../array_printf_float32.h"
 #include "./../depthwise_conv2d.h"
 #include "./../pointwise_conv2d.h"
+#include "./../separable_conv2d.h"
+#include "./../conv2d.h"
 #include "./../padding2d.h"
 
 int main(void){
     // vector< vector <vector< int16_t> > > input_array(3, vector< vector< int16_t> >(7, vector <int16_t>(7, 0)));
     int16_t input_array[3][7][7];
     // vector< vector <vector< int16_t> > > padding_array(3, vector< vector< int16_t> >(9, vector <int16_t>(9, 0)));
-    int16_t padding_array[3][9][9];
+    int16_t padding_depth_array[3][9][9];
+    int16_t padding_point_array[3][7][7];
     // vector< vector <vector< int16_t> > > output_array(3, vector< vector< int16_t> >(7, vector <int16_t>(7, 0)));
-    int16_t output_array[6][7][7];
+    int16_t output_depth_array[3][7][7];
+    int16_t output_point_array[6][7][7];
     // vector< vector <vector< vector< int16_t> > > > kernel_depth_array(1, vector< vector< vector< int16_t> > >(3, vector< vector< int16_t> >(3, vector< int16_t>(3, 0))));
     int16_t kernel_depth_array[1][3][3][3];
     // vector< vector <vector< vector< int16_t> > > > kernel_depth_array(6, vector< vector< vector< int16_t> > >(3, vector< vector< int16_t> >(1, vector< int16_t>(1, 0))));
     int16_t kernel_point_array[6][3][1][1];
     // vector< int16_t> bias_array(6, 0);
     int16_t bias_point_array[6];
-    int16_t bias_depth_array[6];
+    int16_t bias_depth_array[3];
 
 
     for(uint16_t d = 0; d < 3; d++){
@@ -43,6 +47,8 @@ int main(void){
 
     for(uint16_t l = 0; l < 6; l++){
         bias_point_array[l] = l;
+    }
+    for(uint16_t l = 0; l < 3; l++){
         bias_depth_array[l] = 0;
     }
 
@@ -57,26 +63,17 @@ int main(void){
     array_printf_3D_fix16(3, 7, 7, input_array, 0);
 
     padding2d_fix16(1, 1,
-    3, 7, 7, input_array,
-    9, 9, padding_array);
+    3, 7, 7, (int16_t*)input_array,
+    9, 9, (int16_t*)padding_depth_array);
 
     printf("\n\n");
 
-    array_printf_3D_fix16(3, 9, 9, padding_array, 0);
+    separable_conv2d_fix16(3, 9, 9, (int16_t*)padding_depth_array,
+    6, 7, 7, (int16_t*)output_point_array,
+    (int16_t*)bias_depth_array, (int16_t*)bias_point_array,
+    3, 3, (int16_t*)kernel_depth_array, (int16_t*)kernel_point_array, 1, 0);
 
-    printf("\n\n");
-
-    depthwise_conv2d_fix16(3, 9, 9, padding_array,
-    3, 7, 7, output_array,
-    bias_depth_array,
-    3, 3, kernel_depth_array, 1, 0);
-
-    pointwise_conv2d_fix16(3, 7, 7, output_array,
-    6, 7, 7, output_array,
-    bias_point_array,
-    1, 1, kernel_point_array, 1, 0);
-
-    array_printf_3D_fix16(6, 7, 7, output_array, 0);
+    array_printf_3D_fix16(6, 7, 7, output_point_array, 0);
 
     printf("\n\n");
 
@@ -124,3 +121,13 @@ int main(void){
     // printf("\n\n");
 
 }
+
+
+
+// [[[[  72.  126.  180.  234.  288.  342.  180.]
+//    [ 144.  252.  360.  468.  576.  684.  360.]
+//    [ 216.  378.  540.  702.  864. 1026.  540.]
+//    [ 288.  504.  720.  936. 1152. 1368.  720.]
+//    [ 360.  630.  900. 1170. 1440. 1710.  900.]
+//    [ 432.  756. 1080. 1404. 1728. 2052. 1080.]
+//    [ 312.  546.  780. 1014. 1248. 1482.  780.]]
