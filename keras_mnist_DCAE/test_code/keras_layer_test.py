@@ -22,6 +22,12 @@ model.add(SeparableConv2D(6, kernel_size=(3, 3),
                           padding='same',
                           input_shape=input_shape_keras))
 
+# model.add(DepthwiseConv2D(kernel_size=(3, 3),
+#                           activation='relu',
+#                           padding='same',
+#                           input_shape=input_shape_keras))
+
+
 model.build()
 # model.compile(loss=keras.losses.mean_squared_error,
 #             optimizer=keras.optimizers.Adadelta(),

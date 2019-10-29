@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "conv2d.h"
+#include "pointwise_conv2d.h"
 #include "depthwise_conv2d.h"
 #include "separable_conv2d.h"
 
@@ -12,11 +12,11 @@ uint8_t relu, uint8_t fractal_width){
     int16_t middle_array[input_depth][output_height][output_width];
 
     depthwise_conv2d_fix16(input_depth, input_height, input_depth, input,
-                           input_depth, output_height, output_width, middle_array,
+                           input_depth, output_height, output_width, (int16_t*)middle_array,
                            bias_d,
                            kernel_d_height, kernel_d_width, kernel_d, relu, fractal_width);
 
-    conv2d_fix16(input_depth, output_height, output_width, middle_array,
+    pointwise_conv2d_fix16(input_depth, output_height, output_width, (int16_t*)middle_array,
                 output_depth, output_height, output_width, output,
                 bias_p,
                 1, 1, kernel_p, relu, fractal_width);
@@ -33,11 +33,11 @@ uint8_t relu){
     float middle_array[input_depth][output_height][output_width];
 
     depthwise_conv2d_float32(input_depth, input_height, input_depth, input,
-                           input_depth, output_height, output_width, middle_array,
+                           input_depth, output_height, output_width, (float*)middle_array,
                            bias_d,
                            kernel_d_height, kernel_d_width, kernel_d, relu);
 
-    conv2d_float32(input_depth, output_height, output_width, middle_array,
+    pointwise_conv2d_float32(input_depth, output_height, output_width, (float*)middle_array,
                 output_depth, output_height, output_width, output,
                 bias_p,
                 1, 1, kernel_p, relu);

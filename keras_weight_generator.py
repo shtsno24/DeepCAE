@@ -47,12 +47,14 @@ def write_weight_SeparableConv2D_c(weight_depthwise, weight_pointwise, bias, fil
         # reshape weight array
         weight_depthwise = weight_depthwise.transpose(3, 2, 0, 1)
         weight_pointwise = weight_pointwise.transpose(3, 2, 0, 1)
-        bias_depthwise = np.zeros((bias.shape))
+        bias_pointwise = np.copy(bias)
 
         if isFixed is True:
             weight_depthwise = float2fixed.float2fixed_array(array_type, fractal_width, weight_depthwise)
             weight_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, weight_pointwise)
-            bias_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, bias)
+            bias_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, bias_pointwise)
+
+        bias_depthwise = np.zeros((bias.shape), dtype=bias_pointwise.dtype)
 
         # headers
         todaytime = str(datetime.datetime.today())
@@ -107,7 +109,7 @@ def write_weight_SeparableConv2D_c(weight_depthwise, weight_pointwise, bias, fil
         f.write("\n")
 
         # bias(pointwise)
-        f.write(str("const uint16_t shape_{}_b_p = {};\n").format(str(weight_array_name[:-2]), bias_pointwise.shape[0]))
+        f.write(str("const uint16_t shape_{}_b_p = {};\n").format(str(weight_array_name[:-2]), bias.shape[0]))
 
         f.write("const " + type_name + " " + bias_array_name + "_p")
         f.write("[%d] = " % bias_pointwise.shape)
@@ -126,12 +128,14 @@ def write_weight_SeparableConv2D_cpp(weight_depthwise, weight_pointwise, bias, f
         # reshape weight array
         weight_depthwise = weight_depthwise.transpose(3, 2, 0, 1)
         weight_pointwise = weight_pointwise.transpose(3, 2, 0, 1)
-        bias_depthwise = np.zeros((bias.shape))
+        bias_pointwise = np.copy(bias)
 
         if isFixed is True:
             weight_depthwise = float2fixed.float2fixed_array(array_type, fractal_width, weight_depthwise)
             weight_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, weight_pointwise)
             bias_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, bias)
+
+        bias_depthwise = np.zeros((bias.shape), dtype=bias_pointwise.dtype)
 
         # headers
         todaytime = str(datetime.datetime.today())
@@ -171,7 +175,7 @@ def write_weight_SeparableConv2D_cpp(weight_depthwise, weight_pointwise, bias, f
 
         f.write("const vector< vector< vector< vector< " + type_name + "> > > > " + weight_array_name + "_p =\n")
 
-        write_array_ND(weight_depthwise, f)
+        write_array_ND(weight_pointwise, f)
         f.write(";")
         f.write("\n\n")
 
@@ -442,6 +446,8 @@ if __name__ == "__main__":
         for name in params_header_name_fix:
             f.write('#include "' + name + '"\n')
 
+        f.write("\n#define fractal_width_input_0 {}\n".format(fractal))
+
     with open("./weights_cpp/weights_float32.h", "w") as f:
         # print(params_header_name_float)
 
@@ -467,3 +473,5 @@ if __name__ == "__main__":
 
         for name in params_header_name_fix:
             f.write('#include "' + name + '"\n')
+
+        f.write("\n#define fractal_width_input_0 {}\n".format(fractal))

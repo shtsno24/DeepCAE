@@ -1,10 +1,10 @@
 /*
  * author : shtsno24
- * Date : 2019-10-28 15:53:18.598822
+ * Date : 2019-10-29 19:58:44.211529
  *
  */
-#include "Conv2D_0_float32.h"
-#include "Conv2D_1_float32.h"
-#include "Conv2D_2_float32.h"
-#include "Conv2D_3_float32.h"
-#include "Conv2D_4_float32.h"
+#include "SeparableConv2D_0_float32.h"
+#include "SeparableConv2D_1_float32.h"
+#include "SeparableConv2D_2_float32.h"
+#include "SeparableConv2D_3_float32.h"
+#include "SeparableConv2D_4_float32.h"

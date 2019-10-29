@@ -227,8 +227,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                 f.write("\t\t}\n")
                 f.write("\t}\n")
 
+
                 f.write('\tFILE* fp = fopen("template_input_fix16.tsv", "w");\n\t')
-                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_Conv2D_0);\n\t")
+                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t")
                 f.write("fclose(fp);\n\n")
 
             elif i["layer_name"].find("Padding2D") != -1:
@@ -254,9 +255,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tseparable conv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("\tseparable_conv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
                 f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {}_b_d, (int16_t*) {}_b_p\n\t").format(i["layer_name"]))
+                f.write(str("(int16_t*) {0}_b_d, (int16_t*) {0}_b_p,\n\t").format(i["layer_name"]))
                 f.write(str("{0}, {1}, (int16_t*) {2}_w_d, (int16_t*) {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             elif i["layer_name"].find("Conv2D") != -1:
@@ -332,9 +333,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tseparable conv2d_float32({0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("\tseparable_conv2d_float32({0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
                 f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(float*) {}_b_d, (float*) {}_b_p\n\t").format(i["layer_name"]))
+                f.write(str("(float*) {0}_b_d, (float*) {0}_b_p,\n\t").format(i["layer_name"]))
                 f.write(str("{0}, {1}, (float*) {2}_w_d, (float*) {2}_w_p, {3});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             elif i["layer_name"].find("Conv2D") != -1:
@@ -388,43 +389,43 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                 f.write("\t}\n")
 
                 f.write('\tofstream fp("template_input_fix16.tsv");\n\t')
-                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_Conv2D_0);\n\t")
+                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t")
                 f.write("fp.close();\n\n")
 
             elif i["layer_name"].find("Padding2D") != -1:
                 f.write(str("\tpadding2d_fix16({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("MaxPooling2D") != -1:
                 f.write(str("\tmax_pooling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("UpSampling2D") != -1:
                 f.write(str("\tup_sampling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("SeparableConv2D") != -1:
                 if i["activation"] == "relu":
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tseparable conv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {}_b_d, (int16_t*) {}_b_p\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (int16_t*) {2}_w_d, (int16_t*) {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
+                f.write(str("\tseparable_conv2d_fix16({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
+                f.write(str("{0}_b_d, {0}_b_p,\n\t").format(i["layer_name"]))
+                f.write(str("{0}, {1}, {2}_w_d, {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             elif i["layer_name"].find("Conv2D") != -1:
                 if i["activation"] == "relu":
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tconv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {}_b,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (int16_t*) {2}_w, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
+                f.write(str("\tconv2d_fix16({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
+                f.write(str("{}_b,\n\t").format(i["layer_name"]))
+                f.write(str("{0}, {1}, {2}_w, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             i_old = i.copy()
 
@@ -488,38 +489,38 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
             elif i["layer_name"].find("Padding2D") != -1:
                 f.write(str("\tpadding2d_float32({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height, {0}_width, (float*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("MaxPooling2D") != -1:
                 f.write(str("\tmax_pooling2d_float32({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("UpSampling2D") != -1:
                 f.write(str("\tup_sampling2d_float32({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array);\n\n").format(i["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
 
             elif i["layer_name"].find("SeparableConv2D") != -1:
                 if i["activation"] == "relu":
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tseparable conv2d_fix16({0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {}_b_d, (float*) {}_b_p\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (float*) {2}_w_d, (float*) {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
+                f.write(str("\tseparable_conv2d_float32({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
+                f.write(str("{0}_b_d, {0}_b_p,\n\t").format(i["layer_name"]))
+                f.write(str("{0}, {1}, {2}_w_d, {2}_w_p, {3});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             elif i["layer_name"].find("Conv2D") != -1:
                 if i["activation"] == "relu":
                     relu_flag = 1
                 else:
                     relu_flag = 0
-                f.write(str("\tconv2d_float32({0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (float*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(float*) {}_b,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (float*) {2}_w, {3});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
+                f.write(str("\tconv2d_float32({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
+                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
+                f.write(str("{}_b,\n\t").format(i["layer_name"]))
+                f.write(str("{0}, {1}, {2}_w, {3});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
 
             i_old = i.copy()
 
