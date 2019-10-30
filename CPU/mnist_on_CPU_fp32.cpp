@@ -39,73 +39,77 @@ int network(float input_data[1*28*28], float output_data[1*28*28]){
 	input_0_depth, input_0_height, input_0_width, (float*) input_0_array,
 	Padding2D_0_height, Padding2D_0_width, (float*) Padding2D_0_array);
 
-	separable_conv2d_float32(Padding2D_0_depth, Padding2D_0_height, Padding2D_0_width, (float*) Padding2D_0_array,
-	SeparableConv2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, (float*) SeparableConv2D_0_array,
-	(float*) SeparableConv2D_0_b_d, (float*) SeparableConv2D_0_b_p,
-	3, 3, (float*) SeparableConv2D_0_w_d, (float*) SeparableConv2D_0_w_p, 1);
+	padding2d_float32(1, 1,
+	input_0_depth, input_0_height, input_0_width, (float*) input_0_array,
+	Padding2D_0_height, Padding2D_0_width, (float*) Padding2D_0_array);
+
+	conv2d_float32(Padding2D_0_depth, Padding2D_0_height, Padding2D_0_width, (float*) Padding2D_0_array,
+	Conv2D_0_depth, Conv2D_0_height, Conv2D_0_width, (float*) Conv2D_0_array,
+	(float*) Conv2D_0_b,
+	3, 3, (float*) Conv2D_0_w, 1);
 
 	max_pooling2d_float32(2,
-	SeparableConv2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, (float*) SeparableConv2D_0_array,
+	Conv2D_0_depth, Conv2D_0_height, Conv2D_0_width, (float*) Conv2D_0_array,
 	MaxPooling2D_0_depth, MaxPooling2D_0_height, MaxPooling2D_0_width, (float*) MaxPooling2D_0_array);
 
 	padding2d_float32(1, 1,
 	MaxPooling2D_0_depth, MaxPooling2D_0_height, MaxPooling2D_0_width, (float*) MaxPooling2D_0_array,
 	Padding2D_1_height, Padding2D_1_width, (float*) Padding2D_1_array);
 
-	separable_conv2d_float32(Padding2D_1_depth, Padding2D_1_height, Padding2D_1_width, (float*) Padding2D_1_array,
-	SeparableConv2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, (float*) SeparableConv2D_1_array,
-	(float*) SeparableConv2D_1_b_d, (float*) SeparableConv2D_1_b_p,
-	3, 3, (float*) SeparableConv2D_1_w_d, (float*) SeparableConv2D_1_w_p, 1);
+	conv2d_float32(Padding2D_1_depth, Padding2D_1_height, Padding2D_1_width, (float*) Padding2D_1_array,
+	Conv2D_1_depth, Conv2D_1_height, Conv2D_1_width, (float*) Conv2D_1_array,
+	(float*) Conv2D_1_b,
+	3, 3, (float*) Conv2D_1_w, 1);
 
 	max_pooling2d_float32(2,
-	SeparableConv2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, (float*) SeparableConv2D_1_array,
+	Conv2D_1_depth, Conv2D_1_height, Conv2D_1_width, (float*) Conv2D_1_array,
 	MaxPooling2D_1_depth, MaxPooling2D_1_height, MaxPooling2D_1_width, (float*) MaxPooling2D_1_array);
 
 	padding2d_float32(1, 1,
 	MaxPooling2D_1_depth, MaxPooling2D_1_height, MaxPooling2D_1_width, (float*) MaxPooling2D_1_array,
 	Padding2D_2_height, Padding2D_2_width, (float*) Padding2D_2_array);
 
-	separable_conv2d_float32(Padding2D_2_depth, Padding2D_2_height, Padding2D_2_width, (float*) Padding2D_2_array,
-	SeparableConv2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, (float*) SeparableConv2D_2_array,
-	(float*) SeparableConv2D_2_b_d, (float*) SeparableConv2D_2_b_p,
-	3, 3, (float*) SeparableConv2D_2_w_d, (float*) SeparableConv2D_2_w_p, 1);
+	conv2d_float32(Padding2D_2_depth, Padding2D_2_height, Padding2D_2_width, (float*) Padding2D_2_array,
+	Conv2D_2_depth, Conv2D_2_height, Conv2D_2_width, (float*) Conv2D_2_array,
+	(float*) Conv2D_2_b,
+	3, 3, (float*) Conv2D_2_w, 1);
 
 	up_sampling2d_float32(2,
-	SeparableConv2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, (float*) SeparableConv2D_2_array,
+	Conv2D_2_depth, Conv2D_2_height, Conv2D_2_width, (float*) Conv2D_2_array,
 	UpSampling2D_0_depth, UpSampling2D_0_height, UpSampling2D_0_width, (float*) UpSampling2D_0_array);
 
 	padding2d_float32(1, 1,
 	UpSampling2D_0_depth, UpSampling2D_0_height, UpSampling2D_0_width, (float*) UpSampling2D_0_array,
 	Padding2D_3_height, Padding2D_3_width, (float*) Padding2D_3_array);
 
-	separable_conv2d_float32(Padding2D_3_depth, Padding2D_3_height, Padding2D_3_width, (float*) Padding2D_3_array,
-	SeparableConv2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, (float*) SeparableConv2D_3_array,
-	(float*) SeparableConv2D_3_b_d, (float*) SeparableConv2D_3_b_p,
-	3, 3, (float*) SeparableConv2D_3_w_d, (float*) SeparableConv2D_3_w_p, 1);
+	conv2d_float32(Padding2D_3_depth, Padding2D_3_height, Padding2D_3_width, (float*) Padding2D_3_array,
+	Conv2D_3_depth, Conv2D_3_height, Conv2D_3_width, (float*) Conv2D_3_array,
+	(float*) Conv2D_3_b,
+	3, 3, (float*) Conv2D_3_w, 1);
 
 	up_sampling2d_float32(2,
-	SeparableConv2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, (float*) SeparableConv2D_3_array,
+	Conv2D_3_depth, Conv2D_3_height, Conv2D_3_width, (float*) Conv2D_3_array,
 	UpSampling2D_1_depth, UpSampling2D_1_height, UpSampling2D_1_width, (float*) UpSampling2D_1_array);
 
 	padding2d_float32(1, 1,
 	UpSampling2D_1_depth, UpSampling2D_1_height, UpSampling2D_1_width, (float*) UpSampling2D_1_array,
 	Padding2D_4_height, Padding2D_4_width, (float*) Padding2D_4_array);
 
-	separable_conv2d_float32(Padding2D_4_depth, Padding2D_4_height, Padding2D_4_width, (float*) Padding2D_4_array,
-	SeparableConv2D_4_depth, SeparableConv2D_4_height, SeparableConv2D_4_width, (float*) SeparableConv2D_4_array,
-	(float*) SeparableConv2D_4_b_d, (float*) SeparableConv2D_4_b_p,
-	3, 3, (float*) SeparableConv2D_4_w_d, (float*) SeparableConv2D_4_w_p, 1);
+	conv2d_float32(Padding2D_4_depth, Padding2D_4_height, Padding2D_4_width, (float*) Padding2D_4_array,
+	Conv2D_4_depth, Conv2D_4_height, Conv2D_4_width, (float*) Conv2D_4_array,
+	(float*) Conv2D_4_b,
+	3, 3, (float*) Conv2D_4_w, 1);
 
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
 			for(int width = 0; width < input_0_width; width++){
-				output_img[depth][height][width] = SeparableConv2D_4_array[depth][height][width];
+				output_img[depth][height][width] = Conv2D_4_array[depth][height][width];
 			}
 		}
 	}
 
 	fp.open("template_output_float32_cpp.tsv");
-	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp);
+	array_fprintf_2D_float32(Conv2D_4_height, Conv2D_4_width, output_img[0], '\t', fp);
 	fp.close();
 
 	return(0);
