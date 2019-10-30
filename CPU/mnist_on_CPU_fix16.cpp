@@ -27,21 +27,14 @@ double gettimeofday_sec(){
 int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	uint16_t input_0_depth = 1, input_0_height = 28, input_0_width = 28;
 	int16_t input_0_array[1][28][28];
-	vector< vector< vector< int16_t> > > input_img(input_0_depth, vector< vector < int16_t> >(input_0_height, vector< int16_t>(input_0_width)));
-	vector< vector< vector< int16_t> > > output_img(input_0_depth, vector< vector < int16_t> >(input_0_height, vector< int16_t>(input_0_width)));
 
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
 			for(int width = 0; width < input_0_width; width++){
 				input_0_array[depth][height][width] = input_data[depth * 28 * 28 + height * 28 + width];
-				input_img[depth][height][width] = input_data[depth * 28 * 28 + height * 28 + width];
 			}
 		}
 	}
-
-	ofstream fp("template_input_fix16.tsv");
-	array_fprintf_2D_fix16(input_0_height, input_0_width, input_img[0], '\t', fp, fractal_width_input_0);
-	fp.close();
 
 	padding2d_fix16(1, 1,
 	input_0_depth, input_0_height, input_0_width, (int16_t*) input_0_array,
@@ -107,15 +100,10 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
 			for(int width = 0; width < input_0_width; width++){
-				output_img[depth][height][width] = SeparableConv2D_4_array[depth][height][width];
+				output_data[depth * 28 * 28 + height * 28 + width] = SeparableConv2D_4_array[depth][height][width];
 			}
 		}
 	}
-
-	fp.open("template_output_fix16_cpp.tsv");
-	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp, fractal_width_SeparableConv2D_4);
-	fp.close();
-
 	return(0);
 }
 
@@ -124,14 +112,23 @@ int main(void){
 	int16_t input_buffer[1*28*28];
 	double start, end, sum_time = 0, time_array[1000];
 	int32_t times = 1000;
+	vector< vector< vector< int16_t> > > input_img(1, vector< vector < int16_t> >(28, vector< int16_t>(28)));
+	vector< vector< vector< int16_t> > > output_img(1, vector< vector < int16_t> >(28, vector< int16_t>(28)));
+
 
 	for(int depth = 0; depth < 1; depth++){
 		for(int height = 0; height < 28; height++){
 			for(int width = 0; width < 28; width++){
 				input_buffer[depth * 28 * 28 + height * 28 + width] = test_input_fix16[depth][height][width];
+				input_img[depth][height][width] = test_input_fix16[depth][height][width];
 			}
 		}
 	}
+
+	ofstream fp("template_input_fix16.tsv");
+	array_fprintf_2D_fix16(28, 28, input_img[0], '\t', fp, fractal_width_input_0);
+	fp.close();
+
 
 	ofstream time_file("time_output_fix16_cpp.tsv");
 	for(int32_t i = 0; i < times; i++){
@@ -143,4 +140,17 @@ int main(void){
 	}
 	cout << "end_time_fix16_cpp : " << sum_time / (double)times << " [s]" << endl;
 	time_file.close();
+
+	for(int depth = 0; depth < 1; depth++){
+		for(int height = 0; height < 28; height++){
+			for(int width = 0; width < 28; width++){
+				output_img[depth][height][width] = output_buffer[depth * 28 * 28 + height * 28 + width];
+			}
+		}
+	}
+
+	fp.open("template_output_fix16_cpp.tsv");
+	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp, fractal_width_SeparableConv2D_4);
+	fp.close();
+
 }

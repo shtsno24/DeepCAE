@@ -33,10 +33,6 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 		}
 	}
 
-	FILE* fp = fopen("template_input_fix16.tsv", "w");
-	array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\t', fp, fractal_width_input_0);
-	fclose(fp);
-
 	padding2d_fix16(1, 1,
 	input_0_depth, input_0_height, input_0_width, (int16_t*) input_0_array,
 	Padding2D_0_height, Padding2D_0_width, (int16_t*) Padding2D_0_array);
@@ -98,9 +94,13 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 	(int16_t*) SeparableConv2D_4_b_d, (int16_t*) SeparableConv2D_4_b_p,
 	3, 3, (int16_t*) SeparableConv2D_4_w_d, (int16_t*) SeparableConv2D_4_w_p, 1, fractal_width_SeparableConv2D_4);
 
-	fp = fopen("template_output_fix16_c.tsv", "w");
-	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, SeparableConv2D_4_array[0], '\t', fp, fractal_width_SeparableConv2D_4);
-	fclose(fp);
+	for(int depth = 0; depth < SeparableConv2D_4_depth; depth++){
+		for(int height = 0; height < SeparableConv2D_4_height; height++){
+			for(int width = 0; width < SeparableConv2D_4_width; width++){
+			output_data[depth * 28 * 28 + height * 28 + width] = SeparableConv2D_4_array[depth][height][width];
+			}
+		}
+	}
 
 	return(0);
 }
@@ -108,9 +108,14 @@ int network(int16_t input_data[1*28*28], int16_t output_data[1*28*28]){
 int main(void){
 	int16_t output_buffer[1*28*28];
 	int16_t input_buffer[1*28*28];
+	int16_t img[1][28][28];
 	double start, end, sum_time = 0, time_array[1000];
 	int32_t times = 1000;
 	FILE* fp;
+
+	fp = fopen("template_input_fix16.tsv", "w");
+	array_fprintf_2D_fix16(28, 28, test_input_fix16[0], '\t', fp, fractal_width_input_0);
+	fclose(fp);
 
 	for(int depth = 0; depth < 1; depth++){
 		for(int height = 0; height < 28; height++){
@@ -119,6 +124,7 @@ int main(void){
 			}
 		}
 	}
+	
 	fp = fopen("time_output_fix16_c.tsv", "w");
 	for(int32_t i = 0; i < times; i++){
 		start = gettimeofday_sec();
@@ -129,4 +135,17 @@ int main(void){
 	}
 	printf("end_time_fix16_c : %lf [s]\r\n", sum_time / (double)times);
 	fclose(fp);
+
+	for(int depth = 0; depth < 1; depth++){
+		for(int height = 0; height < 28; height++){
+			for(int width = 0; width < 28; width++){
+				img[depth][height][width] = output_buffer[depth * 28 * 28 + height * 28 + width];
+			}
+		}
+	}
+
+	fp = fopen("template_output_fix16_c.tsv", "w");
+	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, img[0], '\t', fp, fractal_width_SeparableConv2D_4);
+	fclose(fp);
+
 }
