@@ -54,6 +54,8 @@ for i in range(times):
     end_time = time.perf_counter() - start_time
     time_array[i] = end_time
 
+np.savetxt("keras_mnist_DCAE_time_output.tsv", time_array, delimiter='\t', fmt="%25.4f")
+
 print("end_time : ", np.sum(time_array) / times)
 y = time_array
 x = np.linspace(0, times, times)

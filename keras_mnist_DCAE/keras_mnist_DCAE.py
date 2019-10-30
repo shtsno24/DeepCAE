@@ -10,7 +10,7 @@ import numpy as np
 
 batch_size = 32
 # num_classes = 10
-epochs = 256
+epochs = 1
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -55,32 +55,32 @@ model = Sequential()
 # model.add(Dense(64, activation='relu'))
 # model.add(Dropout(0.5))
 # model.add(Dense(num_classes, activation='softmax'))
-model.add(SeparableConv2D(16, kernel_size=(3, 3),
+model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(SeparableConv2D(8, kernel_size=(3, 3),
+model.add(Conv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 #remove this layer if the code won't work
-model.add(SeparableConv2D(8, kernel_size=(3, 3),
+model.add(Conv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
 
 model.add(UpSampling2D(size=(2, 2)))
-model.add(SeparableConv2D(16, kernel_size=(3, 3),
+model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
 
 model.add(UpSampling2D(size=(2, 2)))
-model.add(SeparableConv2D(1, kernel_size=(3, 3),
+model.add(Conv2D(1, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same'))
