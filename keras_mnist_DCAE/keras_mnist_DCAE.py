@@ -8,9 +8,9 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img
 import numpy as np
 
-batch_size = 32
+batch_size = 64
 # num_classes = 10
-epochs = 256
+epochs = 1024
 
 # input image dimensions
 img_rows, img_cols = 28, 28
