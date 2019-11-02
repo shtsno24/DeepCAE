@@ -7,6 +7,7 @@
         "stdio.h": "c",
         "test_data.h": "c",
         "iosfwd": "cpp",
-        "array_printf_fix16.h": "c"
+        "array_printf_fix16.h": "c",
+        "pointwise_conv2d.h": "c"
     }
 }
