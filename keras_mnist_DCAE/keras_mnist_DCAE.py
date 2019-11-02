@@ -10,11 +10,7 @@ import numpy as np
 
 batch_size = 64
 # num_classes = 10
-<<<<<<< HEAD
 epochs = 1024
-=======
-epochs = 1
->>>>>>> 5b619003fa541cbb9d1e73b3f447aa35dc46396c
 
 # input image dimensions
 img_rows, img_cols = 28, 28
