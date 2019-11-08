@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "padding2d.h"
-
+#include <stdio.h>
 
 uint8_t padding2d_fix16(uint16_t padding_height, uint16_t padding_width,
 		uint16_t input_depth, uint16_t input_height, uint16_t input_width,
@@ -12,6 +12,7 @@ uint8_t padding2d_fix16(uint16_t padding_height, uint16_t padding_width,
 	for(uint16_t depth = 0; depth < input_depth; depth++){
 		for(uint16_t i = 0; i < padding_height * (padding_width * 2 + input_width) - padding_width; i++){
 			output[o_count] = 0;
+			// printf("o_count = %d", o_count);
 			o_count += 1;
 		}
 
@@ -19,21 +20,25 @@ uint8_t padding2d_fix16(uint16_t padding_height, uint16_t padding_width,
 
 			for(uint16_t width = 0; width < 2 * padding_width; width++){
 				output[o_count] = 0;
+				// printf("o_count = %d", o_count);
 				o_count += 1;
 			}
 
 			for(uint16_t width = 0; width < input_width; width++){
 				output[o_count] = input[i_count];
+				// printf("o_count = %d, ", o_count);
+				// printf("i_count = %d", i_count);
 				i_count += 1;
 				o_count += 1;
-			}	
+			}
 		}
 
 		for(uint16_t i = 0; i < padding_height * (padding_width * 2 + input_width) + padding_width; i++){
 			output[o_count] = 0;
+			// printf("o_count = %d", o_count);
 			o_count += 1;
 		}
-		
+		// printf("\r\n\r\n");
 
 	}
 	return (0);
