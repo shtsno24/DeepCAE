@@ -14,6 +14,8 @@ int main(void){
     int16_t input_array[3][7][7];
     // vector< vector <vector< int16_t> > > padding_array(3, vector< vector< int16_t> >(9, vector <int16_t>(9, 0)));
     int16_t padding_depth_array[3][9][9];
+    // vector< vector <vector< int16_t> > > middle_array(3, vector< vector< int16_t> >(7, vector <int16_t>(7, 0)));
+    int16_t middle_array[3][7][7];
     // vector< vector <vector< int16_t> > > output_array(3, vector< vector< int16_t> >(7, vector <int16_t>(7, 0)));
     int16_t output_array[6][7][7];
     // vector< vector <vector< vector< int16_t> > > > kernel_depth_array(1, vector< vector< vector< int16_t> > >(3, vector< vector< int16_t> >(3, vector< int16_t>(3, 0))));
@@ -53,7 +55,7 @@ int main(void){
     for(uint16_t d = 0; d < 3; d++){
         for(uint16_t h = 0; h < 7; h++){
             for(uint16_t w = 0; w < 7; w++){
-                input_array[d][h][w] = (h + 1) * (w + 1);
+                input_array[d][h][w] = (h + 1) * (w - 2);
             }
         }
     }
@@ -67,7 +69,7 @@ int main(void){
     printf("\n\n");
 
     separable_conv2d_fix16(3, 9, 9, (int16_t*)padding_depth_array,
-    6, 7, 7, (int16_t*)output_array,
+    6, 7, 7, (int16_t*)output_array, (int16_t*)middle_array,
     (int16_t*)bias_depth_array, (int16_t*)bias_point_array,
     3, 3, (int16_t*)kernel_depth_array, (int16_t*)kernel_point_array, 1, 0);
 
@@ -121,11 +123,10 @@ int main(void){
 }
 
 
-
-// [[[[  72.  126.  180.  234.  288.  342.  180.]
-//    [ 144.  252.  360.  468.  576.  684.  360.]
-//    [ 216.  378.  540.  702.  864. 1026.  540.]
-//    [ 288.  504.  720.  936. 1152. 1368.  720.]
-//    [ 360.  630.  900. 1170. 1440. 1710.  900.]
-//    [ 432.  756. 1080. 1404. 1728. 2052. 1080.]
-//    [ 312.  546.  780. 1014. 1248. 1482.  780.]]
+// [[[[   0.    0.   72.  288.  504.  720.  396.]
+//    [   0.    0.  180.  720. 1260. 1800.  990.]
+//    [   0.    0.  288. 1152. 2016. 2880. 1584.]
+//    [   0.    0.  396. 1584. 2772. 3960. 2178.]
+//    [   0.    0.  504. 2016. 3528. 5040. 2772.]
+//    [   0.    0.  612. 2448. 4284. 6120. 3366.]
+//    [   0.    0.  576. 2304. 4032. 5760. 3168.]]
