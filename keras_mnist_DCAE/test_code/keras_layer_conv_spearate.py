@@ -71,7 +71,7 @@ for length in range(6):
 for d in range(3):
     for h in range(7):
         for w in range(7):
-            input_img[d][h][w] = (h + 1) * (w + 1)
+            input_img[d][h][w] = (h + 1) * (w - 2)
 
 input_img_keras = input_img.transpose(1, 2, 0)
 input_img_keras = input_img_keras.reshape((1,) + input_shape_keras)
