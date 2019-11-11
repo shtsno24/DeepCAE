@@ -7,7 +7,7 @@ void array_printf_1D_fix16(uint16_t input_length,
 int16_t input[input_length], uint16_t fractal){
     printf("[");
     for(uint16_t length = 0; length < input_length; length++){
-        printf("% 10.5f", fixed2float(input[length], fractal));
+        printf("% 3.2f", fixed2float(input[length], fractal));
         if(length < input_length - 1){
             printf(" ");    
         }
