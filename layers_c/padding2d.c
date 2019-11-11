@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "padding2d.h"
-#include <stdio.h>
 
 uint8_t padding2d_fix16(uint16_t padding_height, uint16_t padding_width,
 		uint16_t input_depth, uint16_t input_height, uint16_t input_width,
