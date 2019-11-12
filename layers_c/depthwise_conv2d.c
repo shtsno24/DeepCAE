@@ -28,8 +28,9 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                                 (int16_t)(((int32_t)(input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)]) * 
                                             (int32_t)(kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]))>> fractal_width);
                                 if(debug == 1){
-                                    fprintf(fp, "depthwise2d : input : % 5d, kernel : % 5d\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)], kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]);
-                                    fprintf(fp, "depthwise2d : output += % 5d\r\n=======\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)] * kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w] >> fractal_width);
+                                    // fprintf(fp, "depthwise2d : input : % 5d\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)]);
+                                    // fprintf(fp, "depthwise2d : kernel : % 5d\r\n", kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]);
+                                    // fprintf(fp, "depthwise2d : output += % 5d\r\n=======\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)] * kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w] >> fractal_width);
                                 }
                     }
                 }

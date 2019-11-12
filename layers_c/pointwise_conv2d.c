@@ -13,6 +13,7 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     
     // input_size *must* be included padding size
     // stride is fixed to 1
+    long int addr_diff = 0;
     FILE *fp;
     if(debug == 1){
         fp = fopen("debug.txt", "a");
@@ -28,7 +29,12 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                         (int16_t)(((int32_t)(input[in_d * input_height * input_width + out_h * input_width + out_w]) * 
                                     (int32_t)(kernel[out_d * input_depth + in_d])) >> fractal_width);
                     if(debug == 1){
-                        fprintf(fp, "pointwise2d : input : % 5d, kernel : % 5d\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w], kernel[out_d * input_depth + in_d]);
+                        if(in_d * input_height * input_width + out_h * input_width + out_w != 0){
+                            addr_diff = &(input[in_d * input_height * input_width + out_h * input_width + out_w]) - &(input[in_d * input_height * input_width + out_h * input_width + out_w - 1]);
+                        }
+                        fprintf(fp, "pointwise2d : input : % 5d\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w]);
+                        fprintf(fp, "pointwise2d : input : 0x%X\r\n", addr_diff);
+                        fprintf(fp, "pointwise2d : kernel : % 5d\r\n", kernel[out_d * input_depth + in_d]);
                         fprintf(fp, "pointwise2d : output += % 5d\r\n=======\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w] * kernel[out_d * input_depth + in_d] >> fractal_width);
                     }
                 }
