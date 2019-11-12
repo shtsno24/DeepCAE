@@ -1,18 +1,22 @@
 #include <stdint.h>
 #include "depthwise_conv2d.h"
-
+#include <stdio.h>
 
 uint8_t depthwise_conv2d_fix16(uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t* input,
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t* output,
 const int16_t* bias,
 uint16_t kernel_height, uint16_t kernel_width, const int16_t* kernel,
-uint8_t relu, uint8_t fractal_width){
+uint8_t relu, uint8_t fractal_width, uint8_t debug){
     // uint16_t output_hight = (input_shape.height + 2 * pad - kernel_shape.height) / stride + 1;
     // uint16_t output_width = (input_shape.width + 2 * pad - kernel_shape.width) / stride + 1;
     
     // input_size *must* be included padding size
     // stride is fixed to 1
     // dilation rate *must* be (1, 1)
+    FILE *fp;
+    if(debug == 1){
+        fp = fopen("debug.txt", "a");
+    }
 
     for(uint16_t out_d = 0; out_d < output_depth; out_d++){
         for(uint16_t out_h = 0; out_h < output_height; out_h++){
@@ -23,7 +27,10 @@ uint8_t relu, uint8_t fractal_width){
                         output[out_d * output_height * output_width + out_h * output_width + out_w] += 
                                 (int16_t)(((int32_t)(input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)]) * 
                                             (int32_t)(kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]))>> fractal_width);
-
+                                if(debug == 1){
+                                    fprintf(fp, "depthwise2d : input : % 5d, kernel : % 5d\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)], kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]);
+                                    fprintf(fp, "depthwise2d : output += % 5d\r\n=======\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)] * kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w] >> fractal_width);
+                                }
                     }
                 }
                 output[out_d * output_height * output_width + out_h * output_width + out_w] += bias[out_d];
@@ -36,6 +43,11 @@ uint8_t relu, uint8_t fractal_width){
             }
         }
     }
+
+    if(debug == 1){
+        fclose(fp);
+    }
+
     return(0);
 }
 
