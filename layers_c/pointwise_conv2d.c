@@ -13,7 +13,7 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     
     // input_size *must* be included padding size
     // stride is fixed to 1
-    long int addr_diff = 0;
+    int addr_diff = 0;
     FILE *fp;
     if(debug == 1){
         fp = fopen("debug_pointwise.txt", "w");

@@ -54,7 +54,8 @@ def write_weight_SeparableConv2D_c(weight_depthwise, weight_pointwise, bias, fil
             weight_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, weight_pointwise)
             bias_pointwise = float2fixed.float2fixed_array(array_type, fractal_width, bias_pointwise)
 
-        bias_depthwise = np.zeros((bias.shape), dtype=bias_pointwise.dtype)
+        # bias_depthwise = np.zeros((bias.shape), dtype=bias_pointwise.dtype)
+        bias_depthwise = np.zeros((weight_pointwise.shape[1],), dtype=bias_pointwise.dtype)
 
         # headers
         todaytime = str(datetime.datetime.today())

@@ -13,7 +13,7 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     // input_size *must* be included padding size
     // stride is fixed to 1
     // dilation rate *must* be (1, 1)
-    long int addr_diff = 0;
+    int addr_diff = 0;
     FILE *fp;
     if(debug == 1){
         fp = fopen("debug_depthwise.txt", "a");
@@ -33,22 +33,38 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                 }
                 output[out_d * output_height * output_width + out_h * output_width + out_w] += bias[out_d];
 
+                if(debug == 1){
+                    addr_diff = &(output[out_d * output_height * output_width + out_h * output_width + out_w]) - &(output[0]);
+                    fprintf(fp, "addr : 0x%X\r\n", addr_diff);
+                    fprintf(fp, "value : % 5d\r\n", output[out_d * output_height * output_width + out_h * output_width + out_w]);
+                    addr_diff = &(bias[out_d]) - &(bias[0]);
+                    fprintf(fp, "bias_addr : 0x%X\r\n", addr_diff);
+                    fprintf(fp, "bias_value : % 5d\r\n", bias[out_d]);
+                }
+
                 if(relu == 1){
                     if(output[out_d * output_height * output_width + out_h * output_width + out_w] < 0){
                         output[out_d * output_height * output_width + out_h * output_width + out_w] = 0;
                     }
                 }
+
+                // if(debug == 1){
+                //     addr_diff = &(output[out_d * output_height * output_width + out_h * output_width + out_w]) - &(output[0]);
+                //     fprintf(fp, "addr_relu : 0x%X\r\n", addr_diff);
+                //     fprintf(fp, "value_relu : % 5d\r\n", output[out_d * output_height * output_width + out_h * output_width + out_w]);
+                // }
+
             }
         }
     }
 
     if(debug == 1){
-        for(int i = 0;i < output_depth * output_height * output_width; i++){
-            addr_diff = &(output[i]) - &(output[0]);
-            fprintf(fp, "addr : 0x%X\r\n", addr_diff);
-            fprintf(fp, "value : % 5d\r\n", output[i]);
-        }
-        fprintf(fp, "output @ 0x%X\r\n", output);
+        // for(int i = 0;i < output_depth * output_height * output_width; i++){
+        //     addr_diff = &(output[i]) - &(output[0]);
+        //     fprintf(fp, "addr : 0x%X\r\n", addr_diff);
+        //     fprintf(fp, "value : % 5d\r\n", output[i]);
+        // }
+        // fprintf(fp, "output @ 0x%X\r\n", output);
         fclose(fp);
     }
 
