@@ -13,9 +13,11 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     // input_size *must* be included padding size
     // stride is fixed to 1
     // dilation rate *must* be (1, 1)
+    long int addr_diff = 0;
     FILE *fp;
     if(debug == 1){
         fp = fopen("debug.txt", "a");
+        fprintf(fp, "============\r\n");
     }
 
     for(uint16_t out_d = 0; out_d < output_depth; out_d++){
@@ -30,7 +32,9 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                                 if(debug == 1){
                                     // fprintf(fp, "depthwise2d : input : % 5d\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)]);
                                     // fprintf(fp, "depthwise2d : kernel : % 5d\r\n", kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w]);
-                                    // fprintf(fp, "depthwise2d : output += % 5d\r\n=======\r\n", input[out_d * input_height * input_width + (out_h + k_h) * input_width + (out_w + k_w)] * kernel[(out_d * kernel_height * kernel_width) + (k_h * kernel_width) + k_w] >> fractal_width);
+                                    addr_diff = &(output[out_d * output_height * output_width + out_h * output_width + out_w]) - &(output[0]);
+                                    fprintf(fp, "depthwise2d : output : % 5d\r\n", output[out_d * output_height * output_width + out_h * output_width + out_w]);
+                                    fprintf(fp, "depthwise2d : output : 0x%X\r\n", addr_diff);
                                 }
                     }
                 }
@@ -46,6 +50,7 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     }
 
     if(debug == 1){
+        fprintf(fp, "output @ 0x%X\r\n", output);
         fclose(fp);
     }
 
