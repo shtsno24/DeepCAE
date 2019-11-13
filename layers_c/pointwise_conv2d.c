@@ -16,9 +16,8 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     long int addr_diff = 0;
     FILE *fp;
     if(debug == 1){
-        fp = fopen("debug.txt", "a");
+        fp = fopen("debug_pointwise.txt", "w");
         fprintf(fp, "============\r\n");
-        fprintf(fp, "input @ 0x%X\r\n", input);
     }
 
     for(uint16_t out_d = 0; out_d < output_depth; out_d++){
@@ -31,9 +30,6 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                         (int16_t)(((int32_t)(input[in_d * input_height * input_width + out_h * input_width + out_w]) * 
                                     (int32_t)(kernel[out_d * input_depth + in_d])) >> fractal_width);
                     if(debug == 1){
-                        addr_diff = &(input[in_d * input_height * input_width + out_h * input_width + out_w ]) - &(input[0]);
-                        fprintf(fp, "pointwise2d : input : % 5d\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w]);
-                        fprintf(fp, "pointwise2d : input : 0x%X\r\n", addr_diff);
                         // fprintf(fp, "pointwise2d : kernel : % 5d\r\n", kernel[out_d * input_depth + in_d]);
                         // fprintf(fp, "pointwise2d : output += % 5d\r\n=======\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w] * kernel[out_d * input_depth + in_d] >> fractal_width);
                     }
@@ -50,6 +46,12 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
         }
     }
     if(debug == 1){
+        for(int i = 0;i < input_depth * input_height * input_width; i++){
+            addr_diff = &(input[i]) - &(input[0]);
+            fprintf(fp, "addr : 0x%X\r\n", addr_diff);
+            fprintf(fp, "value : % 5d\r\n", input[i]);
+        }
+        fprintf(fp, "input @ 0x%X\r\n", input);
         fclose(fp);
     }
     return(0);
