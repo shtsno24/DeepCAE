@@ -1,24 +1,17 @@
 #include <stdint.h>
 #include "pointwise_conv2d.h"
-#include <stdio.h>
 
 
 uint8_t pointwise_conv2d_fix16(uint16_t input_depth, uint16_t input_height, uint16_t input_width, int16_t* input,
 uint16_t output_depth, uint16_t output_height, uint16_t output_width, int16_t* output,
 const int16_t* bias,
 uint16_t kernel_height, uint16_t kernel_width, const int16_t* kernel,
-uint8_t relu, uint8_t fractal_width, uint8_t debug){
+uint8_t relu, uint8_t fractal_width){
     // uint16_t output_hight = (input_shape.height + 2 * pad - kernel_shape.height) / stride + 1;
     // uint16_t output_width = (input_shape.width + 2 * pad - kernel_shape.width) / stride + 1;
     
     // input_size *must* be included padding size
     // stride is fixed to 1
-    int addr_diff = 0;
-    FILE *fp;
-    if(debug == 1){
-        fp = fopen("debug_pointwise.txt", "w");
-        fprintf(fp, "============\r\n");
-    }
 
     for(uint16_t out_d = 0; out_d < output_depth; out_d++){
         for(uint16_t out_h = 0; out_h < output_height; out_h++){
@@ -40,15 +33,6 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                 }
             }
         }
-    }
-    if(debug == 1){
-        for(int i = 0;i < input_depth * input_height * input_width; i++){
-            addr_diff = &(input[i]) - &(input[0]);
-            fprintf(fp, "addr : 0x%X\r\n", addr_diff);
-            fprintf(fp, "value : % 5d\r\n", input[i]);
-        }
-        fprintf(fp, "input @ 0x%X\r\n", input);
-        fclose(fp);
     }
     return(0);
 }

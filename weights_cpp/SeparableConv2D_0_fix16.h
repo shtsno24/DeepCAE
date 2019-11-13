@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-13 13:45:38.539491
+ * Date : 2019-11-13 14:12:04.684592
  * array_type : int16
  * fractal_width : 14 bit
  * bit_width : 16 bit
@@ -55,7 +55,7 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_0_w_p =
 
 {{{ 6639}}}};
 
-const uint16_t shape_SeparableConv2D_0_b_d = 16;
-const vector< int16_t> SeparableConv2D_0_b_d = {    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0};
+const uint16_t shape_SeparableConv2D_0_b_d = 1;
+const vector< int16_t> SeparableConv2D_0_b_d = {    0};
 const uint16_t shape_SeparableConv2D_0_b_p = 16;
 const vector< int16_t> SeparableConv2D_0_b_p = { 1542, -1048,  -333,   783,  -788,  -804,   758,  -342,  1083,  2512,   441,     0,  -963,   103,  -697,  -852};
