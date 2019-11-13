@@ -29,10 +29,6 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
                     output[out_d * output_height * output_width + out_h * output_width + out_w] += 
                         (int16_t)(((int32_t)(input[in_d * input_height * input_width + out_h * input_width + out_w]) * 
                                     (int32_t)(kernel[out_d * input_depth + in_d])) >> fractal_width);
-                    if(debug == 1){
-                        // fprintf(fp, "pointwise2d : kernel : % 5d\r\n", kernel[out_d * input_depth + in_d]);
-                        // fprintf(fp, "pointwise2d : output += % 5d\r\n=======\r\n", input[in_d * input_height * input_width + out_h * input_width + out_w] * kernel[out_d * input_depth + in_d] >> fractal_width);
-                    }
                 }
 
                 output[out_d * output_height * output_width + out_h * output_width + out_w] += bias[out_d];

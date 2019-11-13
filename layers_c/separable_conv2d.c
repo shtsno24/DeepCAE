@@ -13,12 +13,12 @@ uint8_t relu, uint8_t fractal_width, uint8_t debug){
     depthwise_conv2d_fix16(input_depth, input_height, input_width, input,
                            input_depth, output_height, output_width, (int16_t*)middle_array,
                            bias_d,
-                           kernel_d_height, kernel_d_width, kernel_d, 0, fractal_width, 1);
+                           kernel_d_height, kernel_d_width, kernel_d, 0, fractal_width, debug);
 
     pointwise_conv2d_fix16(input_depth, output_height, output_width, (int16_t*)middle_array,
                 output_depth, output_height, output_width, output,
                 bias_p,
-                1, 1, kernel_p, relu, fractal_width, debug);
+                1, 1, kernel_p, relu, fractal_width, 0);
 
     return (0);
 }
