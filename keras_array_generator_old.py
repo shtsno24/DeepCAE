@@ -11,11 +11,6 @@ output_file_C_array_fix16 = "./arrays_c/arrays_fix16.h"
 output_file_C_template_float32 = "./template_c/template_float32.c"
 output_file_C_template_fix16 = "./template_c/template_fix16.c"
 
-output_file_Cpp_array_float32 = "./arrays_cpp/arrays_float32.h"
-output_file_Cpp_array_fix16 = "./arrays_cpp/arrays_fix16.h"
-output_file_Cpp_template_float32 = "./template_cpp/template_float32.cpp"
-output_file_Cpp_template_fix16 = "./template_cpp/template_fix16.cpp"
-
 output_languages = ["c", "cpp"]
 output_files = ["template", "arrays"]
 output_precision = ["fix16", "float32"]
@@ -37,7 +32,7 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
     layer_params_dict = {"layer_name": "input_0", "depth": 1, "height": 28, "width": 28}
     layer_params = [layer_params_dict]
 
-    itr_counter = {"MaxPooling2D": 0, "UpSampling2D": 0, "Conv2D": 0, "Padding2D": 0, "SeparableConv2D": 0, "DepthwiseConv2D": 0, "PointwiseConv2D": 0, "input_0": 1}
+    itr_counter = {"MaxPooling2D": 0, "UpSampling2D": 0, "Conv2D": 0, "Padding2D": 0, "SeparableConv2D": 0}
     array_shapes = np.array([0, 0, 0], dtype=np.uint16)  # depth height width
 
     for layers in model_arrays_itr["config"]["layers"]:
@@ -49,9 +44,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             array_shapes = np.array([array_shapes[0], array_shapes[1] / size[0], array_shapes[2] / size[1]], dtype=np.uint16)
 
             layer_params_dict = {"layer_name": layer_name,
-                                 "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
-                                 "ksize_h": size[0], "ksize_w": size[1]}
-            layer_params.append(layer_params_dict)
+                                       "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
+                                       "ksize_h": size[0], "ksize_w": size[1]}
+
             itr_counter["MaxPooling2D"] += 1
 
         elif layers["class_name"].find("UpSampling2D") != -1:
@@ -59,9 +54,9 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
             array_shapes = np.array([array_shapes[0], array_shapes[1] * size[0], array_shapes[2] * size[1]], dtype=np.uint16)
 
             layer_params_dict = {"layer_name": layer_name,
-                                 "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
-                                 "ksize_h": size[0], "ksize_w": size[1]}
-            layer_params.append(layer_params_dict)
+                                       "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
+                                       "ksize_h": size[0], "ksize_w": size[1]}
+
             itr_counter["UpSampling2D"] += 1
 
         elif layers["class_name"].find("SeparableConv2D") != -1:
@@ -82,17 +77,18 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
                 # generate padding layers
                 # write to float32.c file
-                # arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
-                # arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
+                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
+                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
 
                 # write to fix16.c file
-                # arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
-                # arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
+                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
+                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
 
                 layer_params_dict = {"layer_name": str("Padding2D_{}").format(itr_counter["Padding2D"]),
-                                     "depth": input_depth, "height": int(out_shapes_height + padding[0]), "width": int(out_shapes_width + padding[1]),
-                                     "padding_h": int(padding[0] / 2), "padding_w": int(padding[1] / 2)}
+                                           "depth": input_depth, "height": int(out_shapes_height + padding[0]), "width": int(out_shapes_width + padding[1]),
+                                           "padding_h": int(padding[0] / 2), "padding_w": int(padding[1] / 2)}
                 layer_params.append(layer_params_dict)
+
                 itr_counter["Padding2D"] += 1
 
             else:
@@ -100,34 +96,22 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                 out_shapes_width = (input_shapes[1] - kernel_shapes[1]) / strides[1] + 1
 
             # write middle array to float32.c file
-            # arrays_float32.append(str("uint16_t SeparableConv2D_{}_m_depth = {}, SeparableConv2D_{}_m_height = {}, SeparableConv2D_{}_m_width = {};\n").format(itr_counter["SeparableConv2D"], input_depth, itr_counter["SeparableConv2D"], int(out_shapes_height), itr_counter["SeparableConv2D"], int(out_shapes_width)))
-            # arrays_float32.append(str("float SeparableConv2D_{}_m_array[{}][{}][{}];\n\n").format(itr_counter["SeparableConv2D"], input_depth, int(out_shapes_height), int(out_shapes_width)))
+            arrays_float32.append(str("uint16_t SeparableConv2D_{}_m_depth = {}, SeparableConv2D_{}_m_height = {}, SeparableConv2D_{}_m_width = {};\n").format(itr_counter["SeparableConv2D"], input_depth, itr_counter["SeparableConv2D"], int(out_shapes_height), itr_counter["SeparableConv2D"], int(out_shapes_width)))
+            arrays_float32.append(str("float SeparableConv2D_{}_m_array[{}][{}][{}];\n\n").format(itr_counter["SeparableConv2D"], input_depth, int(out_shapes_height), int(out_shapes_width)))
 
             # write middle array to fix16.c file
-            # arrays_fix16.append(str("uint16_t SeparableConv2D_{}_m_depth = {}, SeparableConv2D_{}_m_height = {}, SeparableConv2D_{}_m_width = {};\n").format(itr_counter["SeparableConv2D"], input_depth, itr_counter["SeparableConv2D"], int(out_shapes_height), itr_counter["SeparableConv2D"], int(out_shapes_width)))
-            # arrays_fix16.append(str("int16_t SeparableConv2D_{}_m_array[{}][{}][{}];\n\n").format(itr_counter["SeparableConv2D"], input_depth, int(out_shapes_height), int(out_shapes_width)))
+            arrays_fix16.append(str("uint16_t SeparableConv2D_{}_m_depth = {}, SeparableConv2D_{}_m_height = {}, SeparableConv2D_{}_m_width = {};\n").format(itr_counter["SeparableConv2D"], input_depth, itr_counter["SeparableConv2D"], int(out_shapes_height), itr_counter["SeparableConv2D"], int(out_shapes_width)))
+            arrays_fix16.append(str("int16_t SeparableConv2D_{}_m_array[{}][{}][{}];\n\n").format(itr_counter["SeparableConv2D"], input_depth, int(out_shapes_height), int(out_shapes_width)))
 
             # depth first, not last
             array_shapes = np.array([layers["config"]["filters"], out_shapes_height, out_shapes_width], dtype=np.uint16)
 
-            layer_params_dict = {"layer_name": str("DepthwiseConv2D_{}").format(itr_counter["DepthwiseConv2D"]),
-                                 "depth": input_depth, "height": array_shapes[1], "width": array_shapes[2],  # output shape
-                                 "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
-                                 "bias_length": input_depth, "activation": layers["config"]["activation"]}
-            layer_params.append(layer_params_dict)
-            layer_params_dict = {"layer_name": str("PointwiseConv2D_{}").format(itr_counter["PointwiseConv2D"]),
-                                 "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],  # output shape
-                                 "ksize_h": 1, "ksize_w": 1,
-                                 "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
-            layer_params.append(layer_params_dict)
             layer_params_dict = {"layer_name": layer_name,
-                                 "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],  # output shape
-                                 "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
-                                 "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
-            layer_params.append(layer_params_dict)
+                                       "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2], # output shape
+                                       "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
+                                       "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
+
             itr_counter["SeparableConv2D"] += 1
-            itr_counter["DepthwiseConv2D"] += 1
-            itr_counter["PointwiseConv2D"] += 1
 
         elif layers["class_name"].find("Conv2D") != -1:
             if itr_counter["Conv2D"] == 0:
@@ -147,17 +131,18 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
 
                 # generate padding layers
                 # write to float32.c file
-                # arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
-                # arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
+                arrays_float32.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
+                arrays_float32.append(str("float Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
 
                 # write to fix16.c file
-                # arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
-                # arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
+                arrays_fix16.append(str("uint16_t Padding2D_{}_depth = {}, Padding2D_{}_height = {}, Padding2D_{}_width = {};\n").format(itr_counter["Padding2D"], input_depth, itr_counter["Padding2D"], int(out_shapes_height + padding[0]), itr_counter["Padding2D"], int(out_shapes_width + padding[1])))
+                arrays_fix16.append(str("int16_t Padding2D_{}_array[{}][{}][{}];\n\n").format(itr_counter["Padding2D"], input_depth, int(out_shapes_height + padding[0]), int(out_shapes_width + padding[1])))
 
                 layer_params_dict = {"layer_name": str("Padding2D_{}").format(itr_counter["Padding2D"]),
-                                     "depth": input_depth, "height": int(out_shapes_height + padding[0]), "width": int(out_shapes_width + padding[1]),
-                                     "padding_h": int(padding[0] / 2), "padding_w": int(padding[1] / 2)}
+                                           "depth": input_depth, "height": int(out_shapes_height + padding[0]), "width": int(out_shapes_width + padding[1]),
+                                           "padding_h": int(padding[0] / 2), "padding_w": int(padding[1] / 2)}
                 layer_params.append(layer_params_dict)
+
                 itr_counter["Padding2D"] += 1
 
             else:
@@ -171,19 +156,21 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                                  "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],
                                  "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
                                  "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
-            layer_params.append(layer_params_dict)
+
             itr_counter["Conv2D"] += 1
 
         else:
             print("This Layer is not available OTL")
 
         # write to float32.c file
-        # arrays_float32.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
-        # arrays_float32.append(str("float " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_float32.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_float32.append(str("float " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
 
         # write to fix16.c file
-        # arrays_fix16.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
-        # arrays_fix16.append(str("int16_t " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_fix16.append(str("uint16_t " + layer_name + "_depth = {}, " + layer_name + "_height = {}, " + layer_name + "_width = {};\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+        arrays_fix16.append(str("int16_t " + layer_name + "_array[{}][{}][{}];\n\n").format(array_shapes[0], array_shapes[1], array_shapes[2]))
+
+        layer_params.append(layer_params_dict)
 
     for langs in output_languages:
         for files in output_files:
@@ -195,23 +182,6 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
                     buff_name = str("./{0}_{1}/{0}_{2}.{1}").format(files, langs, precise)
                 print(buff_name)
 
-    for layer_p in layer_params:
-        print(layer_p["layer_name"], layer_p["depth"], layer_p["height"], layer_p["width"], end=" ")
-        if(layer_p["layer_name"].find("Conv2D") != -1):
-            print(layer_p["ksize_h"], layer_p["ksize_w"], layer_p["bias_length"])
-        else:
-            print()
-
-        if(layer_p["layer_name"] == "input_0"):
-            max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-        if(layer_p["depth"] * layer_p["height"] * layer_p["width"] > max_array_size):
-            max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-
-    print(max_array_size)
-    print(itr_counter)
-
-
-"""
     with open(output_file_C_array_float32, "w") as f:
         todaytime = str(datetime.datetime.today())
         f.write("/*\n")
@@ -584,4 +554,3 @@ with open("keras_mnist_DCAE/keras_mnist_DCAE.json") as jfile:
         for i in layer_params:
             f.write(str("uint16_t {0}_depth = {1}, {0}_height = {2}, {0}_width = {3};\n").format(i["layer_name"], i["depth"], i["height"], i["width"]))
             f.write(str("vector< vector< vector< float> > > {0}_array({0}_depth, vector< vector < float> >({0}_height, vector< float>({0}_width)));\n\n").format(i["layer_name"]))
-"""
