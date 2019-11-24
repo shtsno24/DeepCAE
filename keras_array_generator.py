@@ -5,9 +5,8 @@ import os
 from keras_model_parser import parse_keras_model
 
 languages = ["c", "cpp"]
-folders = ["template", "arrays"]
+folders = ["arrays"]
 precision = ["fix16", "float32"]
-target_files = []
 
 
 def array_writer(layer_parameters, file_name):
@@ -86,26 +85,5 @@ if __name__ == "__main__":
         for folder in folders:
             for precise in precision:
                 # "./arrays_C/arrays_float32.h"
-                if folder == "arrays":
-                    buff_name = str("./{0}_{1}/{0}_{2}.h").format(folder, langs, precise)
-                    print(buff_name)
-                    array_writer(layer_params, buff_name)
-                else:
-                    buff_name = str("./{0}_{1}/{0}_{2}.{1}").format(folder, langs, precise)
-                # print(buff_name)
-                target_files.append(buff_name)
-
-    for layer_p in layer_params:
-        print(layer_p["layer_name"], layer_p["depth"], layer_p["height"], layer_p["width"], end=" ")
-        if(layer_p["layer_name"].find("Conv2D") != -1):
-            print(layer_p["ksize_h"], layer_p["ksize_w"], layer_p["bias_length"])
-        else:
-            print()
-
-        if(layer_p["layer_name"] == "input_0"):
-            max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-        if(layer_p["depth"] * layer_p["height"] * layer_p["width"] > max_array_size):
-            max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-
-    print(max_array_size)
-    print(itr_counter)
+                buff_name = str("./{0}_{1}/{0}_{2}.h").format(folder, langs, precise)
+                array_writer(layer_params, buff_name)

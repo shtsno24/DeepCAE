@@ -74,16 +74,16 @@ def parse_keras_model(json_file, h5_file):
                 # depth first, not last
                 array_shapes = np.array([layers["config"]["filters"], out_shapes_height, out_shapes_width], dtype=np.uint16)
 
-                layer_params_dict = {"layer_name": str("DepthwiseConv2D_{}").format(itr_counter["DepthwiseConv2D"]),
-                                     "depth": input_depth, "height": array_shapes[1], "width": array_shapes[2],  # output shape
-                                     "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
-                                     "bias_length": input_depth, "activation": layers["config"]["activation"]}
-                layer_params.append(layer_params_dict)
-                layer_params_dict = {"layer_name": str("PointwiseConv2D_{}").format(itr_counter["PointwiseConv2D"]),
-                                     "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],  # output shape
-                                     "ksize_h": 1, "ksize_w": 1,
-                                     "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
-                layer_params.append(layer_params_dict)
+                # layer_params_dict = {"layer_name": str("DepthwiseConv2D_{}").format(itr_counter["DepthwiseConv2D"]),
+                #                      "depth": input_depth, "height": array_shapes[1], "width": array_shapes[2],  # output shape
+                #                      "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
+                #                      "bias_length": input_depth, "activation": layers["config"]["activation"]}
+                # layer_params.append(layer_params_dict)
+                # layer_params_dict = {"layer_name": str("PointwiseConv2D_{}").format(itr_counter["PointwiseConv2D"]),
+                #                      "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],  # output shape
+                #                      "ksize_h": 1, "ksize_w": 1,
+                #                      "bias_length": array_shapes[0], "activation": layers["config"]["activation"]}
+                # layer_params.append(layer_params_dict)
                 layer_params_dict = {"layer_name": layer_name,
                                      "depth": array_shapes[0], "height": array_shapes[1], "width": array_shapes[2],  # output shape
                                      "ksize_h": kernel_shapes[0], "ksize_w": kernel_shapes[1],
