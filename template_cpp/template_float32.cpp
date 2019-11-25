@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 22:47:53.939433
+ * Date : 2019-11-26 00:14:58.304074
  * Language : cpp
  * Precision : float32
  *
@@ -24,7 +24,7 @@ int network(float* input_data, float* output_data){
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
 			for(int width = 0; width < input_0_width; width++){
-				output_data[i] = MemBank_A[depth][height][width];
+				MemBank_A[depth][height][width] = input_data[i];
 				i += 1;
 			}
 		}
@@ -129,8 +129,8 @@ int network(float* input_data, float* output_data){
 
 int main(void){
 	float output_buffer[1][28][28];
-	vector< vector< vector< int16_t> > > input_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
-	vector< vector< vector< int16_t> > > output_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
+	vector< vector< vector< float> > > input_img(1, vector< vector< float> >(28, vector< float>(28)));
+	vector< vector< vector< float> > > output_img(1, vector< vector< float> >(28, vector< float>(28)));
 
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
@@ -150,11 +150,11 @@ int main(void){
 		}
 	}
 	ofstream fp("template_input_float32.tsv");
-	array_fprintf_2D_float32(input_0_height, input_0_width, test_input_float32[0], '\t', fp);
+	array_fprintf_2D_float32(input_0_height, input_0_width, input_img[0], '\t', fp);
 	fp.close();
 
 	fp.open("template_output_float32.tsv");
-	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp);
+	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp);
 	fp.close();
 
 }

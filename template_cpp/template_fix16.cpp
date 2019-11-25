@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 22:47:53.929748
+ * Date : 2019-11-26 00:14:58.005096
  * Language : cpp
  * Precision : fix16
  *
@@ -24,7 +24,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	for(int depth = 0; depth < input_0_depth; depth++){
 		for(int height = 0; height < input_0_height; height++){
 			for(int width = 0; width < input_0_width; width++){
-				output_data[i] = MemBank_A[depth][height][width];
+				MemBank_A[depth][height][width] = input_data[i];
 				i += 1;
 			}
 		}
@@ -154,7 +154,7 @@ int main(void){
 	fp.close();
 
 	fp.open("template_output_fix16.tsv");
-	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp, fractal_width_SeparableConv2D_4);
+	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp, fractal_width_SeparableConv2D_4);
 	fp.close();
 
 }
