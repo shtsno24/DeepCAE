@@ -1,29 +1,39 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 16:38:11.025749
+ * Date : 2019-11-25 19:58:34.220004
  * Language : cpp
  * Precision : fix16
  *
  */
-#include <stdint.h>
+#include <cstdint>
+#include <vector>
 #include <stdio.h>
 
+using namespace std;
+
 #include "./../test_data/test_data.h"
-#include "./../layers_cpp/array_printf_fix16.h"
+#include "./../layers_c/array_printf_fix16.h"
 #include "./../arrays_cpp/arrays_fix16.h"
 #include "./../layers_cpp/layers.h"
 #include "./../weights_cpp/weights_fix16.h"
 
 int network(int16_t* input_data, int16_t* output_data){
-	for(int i = 0; i < input_0_depth * input_0_height * input_0_width; i++){
-		MemBank_A[i] = input_data[i];
+	int i = 0;
+	for(int depth = 0; depth < input_0_depth; depth++){
+		for(int height = 0; height < input_0_height; height++){
+			for(int width = 0; width < input_0_width; width++){
+				output_data[i] = MemBank_A[depth][height][width];
+				i += 1;
+			}
+		}
 	}
+
 	padding2d_fix16(1, 1,
 	input_0_depth, input_0_height, input_0_width, MemBank_A,
 	Padding2D_0_height, Padding2D_0_width, MemBank_B);
 
 	depthwise_conv2d_fix16(Padding2D_0_depth, Padding2D_0_height, Padding2D_0_width, MemBank_B,
-	SeparableConv2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, MemBank_A,
+	Padding2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, MemBank_A,
 	SeparableConv2D_0_b_d,
 	3, 3, SeparableConv2D_0_w_d, 0, fractal_width_SeparableConv2D_0);
 
@@ -41,7 +51,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	Padding2D_1_height, Padding2D_1_width, MemBank_B);
 
 	depthwise_conv2d_fix16(Padding2D_1_depth, Padding2D_1_height, Padding2D_1_width, MemBank_B,
-	SeparableConv2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, MemBank_A,
+	Padding2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, MemBank_A,
 	SeparableConv2D_1_b_d,
 	3, 3, SeparableConv2D_1_w_d, 0, fractal_width_SeparableConv2D_1);
 
@@ -59,7 +69,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	Padding2D_2_height, Padding2D_2_width, MemBank_B);
 
 	depthwise_conv2d_fix16(Padding2D_2_depth, Padding2D_2_height, Padding2D_2_width, MemBank_B,
-	SeparableConv2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, MemBank_A,
+	Padding2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, MemBank_A,
 	SeparableConv2D_2_b_d,
 	3, 3, SeparableConv2D_2_w_d, 0, fractal_width_SeparableConv2D_2);
 
@@ -77,7 +87,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	Padding2D_3_height, Padding2D_3_width, MemBank_B);
 
 	depthwise_conv2d_fix16(Padding2D_3_depth, Padding2D_3_height, Padding2D_3_width, MemBank_B,
-	SeparableConv2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, MemBank_A,
+	Padding2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, MemBank_A,
 	SeparableConv2D_3_b_d,
 	3, 3, SeparableConv2D_3_w_d, 0, fractal_width_SeparableConv2D_3);
 
@@ -95,7 +105,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	Padding2D_4_height, Padding2D_4_width, MemBank_B);
 
 	depthwise_conv2d_fix16(Padding2D_4_depth, Padding2D_4_height, Padding2D_4_width, MemBank_B,
-	SeparableConv2D_4_depth, SeparableConv2D_4_height, SeparableConv2D_4_width, MemBank_A,
+	Padding2D_4_depth, SeparableConv2D_4_height, SeparableConv2D_4_width, MemBank_A,
 	SeparableConv2D_4_b_d,
 	3, 3, SeparableConv2D_4_w_d, 0, fractal_width_SeparableConv2D_4);
 
@@ -121,7 +131,7 @@ void main(void){
 	network((int16_t*)test_input_fix16, (int16_t*)output_buffer);
 
 	FILE* fp = fopen("template_input_fix16.tsv", "w");
-	array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\t', fp, fractal_width_input_0);
+	array_fprintf_2D_fix16(input_0_height, input_0_width, test_input_fix16[0], '\t', fp, fractal_width_input_0);
 	fclose(fp);
 
 	fp = fopen("template_output_fix16.tsv", "w");

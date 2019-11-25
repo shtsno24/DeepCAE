@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 16:38:10.771400
+ * Date : 2019-11-25 19:58:33.975660
  * Language : c
  * Precision : float32
  *
@@ -23,7 +23,7 @@ int network(float* input_data, float* output_data){
 	Padding2D_0_height, Padding2D_0_width, (float*)MemBank_B);
 
 	depthwise_conv2d_float32(Padding2D_0_depth, Padding2D_0_height, Padding2D_0_width, (float*)MemBank_B,
-	SeparableConv2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, (float*)MemBank_A,
+	Padding2D_0_depth, SeparableConv2D_0_height, SeparableConv2D_0_width, (float*)MemBank_A,
 	(float*) SeparableConv2D_0_b_d,
 	3, 3, (float*) SeparableConv2D_0_w_d, 0);
 
@@ -41,7 +41,7 @@ int network(float* input_data, float* output_data){
 	Padding2D_1_height, Padding2D_1_width, (float*)MemBank_B);
 
 	depthwise_conv2d_float32(Padding2D_1_depth, Padding2D_1_height, Padding2D_1_width, (float*)MemBank_B,
-	SeparableConv2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, (float*)MemBank_A,
+	Padding2D_1_depth, SeparableConv2D_1_height, SeparableConv2D_1_width, (float*)MemBank_A,
 	(float*) SeparableConv2D_1_b_d,
 	3, 3, (float*) SeparableConv2D_1_w_d, 0);
 
@@ -59,7 +59,7 @@ int network(float* input_data, float* output_data){
 	Padding2D_2_height, Padding2D_2_width, (float*)MemBank_B);
 
 	depthwise_conv2d_float32(Padding2D_2_depth, Padding2D_2_height, Padding2D_2_width, (float*)MemBank_B,
-	SeparableConv2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, (float*)MemBank_A,
+	Padding2D_2_depth, SeparableConv2D_2_height, SeparableConv2D_2_width, (float*)MemBank_A,
 	(float*) SeparableConv2D_2_b_d,
 	3, 3, (float*) SeparableConv2D_2_w_d, 0);
 
@@ -77,7 +77,7 @@ int network(float* input_data, float* output_data){
 	Padding2D_3_height, Padding2D_3_width, (float*)MemBank_B);
 
 	depthwise_conv2d_float32(Padding2D_3_depth, Padding2D_3_height, Padding2D_3_width, (float*)MemBank_B,
-	SeparableConv2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, (float*)MemBank_A,
+	Padding2D_3_depth, SeparableConv2D_3_height, SeparableConv2D_3_width, (float*)MemBank_A,
 	(float*) SeparableConv2D_3_b_d,
 	3, 3, (float*) SeparableConv2D_3_w_d, 0);
 
@@ -95,7 +95,7 @@ int network(float* input_data, float* output_data){
 	Padding2D_4_height, Padding2D_4_width, (float*)MemBank_B);
 
 	depthwise_conv2d_float32(Padding2D_4_depth, Padding2D_4_height, Padding2D_4_width, (float*)MemBank_B,
-	SeparableConv2D_4_depth, SeparableConv2D_4_height, SeparableConv2D_4_width, (float*)MemBank_A,
+	Padding2D_4_depth, SeparableConv2D_4_height, SeparableConv2D_4_width, (float*)MemBank_A,
 	(float*) SeparableConv2D_4_b_d,
 	3, 3, (float*) SeparableConv2D_4_w_d, 0);
 
@@ -112,10 +112,10 @@ int network(float* input_data, float* output_data){
 void main(void){
 	float output_buffer[1][28][28];
 
-	network((float*)test_input_fix16, (float*)output_buffer);
+	network((float*)test_input_float32, (float*)output_buffer);
 
 	FILE* fp = fopen("template_input_float32.tsv", "w");
-	array_fprintf_2D_float32(input_0_height, input_0_width, input_0_array[0], '\t', fp);
+	array_fprintf_2D_float32(input_0_height, input_0_width, test_input_float32[0], '\t', fp);
 	fclose(fp);
 
 	fp = fopen("template_output_float32.tsv", "w");

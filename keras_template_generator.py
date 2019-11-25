@@ -33,11 +33,18 @@ def template_writer(layer_parameters, file_name):
         f.write(" * Precision : " + params["precision"] + "\n")
         f.write(" *\n")
         f.write(" */\n")
-        f.write("#include <stdint.h>\n")
-        f.write("#include <stdio.h>\n\n")
+        
+        if params["langs"] == "c":
+            f.write("#include <stdint.h>\n")
+            f.write("#include <stdio.h>\n\n")
+        else:
+            f.write("#include <cstdint>\n")
+            f.write("#include <vector>\n")
+            f.write("#include <stdio.h>\n\n")
+            f.write("using namespace std;\n\n")
 
         f.write('#include "./../test_data/test_data.h"\n')
-        f.write('#include "./../layers_{0}/array_printf_{1}.h"\n'.format(params["langs"], params["precision"]))
+        f.write('#include "./../layers_c/array_printf_{1}.h"\n'.format(params["langs"], params["precision"]))
         f.write('#include "./../arrays_{0}/arrays_{1}.h"\n'.format(params["langs"], params["precision"]))
         f.write('#include "./../layers_{0}/layers.h"\n'.format(params["langs"]))
         f.write('#include "./../weights_{0}/weights_{1}.h"\n\n'.format(params["langs"], params["precision"]))
@@ -62,16 +69,15 @@ def template_writer(layer_parameters, file_name):
                     f.write("\t\t{0}[i] = input_data[i];\n".format(Memory_Bank))
                     f.write("\t}\n")
                 else:
-                    f.write("\ti = 0;\n")
-                    f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(layer_params_old["layer_name"]))
-                    f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(layer_params_old["layer_name"]))
-                    f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(layer_params_old["layer_name"]))
-                    f.write("\t\t\t\toutput_data[i] = {0}[depth][height][width];\n".format(Memory_Bank_old))
+                    f.write("\tint i = 0;\n")
+                    f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(layer_params["layer_name"]))
+                    f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(layer_params["layer_name"]))
+                    f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(layer_params["layer_name"]))
+                    f.write("\t\t\t\toutput_data[i] = {0}[depth][height][width];\n".format(Memory_Bank))
                     f.write("\t\t\t\ti += 1;\n")
                     f.write("\t\t\t}\n")
                     f.write("\t\t}\n")
-                    f.write("\t}\n")
-                    f.write("}\n\n")
+                    f.write("\t}\n\n")
 
             elif layer_params["layer_name"].find("Padding2D") != -1:
                 if params["langs"] == "c":
@@ -138,7 +144,7 @@ def template_writer(layer_parameters, file_name):
 
                 if params["langs"] == "c":
                     f.write(str("\tdepthwise_conv2d_{0}({1}_depth, {1}_height, {1}_width, ({2}*){3},\n\t").format(params["precision"], layer_params_old["layer_name"], array_type, Memory_Bank_old))
-                    f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2},\n\t").format(layer_params["layer_name"], array_type, Memory_Bank))
+                    f.write(str("{0}_depth, {1}_height, {1}_width, ({2}*){3},\n\t").format(layer_params_old["layer_name"], layer_params["layer_name"], array_type, Memory_Bank))
                     f.write(str("({1}*) {0}_b_d,\n\t").format(layer_params["layer_name"], array_type))
                     if params["precision"] == "fix16":
                         f.write(str("{0}, {1}, ({4}*) {2}_w_d, {3}, fractal_width_{2});\n\n").format(layer_params["ksize_h"], layer_params["ksize_w"], layer_params["layer_name"], 0, array_type))
@@ -146,7 +152,7 @@ def template_writer(layer_parameters, file_name):
                         f.write(str("{0}, {1}, ({4}*) {2}_w_d, {3});\n\n").format(layer_params["ksize_h"], layer_params["ksize_w"], layer_params["layer_name"], 0, array_type))
                 else:
                     f.write(str("\tdepthwise_conv2d_{0}({1}_depth, {1}_height, {1}_width, {2},\n\t").format(params["precision"], layer_params_old["layer_name"], Memory_Bank_old))
-                    f.write(str("{0}_depth, {0}_height, {0}_width, {1},\n\t").format(layer_params["layer_name"], Memory_Bank))
+                    f.write(str("{0}_depth, {1}_height, {1}_width, {2},\n\t").format(layer_params_old["layer_name"], layer_params["layer_name"], Memory_Bank))
                     f.write(str("{0}_b_d,\n\t").format(layer_params["layer_name"]))
                     if params["precision"] == "fix16":
                         f.write(str("{0}, {1}, {2}_w_d, {3}, fractal_width_{2});\n\n").format(layer_params["ksize_h"], layer_params["ksize_w"], layer_params["layer_name"], 0))
@@ -212,16 +218,16 @@ def template_writer(layer_parameters, file_name):
             f.write("void main(void){\n")
             f.write("\t{0} output_buffer[{1}][{2}][{3}];\n\n".format(array_type, "1", "28", "28"))
 
-            f.write("\tnetwork(({0}*)test_input_fix16, ({0}*)output_buffer);\n\n".format(array_type))
+            f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))
             f.write('\tFILE* fp = fopen("template_input_{0}.tsv", "w");\n\t'.format(params["precision"]))
             if params["precision"] == "fix16":
-                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
+                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
                 f.write("fclose(fp);\n\n")
 
                 f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_buffer[0], '\\t', fp, fractal_width_{1});\n\t".format(params["precision"], layer_params_old["layer_name"]))
             else:
-                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, input_0_array[0], '\\t', fp);\n\t".format(params["precision"]))
+                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp);\n\t".format(params["precision"]))
                 f.write("fclose(fp);\n\n")
 
                 f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
@@ -240,19 +246,20 @@ def template_writer(layer_parameters, file_name):
             f.write("\t}\n")
             f.write("}\n\n")
 
+
             f.write("void main(void){\n")
             f.write("\t{0} output_buffer[{1}][{2}][{3}];\n\n".format(array_type, "1", "28", "28"))
 
-            f.write("\tnetwork(({0}*)test_input_fix16, ({0}*)output_buffer);\n\n".format(array_type))
+            f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))
             f.write('\tFILE* fp = fopen("template_input_{0}.tsv", "w");\n\t'.format(params["precision"]))
             if params["precision"] == "fix16":
-                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
+                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
                 f.write("fclose(fp);\n\n")
 
                 f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_buffer[0], '\\t', fp, fractal_width_{1});\n\t".format(params["precision"], layer_params_old["layer_name"]))
             else:
-                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, input_0_array[0], '\\t', fp);\n\t".format(params["precision"]))
+                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp);\n\t".format(params["precision"]))
                 f.write("fclose(fp);\n\n")
 
                 f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
@@ -277,184 +284,3 @@ if __name__ == "__main__":
                 buff_name = str("./{0}_{1}/{0}_{2}.{1}").format(folder, langs, precise)
                 print(buff_name)
                 template_writer(layer_layer_params, buff_name)
-
-                # print(buff_name)
-
-    # for layer_p in layer_layer_params:
-    #     print(layer_p["layer_name"], layer_p["depth"], layer_p["height"], layer_p["width"], end=" ")
-    #     if(layer_p["layer_name"].find("Conv2D") != -1):
-    #         print(layer_p["ksize_h"], layer_p["ksize_w"], layer_p["bias_length"])
-    #     else:
-    #         print()
-
-    #     if(layer_p["layer_name"] == "input_0"):
-    #         max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-    #     if(layer_p["depth"] * layer_p["height"] * layer_p["width"] > max_array_size):
-    #         max_array_size = layer_p["depth"] * layer_p["height"] * layer_p["width"]
-
-    # print(max_array_size)
-    # print(itr_counter)
-
-
-"""
-    with open(output_file_C_template_fix16, "w") as f:
-        f.write("/*\n")
-        f.write(" * author : shtsno24\n")
-        f.write(" * Date : " + todaytime + "\n")
-        f.write(" *\n")
-        f.write(" */\n")
-        f.write("#include <stdint.h>\n")
-        f.write("#include <stdio.h>\n\n")
-
-        f.write('#include "test_data/test_data.h"\n')
-        f.write('#include "layers_c/array_printf_fix16.h"\n')
-        f.write('#include "arrays_c/arrays_fix16.h"\n')
-        f.write('#include "layers_c/layers.h"\n')
-        f.write('#include "weights_c/weights_fix16.h"\n\n')
-
-        for i in layer_layer_params:
-            print(i)
-            if i["layer_name"].find("input") != -1:
-                f.write(str("int network(int16_t input_data[{0}*{1}*{2}], int16_t output_data[{0}*{1}*{2}]){{\n").format(i["depth"], i["height"], i["width"]))
-                f.write(str("\tuint16_t " + i["layer_name"] + "_depth = {}, " + i["layer_name"] + "_height = {}, " + i["layer_name"] + "_width = {};\n").format(i["depth"], i["height"], i["width"]))
-                f.write(str("\tint16_t " + i["layer_name"] + "_array[{}][{}][{}];\n\n").format(i["depth"], i["height"], i["width"]))
-
-                f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(i["layer_name"]))
-                f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(i["layer_name"]))
-                f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(i["layer_name"]))
-                f.write("\t\t\t\t{0}_array[depth][height][width] = input_data[depth * {0}_height * {0}_width + height * {0}_width + width];\n".format(i["layer_name"]))
-                f.write("\t\t\t}\n")
-                f.write("\t\t}\n")
-                f.write("\t}\n")
-
-                f.write('\tFILE* fp = fopen("template_input_fix16.tsv", "w");\n\t')
-                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t")
-                f.write("fclose(fp);\n\n")
-
-            elif i["layer_name"].find("Padding2D") != -1:
-                f.write(str("\tpadding2d_fix16({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("MaxPooling2D") != -1:
-                f.write(str("\tmax_pooling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("UpSampling2D") != -1:
-                f.write(str("\tup_sampling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("DepthwiseConv2D") != -1:
-                pass
-
-            elif i["layer_name"].find("SeparableConv2D") != -1:
-                if i["activation"] == "relu":
-                    relu_flag = 1
-                else:
-                    relu_flag = 0
-                f.write(str("\tseparable_conv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array, (int16_t*) {0}_m_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {0}_b_d, (int16_t*) {0}_b_p,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (int16_t*) {2}_w_d, (int16_t*) {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
-
-            elif i["layer_name"].find("Conv2D") != -1:
-                if i["activation"] == "relu":
-                    relu_flag = 1
-                else:
-                    relu_flag = 0
-                f.write(str("\tconv2d_fix16({0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, (int16_t*) {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("(int16_t*) {}_b,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, (int16_t*) {2}_w, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
-
-            i_old = i.copy()
-
-        f.write('\tfp = fopen("template_output_fix16.tsv", "w");\n\t')
-        f.write(str("array_fprintf_2D_fix16({0}_height, {0}_width, {0}_array[0], '\\t', fp, fractal_width_{0});\n\t").format(i_old["layer_name"]))
-        f.write("fclose(fp);\n\n")
-
-        f.write("\treturn(0);\n")
-        f.write("}\n")
-
-
-    with open("./template_cpp/template_fix16.cpp", "w") as f:
-        f.write("/*\n")
-        f.write(" * author : shtsno24\n")
-        f.write(" * Date : " + todaytime + "\n")
-        f.write(" *\n")
-        f.write(" */\n")
-        f.write("#include <cstdint>\n")
-        f.write("#include <vector>\n\n")
-
-        f.write('#include "./../test_data/test_data.h"\n')
-        f.write('#include "./../layers_cpp/array_printf_fix16.h"\n')
-        f.write('#include "./../arrays_cpp/arrays_fix16.h"\n')
-        f.write('#include "./../layers_cpp/layers.h"\n')
-        f.write('#include "./../weights_cpp/weights_fix16.h"\n\n')
-        f.write('using namespace std;\n\n')
-
-        for i in layer_layer_params:
-            print(i)
-            if i["layer_name"].find("input") != -1:
-                f.write(str("int network(int16_t input_data[{0}*{1}*{2}], int16_t output_data[{0}*{1}*{2}]){{\n").format(i["depth"], i["height"], i["width"]))
-                f.write(str("\tuint16_t " + i["layer_name"] + "_depth = {}, " + i["layer_name"] + "_height = {}, " + i["layer_name"] + "_width = {};\n").format(i["depth"], i["height"], i["width"]))
-                f.write(str("\tvector< vector< vector< int16_t> > > {0}_array({0}_depth, vector< vector < int16_t> >({0}_height, vector< int16_t>({0}_width)));\n\n").format(i["layer_name"]))
-
-                f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(i["layer_name"]))
-                f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(i["layer_name"]))
-                f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(i["layer_name"]))
-                f.write("\t\t\t\t{0}_array[depth][height][width] = input_data[depth * {0}_height * {0}_width + height * {0}_width + width];\n".format(i["layer_name"]))
-                f.write("\t\t\t}\n")
-                f.write("\t\t}\n")
-                f.write("\t}\n")
-
-                f.write('\tofstream fp("template_input_fix16.tsv");\n\t')
-                f.write("array_fprintf_2D_fix16(input_0_height, input_0_width, input_0_array[0], '\\t', fp, fractal_width_input_0);\n\t")
-                f.write("fp.close();\n\n")
-
-            elif i["layer_name"].find("Padding2D") != -1:
-                f.write(str("\tpadding2d_fix16({}, {},\n\t").format(i["padding_h"], i["padding_w"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("MaxPooling2D") != -1:
-                f.write(str("\tmax_pooling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("UpSampling2D") != -1:
-                f.write(str("\tup_sampling2d_fix16({},\n\t").format(i["ksize_h"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array);\n\n").format(i["layer_name"]))
-
-            elif i["layer_name"].find("SeparableConv2D") != -1:
-                if i["activation"] == "relu":
-                    relu_flag = 1
-                else:
-                    relu_flag = 0
-                f.write(str("\tseparable_conv2d_fix16({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("{0}_b_d, {0}_b_p,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, {2}_w_d, {2}_w_p, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
-
-            elif i["layer_name"].find("Conv2D") != -1:
-                if i["activation"] == "relu":
-                    relu_flag = 1
-                else:
-                    relu_flag = 0
-                f.write(str("\tconv2d_fix16({0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i_old["layer_name"]))
-                f.write(str("{0}_depth, {0}_height, {0}_width, {0}_array,\n\t").format(i["layer_name"]))
-                f.write(str("{}_b,\n\t").format(i["layer_name"]))
-                f.write(str("{0}, {1}, {2}_w, {3}, fractal_width_{2});\n\n").format(i["ksize_h"], i["ksize_w"], i["layer_name"], relu_flag))
-
-            i_old = i.copy()
-
-        f.write('\tfp.open("template_output_fix16.tsv");\n\t')
-        f.write(str("array_fprintf_2D_fix16({0}_height, {0}_width, {0}_array[0], '\\t', fp, fractal_width_{0});\n\t").format(i_old["layer_name"]))
-        f.write("fp.close();\n\n")
-
-        f.write("\treturn(0);\n")
-        f.write("}\n")
-"""

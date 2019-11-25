@@ -39,14 +39,8 @@ def array_writer(layer_parameters, file_name):
 
             if file_name.find("fix16") != -1:
                 f.write("\nint16_t MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
-                # f.write("int16_t *MemBank_A, *MemBank_B;\n")
-                # f.write("\nMemBank_A = (int16_t*)MemoryBank_A;\n")
-                # f.write("MemBank_B = (int16_t*)MemoryBank_B;\n")
             elif file_name.find("float32") != -1:
                 f.write("\nfloat MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
-                # f.write("float *MemBank_A, *MemBank_B;\n")
-                # f.write("\nMemBank_A = (float*)MemoryBank_A;\n")
-                # f.write("MemBank_B = (float*)MemoryBank_B;\n")
 
         elif langs == "cpp":
             f.write("/*\n")
