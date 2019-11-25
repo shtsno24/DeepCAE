@@ -215,7 +215,7 @@ def template_writer(layer_parameters, file_name):
             f.write("\t}\n")
             f.write("}\n\n")
 
-            f.write("void main(void){\n")
+            f.write("int main(void){\n")
             f.write("\t{0} output_buffer[{1}][{2}][{3}];\n\n".format(array_type, "1", "28", "28"))
 
             f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))
@@ -247,7 +247,7 @@ def template_writer(layer_parameters, file_name):
             f.write("}\n\n")
 
 
-            f.write("void main(void){\n")
+            f.write("int main(void){\n")
             f.write("\t{0} output_buffer[{1}][{2}][{3}];\n\n".format(array_type, "1", "28", "28"))
 
             f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))

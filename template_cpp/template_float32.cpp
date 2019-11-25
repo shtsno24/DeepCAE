@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 19:58:34.228975
+ * Date : 2019-11-25 22:00:44.427989
  * Language : cpp
  * Precision : float32
  *
@@ -125,7 +125,7 @@ int network(float* input_data, float* output_data){
 	}
 }
 
-void main(void){
+int main(void){
 	float output_buffer[1][28][28];
 
 	network((float*)test_input_float32, (float*)output_buffer);

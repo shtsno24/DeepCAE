@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 19:58:34.220004
+ * Date : 2019-11-25 22:00:44.345720
  * Language : cpp
  * Precision : fix16
  *
@@ -125,7 +125,7 @@ int network(int16_t* input_data, int16_t* output_data){
 	}
 }
 
-void main(void){
+int main(void){
 	int16_t output_buffer[1][28][28];
 
 	network((int16_t*)test_input_fix16, (int16_t*)output_buffer);
