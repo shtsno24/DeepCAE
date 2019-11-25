@@ -9,6 +9,7 @@
         "iosfwd": "cpp",
         "array_printf_fix16.h": "c",
         "pointwise_conv2d.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "arrays_fix16.h": "c"
     }
 }

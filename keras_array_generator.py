@@ -39,8 +39,14 @@ def array_writer(layer_parameters, file_name):
 
             if file_name.find("fix16") != -1:
                 f.write("\nint16_t MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
+                # f.write("int16_t *MemBank_A, *MemBank_B;\n")
+                # f.write("\nMemBank_A = (int16_t*)MemoryBank_A;\n")
+                # f.write("MemBank_B = (int16_t*)MemoryBank_B;\n")
             elif file_name.find("float32") != -1:
                 f.write("\nfloat MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
+                # f.write("float *MemBank_A, *MemBank_B;\n")
+                # f.write("\nMemBank_A = (float*)MemoryBank_A;\n")
+                # f.write("MemBank_B = (float*)MemoryBank_B;\n")
 
         elif langs == "cpp":
             f.write("/*\n")
@@ -64,12 +70,12 @@ def array_writer(layer_parameters, file_name):
                     max_array_size = params["depth"] * params["height"] * params["width"]
 
             if file_name.find("fix16") != -1:
-                f.write("\nvector< int16_t> MemBank_A({0});\n".format(max_array_size))
-                f.write("\nvector< int16_t> MemBank_B({0});\n".format(max_array_size))
+                f.write("\nvector< vector< vector< int16_t> > > MemBank_A({0}, vector< vector< int16_t>>({1}, vector< int16_t>({2})));\n".format(16, 30, 30))
+                f.write("\nvector< vector< vector< int16_t> > > MemBank_B({0}, vector< vector< int16_t>>({1}, vector< int16_t>({2})));\n".format(16, 30, 30))
 
             elif file_name.find("float32") != -1:
-                f.write("\nvector< float> MemBank_A({0});\n".format(max_array_size))
-                f.write("\nvector< float> MemBank_B({0});\n".format(max_array_size))
+                f.write("\nvector< vector< vector< float> > > MemBank_A({0}, vector< vector< float>>({1}, vector< float>({2})));\n".format(16, 30, 30))
+                f.write("\nvector< vector< vector< float> > > MemBank_B({0}, vector< vector< float>>({1}, vector< float>({2})));\n".format(16, 30, 30))
 
 
 if __name__ == "__main__":

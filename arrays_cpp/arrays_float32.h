@@ -1,6 +1,6 @@
 /*
  * Author : shtsno24
- * Date : 2019-11-24 22:49:21.493866
+ * Date : 2019-11-25 15:52:22.416778
  * Language : cpp
  *
  */
@@ -41,6 +41,6 @@ uint16_t Padding2D_4_depth = 16, Padding2D_4_height = 30, Padding2D_4_width = 30
 uint16_t SeparableConv2D_4_depth = 1, SeparableConv2D_4_height = 28, SeparableConv2D_4_width = 28;
 
 
-vector< float> MemBank_A(14400);
+vector< vector< vector< float> > > MemBank_A(16, vector< vector< float>>(30, vector< float>(30)));
 
-vector< float> MemBank_B(14400);
+vector< vector< vector< float> > > MemBank_B(16, vector< vector< float>>(30, vector< float>(30)));
