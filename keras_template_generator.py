@@ -40,11 +40,13 @@ def template_writer(layer_parameters, file_name):
         else:
             f.write("#include <cstdint>\n")
             f.write("#include <vector>\n")
+            f.write("#include <iostream>\n")
+            f.write("#include <fstream>\n")
             f.write("#include <stdio.h>\n\n")
             f.write("using namespace std;\n\n")
 
         f.write('#include "./../test_data/test_data.h"\n')
-        f.write('#include "./../layers_c/array_printf_{1}.h"\n'.format(params["langs"], params["precision"]))
+        f.write('#include "./../layers_{0}/array_printf_{1}.h"\n'.format(params["langs"], params["precision"]))
         f.write('#include "./../arrays_{0}/arrays_{1}.h"\n'.format(params["langs"], params["precision"]))
         f.write('#include "./../layers_{0}/layers.h"\n'.format(params["langs"]))
         f.write('#include "./../weights_{0}/weights_{1}.h"\n\n'.format(params["langs"], params["precision"]))
@@ -246,25 +248,52 @@ def template_writer(layer_parameters, file_name):
             f.write("\t}\n")
             f.write("}\n\n")
 
-
             f.write("int main(void){\n")
-            f.write("\t{0} output_buffer[{1}][{2}][{3}];\n\n".format(array_type, "1", "28", "28"))
+            f.write("\t{0} output_buffer[{1}][{2}][{3}];\n".format(array_type, "1", "28", "28"))
+            f.write("\tvector< vector< vector< int16_t> > > input_img({0}, vector< vector< int16_t> >({1}, vector< int16_t>({2})));\n".format(1, 28, 28))
+            f.write("\tvector< vector< vector< int16_t> > > output_img({0}, vector< vector< int16_t> >({1}, vector< int16_t>({2})));\n\n".format(1, 28, 28))
+
+            # f.write("\tint i = 0;")
+            f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format("input_0"))
+            f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format("input_0"))
+            f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format("input_0"))
+            f.write("\t\t\t\tinput_img[depth][height][width] = test_input_{0}[depth][height][width];\n".format(params["precision"]))
+            # f.write("\t\t\t\t{0}[depth][height][width] = output_buffer[depth][height][width];\n".format("input_img"))
+            # f.write("\t\t\t\ti += 1;\n")
+            f.write("\t\t\t}\n")
+            f.write("\t\t}\n")
+            f.write("\t}\n\n")
 
             f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))
-            f.write('\tFILE* fp = fopen("template_input_{0}.tsv", "w");\n\t'.format(params["precision"]))
-            if params["precision"] == "fix16":
-                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
-                f.write("fclose(fp);\n\n")
 
-                f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
+            # f.write("\tint i = 0;")
+            f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(layer_params_old["layer_name"]))
+            f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(layer_params_old["layer_name"]))
+            f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(layer_params_old["layer_name"]))
+            f.write("\t\t\t\t{0}[depth][height][width] = output_buffer[depth][height][width];\n".format("output_img"))
+            # f.write("\t\t\t\ti += 1;\n")
+            f.write("\t\t\t}\n")
+            f.write("\t\t}\n")
+            f.write("\t}\n")
+
+            # ofstream fp("template_input_fix16_Sep.tsv");
+            # array_fprintf_2D_fix16(28, 28, input_img[0], '\t', fp, fractal_width_input_0);
+            # fp.close();
+
+            f.write('\tofstream fp("template_input_{0}.tsv");\n\t'.format(params["precision"]))
+            if params["precision"] == "fix16":
+                f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, input_img[0], '\\t', fp, fractal_width_input_0);\n\t".format(params["precision"]))
+                f.write("fp.close();\n\n")
+
+                f.write('\tfp.open("template_output_{0}.tsv");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_buffer[0], '\\t', fp, fractal_width_{1});\n\t".format(params["precision"], layer_params_old["layer_name"]))
             else:
                 f.write("array_fprintf_2D_{0}(input_0_height, input_0_width, test_input_{0}[0], '\\t', fp);\n\t".format(params["precision"]))
-                f.write("fclose(fp);\n\n")
+                f.write("fp.close();\n\n")
 
-                f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
+                f.write('\tfp.open("template_output_{0}.tsv");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_buffer[0], '\\t', fp);\n\t".format(params["precision"], layer_params_old["layer_name"]))
-            f.write("fclose(fp);\n\n")
+            f.write("fp.close();\n\n")
             f.write("}\n")
 
 

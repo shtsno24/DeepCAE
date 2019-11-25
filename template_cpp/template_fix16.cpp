@@ -1,18 +1,20 @@
 /*
  * author : shtsno24
- * Date : 2019-11-25 22:00:44.345720
+ * Date : 2019-11-25 22:47:53.929748
  * Language : cpp
  * Precision : fix16
  *
  */
 #include <cstdint>
 #include <vector>
+#include <iostream>
+#include <fstream>
 #include <stdio.h>
 
 using namespace std;
 
 #include "./../test_data/test_data.h"
-#include "./../layers_c/array_printf_fix16.h"
+#include "./../layers_cpp/array_printf_fix16.h"
 #include "./../arrays_cpp/arrays_fix16.h"
 #include "./../layers_cpp/layers.h"
 #include "./../weights_cpp/weights_fix16.h"
@@ -127,15 +129,32 @@ int network(int16_t* input_data, int16_t* output_data){
 
 int main(void){
 	int16_t output_buffer[1][28][28];
+	vector< vector< vector< int16_t> > > input_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
+	vector< vector< vector< int16_t> > > output_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
+
+	for(int depth = 0; depth < input_0_depth; depth++){
+		for(int height = 0; height < input_0_height; height++){
+			for(int width = 0; width < input_0_width; width++){
+				input_img[depth][height][width] = test_input_fix16[depth][height][width];
+			}
+		}
+	}
 
 	network((int16_t*)test_input_fix16, (int16_t*)output_buffer);
 
-	FILE* fp = fopen("template_input_fix16.tsv", "w");
-	array_fprintf_2D_fix16(input_0_height, input_0_width, test_input_fix16[0], '\t', fp, fractal_width_input_0);
-	fclose(fp);
+	for(int depth = 0; depth < SeparableConv2D_4_depth; depth++){
+		for(int height = 0; height < SeparableConv2D_4_height; height++){
+			for(int width = 0; width < SeparableConv2D_4_width; width++){
+				output_img[depth][height][width] = output_buffer[depth][height][width];
+			}
+		}
+	}
+	ofstream fp("template_input_fix16.tsv");
+	array_fprintf_2D_fix16(input_0_height, input_0_width, input_img[0], '\t', fp, fractal_width_input_0);
+	fp.close();
 
-	fp = fopen("template_output_fix16.tsv", "w");
+	fp.open("template_output_fix16.tsv");
 	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp, fractal_width_SeparableConv2D_4);
-	fclose(fp);
+	fp.close();
 
 }
