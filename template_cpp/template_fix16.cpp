@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-26 00:14:58.005096
+ * Date : 2019-11-26 09:31:49.632560
  * Language : cpp
  * Precision : fix16
  *
@@ -125,6 +125,9 @@ int network(int16_t* input_data, int16_t* output_data){
 			}
 		}
 	}
+
+	return(0);
+
 }
 
 int main(void){
@@ -156,5 +159,6 @@ int main(void){
 	fp.open("template_output_fix16.tsv");
 	array_fprintf_2D_fix16(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp, fractal_width_SeparableConv2D_4);
 	fp.close();
+	return(0);
 
 }

@@ -214,7 +214,8 @@ def template_writer(layer_parameters, file_name):
         if params["langs"] == "c":
             f.write("\tfor(int i = 0; i < {0}_depth * {0}_height * {0}_width; i++){{\n".format(layer_params_old["layer_name"]))
             f.write("\t\toutput_data[i] = {0}[i];\n".format(Memory_Bank_old))
-            f.write("\t}\n")
+            f.write("\t}\n\n")
+            f.write("\treturn(0);\n\n")
             f.write("}\n\n")
 
             f.write("int main(void){\n")
@@ -234,7 +235,8 @@ def template_writer(layer_parameters, file_name):
 
                 f.write('\tfp = fopen("template_output_{0}.tsv", "w");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_buffer[0], '\\t', fp);\n\t".format(params["precision"], layer_params_old["layer_name"]))
-            f.write("fclose(fp);\n\n")
+            f.write("fclose(fp);\n\t")
+            f.write("return(0);\n\n")
             f.write("}\n")
         else:
             f.write("\ti = 0;\n")
@@ -245,7 +247,8 @@ def template_writer(layer_parameters, file_name):
             f.write("\t\t\t\ti += 1;\n")
             f.write("\t\t\t}\n")
             f.write("\t\t}\n")
-            f.write("\t}\n")
+            f.write("\t}\n\n")
+            f.write("\treturn(0);\n\n")
             f.write("}\n\n")
 
             f.write("int main(void){\n")
@@ -293,7 +296,8 @@ def template_writer(layer_parameters, file_name):
 
                 f.write('\tfp.open("template_output_{0}.tsv");\n\t'.format(params["precision"]))
                 f.write("array_fprintf_2D_{0}({1}_height, {1}_width, output_img[0], '\\t', fp);\n\t".format(params["precision"], layer_params_old["layer_name"]))
-            f.write("fp.close();\n\n")
+            f.write("fp.close();\n\t")
+            f.write("return(0);\n\n")
             f.write("}\n")
 
 

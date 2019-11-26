@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-26 00:14:58.304074
+ * Date : 2019-11-26 09:31:49.730441
  * Language : cpp
  * Precision : float32
  *
@@ -125,6 +125,9 @@ int network(float* input_data, float* output_data){
 			}
 		}
 	}
+
+	return(0);
+
 }
 
 int main(void){
@@ -156,5 +159,6 @@ int main(void){
 	fp.open("template_output_float32.tsv");
 	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp);
 	fp.close();
+	return(0);
 
 }

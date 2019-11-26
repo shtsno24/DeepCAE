@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-26 00:14:57.824308
+ * Date : 2019-11-26 09:31:49.625580
  * Language : c
  * Precision : float32
  *
@@ -107,6 +107,9 @@ int network(float* input_data, float* output_data){
 	for(int i = 0; i < SeparableConv2D_4_depth * SeparableConv2D_4_height * SeparableConv2D_4_width; i++){
 		output_data[i] = MemBank_B[i];
 	}
+
+	return(0);
+
 }
 
 int main(void){
@@ -121,5 +124,6 @@ int main(void){
 	fp = fopen("template_output_float32.tsv", "w");
 	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp);
 	fclose(fp);
+	return(0);
 
 }
