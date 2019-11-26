@@ -57,7 +57,6 @@ uint8_t relu){
                         input[in_d * input_height * input_width + out_h * input_width + out_w] * 
                             kernel[out_d * input_depth + in_d];
                 }
-
                 output[out_d * output_height * output_width + out_h * output_width + out_w] += bias[out_d];
 
                 if(relu == 1){
