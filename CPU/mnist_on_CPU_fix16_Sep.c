@@ -117,7 +117,7 @@ int network(int16_t* input_data, int16_t* output_data){
 }
 
 int main(void){
-	double start, end, sum_time = 0, time_array[1000];
+	double start, end, sum_time = 0;
 	int32_t times = 10000;
 	FILE* fp;
 
@@ -137,7 +137,7 @@ int main(void){
 	printf("end_time_fix16_c : %lf [s]\r\n", sum_time / (double)times);
 	fclose(fp);
 
-	fp = fopen("template_input_fix16.tsv", "w");
+	fp = fopen("template_input_fix16_Sep.tsv", "w");
 	array_fprintf_2D_fix16(input_0_height, input_0_width, test_input_fix16[0], '\t', fp, fractal_width_input_0);
 	fclose(fp);
 

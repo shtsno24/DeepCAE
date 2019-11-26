@@ -41,8 +41,7 @@ def template_writer(layer_parameters, file_name):
             f.write("#include <cstdint>\n")
             f.write("#include <vector>\n")
             f.write("#include <iostream>\n")
-            f.write("#include <fstream>\n")
-            f.write("#include <stdio.h>\n\n")
+            f.write("#include <fstream>\n\n")
             f.write("using namespace std;\n\n")
 
         f.write('#include "./../test_data/test_data.h"\n')

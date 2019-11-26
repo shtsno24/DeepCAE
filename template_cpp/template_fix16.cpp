@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-26 09:31:49.632560
+ * Date : 2019-11-26 10:04:07.997122
  * Language : cpp
  * Precision : fix16
  *
@@ -9,7 +9,6 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
 
 using namespace std;
 
