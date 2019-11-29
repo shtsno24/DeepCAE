@@ -93,9 +93,10 @@ def write_weight_SeparableConv2D_c(weight_depthwise, weight_pointwise, bias, fil
         f.write("{%d, %d, %d, %d};\n" % (weight_pointwise.shape[0], weight_pointwise.shape[1], weight_pointwise.shape[2], weight_pointwise.shape[3]))
 
         f.write("const " + type_name + " " + weight_array_name + "_p")
-        f.write(str("[{}][{}][{}][{}] =\n").format(weight_pointwise.shape[0], weight_pointwise.shape[1], weight_pointwise.shape[2], weight_pointwise.shape[3]))
+        # f.write(str("[{}][{}][{}][{}] =\n").format(weight_pointwise.shape[0], weight_pointwise.shape[1], weight_pointwise.shape[2], weight_pointwise.shape[3]))
+        f.write(str("[{}] =\n").format(weight_pointwise.shape[0] * weight_pointwise.shape[1] * weight_pointwise.shape[2] * weight_pointwise.shape[3]))
 
-        write_array_ND(weight_pointwise, f)
+        write_array_ND(weight_pointwise.reshape(-1), f)
         f.write(";")
         f.write("\n\n")
 
