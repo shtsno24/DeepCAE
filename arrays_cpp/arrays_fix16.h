@@ -1,6 +1,6 @@
 /*
  * Author : shtsno24
- * Date : 2019-11-25 15:52:22.413788
+ * Date : 2019-12-06 11:29:13.052434
  * Language : cpp
  *
  */
@@ -44,3 +44,5 @@ uint16_t SeparableConv2D_4_depth = 1, SeparableConv2D_4_height = 28, SeparableCo
 vector< vector< vector< int16_t> > > MemBank_A(16, vector< vector< int16_t>>(30, vector< int16_t>(30)));
 
 vector< vector< vector< int16_t> > > MemBank_B(16, vector< vector< int16_t>>(30, vector< int16_t>(30)));
+
+ const uint16_t max_array_size = 14400;

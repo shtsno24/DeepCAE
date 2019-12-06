@@ -11,7 +11,8 @@ precision = ["fix16", "float32"]
 
 def template_writer(layer_parameters, file_name):
 
-    params = {"langs": "c", "precision": "fix16"}
+    params = {"langs": "cpp", "precision": "fix16"}
+    itr_counter = {"MaxPooling2D": 0, "UpSampling2D": 0, "Conv2D": 0, "Padding2D": 0, "SeparableConv2D": 0, "DepthwiseConv2D": 0, "PointwiseConv2D": 0, "input_0": 1}
 
     if file_name.find("cpp") != -1:
         params["langs"] = "cpp"
@@ -64,6 +65,7 @@ def template_writer(layer_parameters, file_name):
 
             if layer_params["layer_name"].find("input") != -1:
                 f.write(str("int network({0}* input_data, {0}* output_data){{\n").format(array_type))
+
                 if params["langs"] == "c":
                     f.write("\n\t{} MemBank_A[max_array_size], MemBank_B[max_array_size];\n".format(array_type))
                     f.write("\tfor(int i = 0; i < {0}_depth * {0}_height * {0}_width; i++){{\n".format(layer_params["layer_name"]))
@@ -82,7 +84,7 @@ def template_writer(layer_parameters, file_name):
 
             elif layer_params["layer_name"].find("Padding2D") != -1:
                 if params["langs"] == "c":
-                    f.write(str("\tpadding2d_{0}({1}, {2},\n\t").format(params["precision"], layer_params["padding_h"], layer_params["padding_w"]))
+                    f.write(str("\tpadding2d_{0}_{1}({2}, {3},\n\t").format(params["precision"], itr_counter["Padding2D"], layer_params["padding_h"], layer_params["padding_w"]))
                     f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2},\n\t").format(layer_params_old["layer_name"], array_type, Memory_Bank_old))
                     f.write(str("{0}_height, {0}_width, ({1}*){2});\n\n").format(layer_params["layer_name"], array_type, Memory_Bank))
                 else:
@@ -90,9 +92,11 @@ def template_writer(layer_parameters, file_name):
                     f.write(str("{0}_depth, {0}_height, {0}_width, {1},\n\t").format(layer_params_old["layer_name"], Memory_Bank_old))
                     f.write(str("{0}_height, {0}_width, {1});\n\n").format(layer_params["layer_name"], Memory_Bank))
 
+                itr_counter["Padding2D"] += 1
+
             elif layer_params["layer_name"].find("MaxPooling2D") != -1:
                 if params["langs"] == "c":
-                    f.write(str("\tmax_pooling2d_{0}({1},\n\t").format(params["precision"], layer_params["ksize_h"]))
+                    f.write(str("\tmax_pooling2d_{0}_{1}({2},\n\t").format(params["precision"], itr_counter["MaxPooling2D"], layer_params["ksize_h"]))
                     f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2},\n\t").format(layer_params_old["layer_name"], array_type, Memory_Bank_old))
                     f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2});\n\n").format(layer_params["layer_name"], array_type, Memory_Bank))
                 else:
@@ -100,9 +104,11 @@ def template_writer(layer_parameters, file_name):
                     f.write(str("{0}_depth, {0}_height, {0}_width, {1},\n\t").format(layer_params_old["layer_name"], Memory_Bank_old))
                     f.write(str("{0}_depth, {0}_height, {0}_width, {1});\n\n").format(layer_params["layer_name"], Memory_Bank))
 
+                itr_counter["MaxPooling2D"] += 1
+
             elif layer_params["layer_name"].find("UpSampling2D") != -1:
                 if params["langs"] == "c":
-                    f.write(str("\tup_sampling2d_{0}({1},\n\t").format(params["precision"], layer_params["ksize_h"]))
+                    f.write(str("\tup_sampling2d_{0}_{1}({2},\n\t").format(params["precision"], itr_counter["UpSampling2D"], layer_params["ksize_h"]))
                     f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2},\n\t").format(layer_params_old["layer_name"], array_type, Memory_Bank_old))
                     f.write(str("{0}_depth, {0}_height, {0}_width, ({1}*){2});\n\n").format(layer_params["layer_name"], array_type, Memory_Bank))
                 else:
@@ -209,6 +215,7 @@ def template_writer(layer_parameters, file_name):
             else:
                 Memory_Bank = "MemBank_A"
 
+        # if params["langs"] == "c" and params["precision"] == "fix16":
         if params["langs"] == "c":
             f.write("\tfor(int i = 0; i < {0}_depth * {0}_height * {0}_width; i++){{\n".format(layer_params_old["layer_name"]))
             f.write("\t\toutput_data[i] = {0}[i];\n".format(Memory_Bank_old))
@@ -254,23 +261,32 @@ def template_writer(layer_parameters, file_name):
             f.write("\tvector< vector< vector< {0}> > > input_img({1}, vector< vector< {0}> >({2}, vector< {0}>({3})));\n".format(array_type, 1, 28, 28))
             f.write("\tvector< vector< vector< {0}> > > output_img({1}, vector< vector< {0}> >({2}, vector< {0}>({3})));\n\n".format(array_type, 1, 28, 28))
 
+            # f.write("\tint i = 0;")
             f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format("input_0"))
             f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format("input_0"))
             f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format("input_0"))
             f.write("\t\t\t\tinput_img[depth][height][width] = test_input_{0}[depth][height][width];\n".format(params["precision"]))
+            # f.write("\t\t\t\t{0}[depth][height][width] = output_buffer[depth][height][width];\n".format("input_img"))
+            # f.write("\t\t\t\ti += 1;\n")
             f.write("\t\t\t}\n")
             f.write("\t\t}\n")
             f.write("\t}\n\n")
 
             f.write("\tnetwork(({0}*)test_input_{1}, ({0}*)output_buffer);\n\n".format(array_type, params["precision"]))
 
+            # f.write("\tint i = 0;")
             f.write("\tfor(int depth = 0; depth < {0}_depth; depth++){{\n".format(layer_params_old["layer_name"]))
             f.write("\t\tfor(int height = 0; height < {0}_height; height++){{\n".format(layer_params_old["layer_name"]))
             f.write("\t\t\tfor(int width = 0; width < {0}_width; width++){{\n".format(layer_params_old["layer_name"]))
             f.write("\t\t\t\t{0}[depth][height][width] = output_buffer[depth][height][width];\n".format("output_img"))
+            # f.write("\t\t\t\ti += 1;\n")
             f.write("\t\t\t}\n")
             f.write("\t\t}\n")
             f.write("\t}\n")
+
+            # ofstream fp("template_input_fix16_Sep.tsv");
+            # array_fprintf_2D_fix16(28, 28, input_img[0], '\t', fp, fractal_width_input_0);
+            # fp.close();
 
             f.write('\tofstream fp("template_input_{0}.tsv");\n\t'.format(params["precision"]))
             if params["precision"] == "fix16":

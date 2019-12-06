@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2019-11-26 10:04:07.898723
+ * Date : 2019-12-06 11:31:37.122988
  * Language : c
  * Precision : fix16
  *
@@ -15,6 +15,8 @@
 #include "./../weights_c/weights_fix16.h"
 
 int network(int16_t* input_data, int16_t* output_data){
+
+	int16_t MemBank_A[max_array_size], MemBank_B[max_array_size];
 	for(int i = 0; i < input_0_depth * input_0_height * input_0_width; i++){
 		MemBank_A[i] = input_data[i];
 	}

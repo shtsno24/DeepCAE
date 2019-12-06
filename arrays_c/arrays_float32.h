@@ -1,6 +1,6 @@
 /*
  * Author : shtsno24
- * Date : 2019-11-25 15:52:22.412788
+ * Date : 2019-12-06 11:29:13.050290
  * Language : c
  *
  */
@@ -38,4 +38,4 @@ uint16_t Padding2D_4_depth = 16, Padding2D_4_height = 30, Padding2D_4_width = 30
 uint16_t SeparableConv2D_4_depth = 1, SeparableConv2D_4_height = 28, SeparableConv2D_4_width = 28;
 
 
-float MemBank_A[14400], MemBank_B[14400];
+ const uint16_t max_array_size = 14400;

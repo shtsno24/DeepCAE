@@ -37,10 +37,12 @@ def array_writer(layer_parameters, file_name):
                 if params["depth"] * params["height"] * params["width"] > max_array_size:
                     max_array_size = params["depth"] * params["height"] * params["width"]
 
-            if file_name.find("fix16") != -1:
-                f.write("\nint16_t MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
-            elif file_name.find("float32") != -1:
-                f.write("\nfloat MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
+            # if file_name.find("fix16") != -1:
+            #     f.write("\nint16_t MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
+            # elif file_name.find("float32") != -1:
+            #     f.write("\nfloat MemBank_A[{0}], MemBank_B[{0}];\n".format(max_array_size))
+
+            f.write("\n const uint16_t max_array_size = {};\n".format(max_array_size))
 
         elif langs == "cpp":
             f.write("/*\n")
@@ -71,6 +73,7 @@ def array_writer(layer_parameters, file_name):
                 f.write("\nvector< vector< vector< float> > > MemBank_A({0}, vector< vector< float>>({1}, vector< float>({2})));\n".format(16, 30, 30))
                 f.write("\nvector< vector< vector< float> > > MemBank_B({0}, vector< vector< float>>({1}, vector< float>({2})));\n".format(16, 30, 30))
 
+            f.write("\n const uint16_t max_array_size = {};\n".format(max_array_size))
 
 if __name__ == "__main__":
 
