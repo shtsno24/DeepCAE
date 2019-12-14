@@ -1,20 +1,18 @@
 /*
  * author : shtsno24
- * Date : 2019-10-16 15:53:43.025819
+ * Date : 2019-11-26 09:31:49.625580
+ * Language : c
+ * Precision : float32
  *
  */
-
 #include <stdint.h>
 #include <stdio.h>
 
-#include "./../layers_c/layers.h"
 #include "./../test_data/test_data.h"
+#include "./../layers_c/array_printf_float32.h"
 #include "./../arrays_c/arrays_float32.h"
+#include "./../layers_c/layers.h"
 #include "./../weights_c/weights_float32.h"
-
-#include "./../layers_cpp/array_printf_float32.h"
-
-using namespace std;
 
 int network(float* input_data, float* output_data){
 
@@ -116,35 +114,18 @@ int network(float* input_data, float* output_data){
 
 }
 
-
 int main(void){
 	float output_buffer[1][28][28];
-	vector< vector< vector< float> > > input_img(1, vector< vector< float> >(28, vector< float>(28)));
-	vector< vector< vector< float> > > output_img(1, vector< vector< float> >(28, vector< float>(28)));
-
-	for(int depth = 0; depth < input_0_depth; depth++){
-		for(int height = 0; height < input_0_height; height++){
-			for(int width = 0; width < input_0_width; width++){
-				input_img[depth][height][width] = test_input_float32[depth][height][width];
-			}
-		}
-	}
 
 	network((float*)test_input_float32, (float*)output_buffer);
 
-	for(int depth = 0; depth < SeparableConv2D_4_depth; depth++){
-		for(int height = 0; height < SeparableConv2D_4_height; height++){
-			for(int width = 0; width < SeparableConv2D_4_width; width++){
-				output_img[depth][height][width] = output_buffer[depth][height][width];
-			}
-		}
-	}
-	ofstream fp("template_input_float32.tsv");
-	array_fprintf_2D_float32(input_0_height, input_0_width, input_img[0], '\t', fp);
-	fp.close();
+	FILE* fp = fopen("template_input_float32.tsv", "w");
+	array_fprintf_2D_float32(input_0_height, input_0_width, test_input_float32[0], '\t', fp);
+	fclose(fp);
 
-	fp.open("template_output_float32.tsv");
-	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp);
-	fp.close();
+	fp = fopen("template_output_float32.tsv", "w");
+	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp);
+	fclose(fp);
 	return(0);
+
 }
