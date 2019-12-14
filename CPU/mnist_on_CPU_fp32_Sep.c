@@ -15,6 +15,8 @@
 #include "./../weights_c/weights_float32.h"
 
 int network(float* input_data, float* output_data){
+
+	float MemBank_A[max_array_size], MemBank_B[max_array_size];
 	for(int i = 0; i < input_0_depth * input_0_height * input_0_width; i++){
 		MemBank_A[i] = input_data[i];
 	}
