@@ -4,11 +4,12 @@ from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, SeparableConv2D
+from keras.initializers import he_normal
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img
 import numpy as np
 
-batch_size = 64
+batch_size = 128
 # num_classes = 10
 epochs = 1024
 
@@ -58,32 +59,36 @@ model = Sequential()
 model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
-                 padding='same'))
+                 padding='same',
+                 kernel_initializer='he_normal'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Conv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
-                 padding='same'))
+                 padding='same',
+                 kernel_initializer='he_normal'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-#remove this layer if this code won't work
 model.add(Conv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
-                 padding='same'))
+                 padding='same',
+                 kernel_initializer='he_normal'))
 
 model.add(UpSampling2D(size=(2, 2)))
 model.add(Conv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
-                 padding='same'))
+                 padding='same',
+                 kernel_initializer='he_normal'))
 
 model.add(UpSampling2D(size=(2, 2)))
 model.add(Conv2D(1, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
-                 padding='same'))
+                 padding='same',
+                 kernel_initializer='he_normal'))
 
 # model.compile(loss=keras.losses.categological_crossentropy,
 #               optimizer=keras.optimizers.Adadelta(),
