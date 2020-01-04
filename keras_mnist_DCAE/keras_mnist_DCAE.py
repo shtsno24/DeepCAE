@@ -92,7 +92,7 @@ model.add(Conv2D(1, kernel_size=(3, 3),
 #               optimizer=keras.optimizers.Adadelta(),
 #               metrics=['accuracy'])
 model.compile(loss=keras.losses.mean_squared_error,
-              optimizer=keras.optimizers.Adadelta(),
+              optimizer=keras.optimizers.Adam(),
               metrics=['accuracy'])
 
 model.fit(x_train, x_train,
