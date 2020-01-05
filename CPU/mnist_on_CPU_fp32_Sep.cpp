@@ -143,7 +143,7 @@ int main(void){
 	array_fprintf_2D_float32(input_0_height, input_0_width, input_img[0], '\t', fp);
 	fp.close();
 
-	fp.open("template_output_float32.tsv");
+	fp.open("template_output_float32_cpp_Sep.tsv");
 	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_img[0], '\t', fp);
 	fp.close();
 	return(0);

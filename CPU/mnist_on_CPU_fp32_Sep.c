@@ -123,7 +123,7 @@ int main(void){
 	array_fprintf_2D_float32(input_0_height, input_0_width, test_input_float32[0], '\t', fp);
 	fclose(fp);
 
-	fp = fopen("template_output_float32.tsv", "w");
+	fp = fopen("template_output_float32_c_Sep.tsv", "w");
 	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp);
 	fclose(fp);
 	return(0);
