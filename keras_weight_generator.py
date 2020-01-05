@@ -17,7 +17,9 @@ def write_array_1D(array, f):
         if(str(array.dtype).find("float") == -1):
             f.write(str("{:5d}").format(int(array[length])))
         else:
-            f.write(str("{0:.20f}").format(array[length]))
+            array = array.astype(np.float32)
+            # f.write(str("{0:.20f}").format(array[length]))
+            f.write(str("{:e}").format(array[length]))
         if length < array.shape[0] - 1:
             f.write(", ")
     f.write("}")
@@ -336,9 +338,9 @@ if __name__ == "__main__":
                 param_w_p = model_weights_itr[itr_counter + 1]
                 param_b = model_weights_itr[itr_counter + 2]
                 itr_counter += 3
-                print("weight_depthwise", param_w_d.shape, len(param_w_d.shape))
-                print("weight_pointwise", param_w_p.shape, len(param_w_p.shape))
-                print("bias", param_b.shape, len(param_b.shape))
+                print("weight_depthwise", param_w_d.shape, len(param_w_d.shape), param_w_d.dtype)
+                print("weight_pointwise", param_w_p.shape, len(param_w_p.shape), param_w_p.dtype)
+                print("bias", param_b.shape, len(param_b.shape), param_b.dtype)
 
                 write_weight_SeparableConv2D_c(param_w_d,
                                                param_w_p,
@@ -383,8 +385,8 @@ if __name__ == "__main__":
                 param_w = model_weights_itr[itr_counter]
                 param_b = model_weights_itr[itr_counter + 1]
                 itr_counter += 2
-                print("weight", param_w.shape, len(param_w.shape))
-                print("bias", param_b.shape, len(param_b.shape))
+                print("weight", param_w.shape, len(param_w.shape), param_w.dtype)
+                print("bias", param_b.shape, len(param_b.shape), param_b.dtype)
 
                 write_weight_Conv2D_c(param_w,
                                       param_b,

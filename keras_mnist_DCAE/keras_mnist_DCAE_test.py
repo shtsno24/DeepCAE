@@ -45,7 +45,7 @@ model.summary()
 # input_img = np.zeros(x_test[0:1].shape)
 input_img = x_test[0:1]
 
-times = 1000
+times = 10000
 time_array = np.zeros((times,))
 
 for i in range(times):

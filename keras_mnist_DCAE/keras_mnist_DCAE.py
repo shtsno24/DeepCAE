@@ -4,14 +4,17 @@ from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D, SeparableConv2D
-from keras.initializers import he_normal
+from tensorflow.compat.v1.keras.initializers import he_normal
+# from tensorflow.keras.initializers import he_normal
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing.image import save_img
+import matplotlib.pyplot as plt
 import numpy as np
+
 
 batch_size = 128
 # num_classes = 10
-epochs = 1024
+epochs = 1000
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -56,35 +59,35 @@ model = Sequential()
 # model.add(Dense(64, activation='relu'))
 # model.add(Dropout(0.5))
 # model.add(Dense(num_classes, activation='softmax'))
-model.add(Conv2D(16, kernel_size=(3, 3),
+model.add(SeparableConv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same',
                  kernel_initializer='he_normal'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(8, kernel_size=(3, 3),
+model.add(SeparableConv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same',
                  kernel_initializer='he_normal'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(8, kernel_size=(3, 3),
+model.add(SeparableConv2D(8, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same',
                  kernel_initializer='he_normal'))
 
 model.add(UpSampling2D(size=(2, 2)))
-model.add(Conv2D(16, kernel_size=(3, 3),
+model.add(SeparableConv2D(16, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same',
                  kernel_initializer='he_normal'))
 
 model.add(UpSampling2D(size=(2, 2)))
-model.add(Conv2D(1, kernel_size=(3, 3),
+model.add(SeparableConv2D(1, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape,
                  padding='same',
@@ -100,7 +103,7 @@ model.compile(loss=keras.losses.mean_squared_error,
               optimizer=keras.optimizers.Adam(),
               metrics=['accuracy'])
 
-model.fit(x_train, x_train,
+fit = model.fit(x_train, x_train,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
@@ -122,15 +125,15 @@ def representative_dataset_gen():
         yield [x_train[i: i + 1]]
 
 
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
+# converter = tf.lite.TFLiteConverter.from_keras_model(model)
 # converter.optimizations = [tf.lite.Optimize.DEFAULT]
-converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
-converter.representative_dataset = representative_dataset_gen
-converter.target_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+# converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+# converter.representative_dataset = representative_dataset_gen
+# converter.target_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
 
-tflite_model = converter.convert()
-with open("tflite_mnist_DCAE.tflite", "wb") as f:
-    f.write(tflite_model)
+# tflite_model = converter.convert()
+# with open("tflite_mnist_DCAE.tflite", "wb") as f:
+#     f.write(tflite_model)
 
 # x_test = x_test.astype('uint8')
 input_img = np.array([[x for x in range(28)] for y in range(28)], dtype=np.float32).reshape(x_test[0:1].shape)
@@ -145,3 +148,30 @@ predict_img = predict_img[0]
 # print(array_to_img(input_img).shape, array_to_img(predict_img).shape)
 # save_img("input.png", input_img)
 # save_img("predict.png", predict_img)
+
+fig, (axL, axR) = plt.subplots(ncols=2, figsize=(10,4))
+
+# loss
+def plot_history_loss(fit):
+    # Plot the loss in the history
+    axL.plot(fit.history['loss'],label="training")
+    axL.plot(fit.history['val_loss'],label="validation")
+    axL.set_title('model loss')
+    axL.set_xlabel('epoch')
+    axL.set_ylabel('loss')
+    axL.legend(loc='upper right')
+
+# acc
+def plot_history_acc(fit):
+    # Plot the loss in the history
+    axR.plot(fit.history['acc'],label="training")
+    axR.plot(fit.history['val_acc'],label="validation")
+    axR.set_title('model accuracy')
+    axR.set_xlabel('epoch')
+    axR.set_ylabel('accuracy')
+    axR.legend(loc='upper right')
+
+plot_history_loss(fit)
+plot_history_acc(fit)
+fig.savefig('./history.png')
+plt.close()
