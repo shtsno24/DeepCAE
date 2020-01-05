@@ -6,7 +6,7 @@ void array_printf_1D_float32(uint16_t input_length,
 float input[input_length]){
     printf("[");
     for(uint16_t length = 0; length < input_length; length++){
-        printf("% 6.5f", input[length]);
+        printf("%10e", input[length]);
         if(length < input_length - 1){
             printf(" ");    
         }
@@ -53,7 +53,7 @@ float input[output_depth][input_depth][input_height][input_width]){
 void array_fprintf_1D_float32(uint16_t input_length, 
 float input[input_length], char delimiter, FILE* fp){
     for(uint16_t length = 0; length < input_length; length++){
-        fprintf(fp, "%25.20f", input[length]);
+        fprintf(fp, "%10e", input[length]);
         if(length < input_length - 1){
             fprintf(fp, "%c", delimiter);    
         }

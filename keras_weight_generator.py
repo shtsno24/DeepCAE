@@ -8,7 +8,7 @@ from keras_mnist_DCAE import float2fixed
 import os
 
 
-fractal = 16 - 2
+fractal = 16 - 3
 
 
 def write_array_1D(array, f):

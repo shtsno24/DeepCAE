@@ -7,7 +7,7 @@ void array_printf_1D_fix16(uint16_t input_length,
 int16_t input[input_length], uint16_t fractal){
     printf("[");
     for(uint16_t length = 0; length < input_length; length++){
-        printf("% 3.2f", fixed2float(input[length], fractal));
+        printf("%10e", fixed2float(input[length], fractal));
         if(length < input_length - 1){
             printf(" ");    
         }
@@ -54,7 +54,7 @@ int16_t input[output_depth][input_depth][input_height][input_width], uint16_t fr
 void array_fprintf_1D_fix16(uint16_t input_length, 
 int16_t input[input_length], char delimiter, FILE* fp, uint16_t fractal){
     for(uint16_t length = 0; length < input_length; length++){
-        fprintf(fp, "%25.20f", fixed2float(input[length], fractal));
+        fprintf(fp, "%10e", fixed2float(input[length], fractal));
         if(length < input_length - 1){
             fprintf(fp, "%c", delimiter);    
         }
