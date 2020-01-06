@@ -45,15 +45,25 @@ model.summary()
 # input_img = np.zeros(x_test[0:1].shape)
 input_img = x_test[0:1]
 
-times = 10000
+status_flag = 0
+times = 5000
 time_array = np.zeros((times,))
-
+print("running...")
 for i in range(times):
     start_time = time.perf_counter()
     predict_img = model.predict(input_img)
     end_time = time.perf_counter() - start_time
     time_array[i] = end_time
+    if int((i + 1.0) / times * 100.0) % 2 == 0:
+        if status_flag == 0:
+            print("*", end="")
+            status_flag = 1
+    else:
+        status_flag = 0
 
+print("\n\ndone")
+
+print("saving speed record data...")
 np.savetxt("keras_mnist_DCAE_time_output.tsv", time_array, delimiter='\t', fmt="%25.4f")
 
 print("end_time : ", np.sum(time_array) / times)
