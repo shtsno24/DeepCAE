@@ -44,20 +44,22 @@ def fixed2floar_norm_array(max_val, min_val, array_type, fractal_width, iarray):
 
 
 def float2fixed(fractal_width, fval):
-    return int(fval * ((2 ** fractal_width) - 1))
-
+    # return int(fval * ((2 ** fractal_width) - 1))
+    return int(fval * ((2 ** fractal_width)))
 
 def fixed2float(fractal_width, ival):
-    return float(ival) / ((2.0 ** fractal_width) - 1)
-
+    # return float(ival) / ((2.0 ** fractal_width) - 1)
+    return float(ival) / ((2.0 ** fractal_width))
 
 def float2fixed_array(array_type, fractal_width, farray):
-    iarray = (farray * ((2 ** fractal_width) - 1)).astype(array_type)
+    # iarray = (farray * ((2 ** fractal_width) - 1)).astype(array_type)
+    iarray = (farray * ((2 ** fractal_width))).astype(array_type)
     return iarray
 
 
 def fixed2float_array(array_type, fractal_width, iarray):
-    farray = (iarray.astype(array_type) / (2.0 ** fractal_width - 1))
+    # farray = (iarray.astype(array_type) / (2.0 ** fractal_width - 1))
+    farray = (iarray.astype(array_type) / (2.0 ** fractal_width))
     return farray
 
 
@@ -68,11 +70,11 @@ if __name__ == "__main__":
     float_array[1:2, :] *= -1
     print(float_array)
 
-    int_array = float2fixed_array(np.int16, 8, float_array)
+    int_array = float2fixed_array(np.int16, 16-3, float_array)
     print(int_array.dtype, int_array.shape)
     print(np.vectorize(np.binary_repr)(int_array, width=8))
 
     del(float_array)
-    float_array = fixed2float_array(np.float32, 8, int_array)
+    float_array = fixed2float_array(np.float32, 16-3, int_array)
     print(float_array.dtype, float_array.shape)
     print(float_array)

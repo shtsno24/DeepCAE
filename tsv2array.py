@@ -11,7 +11,7 @@ tsv_array = np.loadtxt(tsv_file + ".tsv", dtype=np.float32, delimiter='\t')
 tsv_array = tsv_array.reshape((1,) + tsv_array.shape)
 print(tsv_array.shape, tsv_array.dtype)
 
-tsv_array_fix16 = float2fixed.float2fixed_array(np.int16, 16-2, tsv_array)
+tsv_array_fix16 = float2fixed.float2fixed_array(np.int16, 16-3, tsv_array)
 print(tsv_array_fix16.shape, tsv_array_fix16.dtype, tsv_array_fix16)
 
 with open("test_data/test_data.h", "w") as f:

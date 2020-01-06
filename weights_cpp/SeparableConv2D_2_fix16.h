@@ -1,6 +1,6 @@
 /*
  * author : shtsno24
- * Date : 2020-01-05 17:26:08.384028
+ * Date : 2020-01-06 13:05:29.744999
  * array_type : int16
  * fractal_width : 13 bit
  * bit_width : 16 bit
@@ -18,35 +18,35 @@ using namespace std;
 const vector< uint16_t> shape_SeparableConv2D_2_w_d = {1, 8, 3, 3};
 const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_d =
 {{{{ -974,  -533,  -747},
-{-1141, -8334,  -520},
+{-1142, -8335,  -520},
 { -973, -1325, -1161}},
 
 {{ -137,   -84,   -34},
-{-1087,  8818,  -321},
+{-1087,  8819,  -321},
 {  -42,   -22,   184}},
 
 {{ 1696,  1611,   -59},
-{-3712,  1048,  1298},
+{-3713,  1048,  1298},
 {-2746, -2625,  3527}},
 
 {{  181,   -93,    17},
-{-5577,    20,   -64},
-{    2,    27,    33}},
+{-5578,    20,   -64},
+{    2,    27,    34}},
 
 {{ -701, -1250,  -218},
-{ -169, -8300,  -430},
+{ -169, -8301,  -430},
 { -164, -1114,  -585}},
 
 {{  110,  -238,    40},
-{ -169,   854,   -11},
-{  687, -6498,   475}},
+{ -169,   855,   -11},
+{  687, -6499,   475}},
 
 {{  803,  1206,   319},
-{ -176,  6223,   -10},
+{ -176,  6224,   -10},
 {  -70,   710,   589}},
 
 {{ -171,  1116,  -213},
-{  349, -6901,   372},
+{  349, -6902,   372},
 { -284,   525,    36}}}};
 
 const vector< uint16_t> shape_SeparableConv2D_2_w_p = {8, 8, 1, 1};
@@ -57,7 +57,7 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{ -234}},
 
-{{ 7209}},
+{{ 7210}},
 
 {{ -210}},
 
@@ -71,7 +71,7 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{-3002}},
 
-{{ 3449}},
+{{ 3450}},
 
 {{ -835}},
 
@@ -93,7 +93,7 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{  649}},
 
-{{14711}},
+{{14713}},
 
 {{ 1734}},
 
@@ -101,7 +101,7 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{{  778}},
 
-{{12996}},
+{{12998}},
 
 {{ -236}},
 
@@ -115,23 +115,23 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{ -492}}},
 
-{{{ 6063}},
+{{{ 6064}},
 
-{{ 1521}},
+{{ 1522}},
 
 {{-3940}},
 
 {{  -29}},
 
-{{-5550}},
+{{-5551}},
 
-{{-2412}},
+{{-2413}},
 
-{{-6338}},
+{{-6339}},
 
 {{ 3567}}},
 
-{{{-1387}},
+{{{-1388}},
 
 {{ -231}},
 
@@ -141,13 +141,13 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{  463}},
 
-{{-8185}},
+{{-8186}},
 
 {{   95}},
 
 {{  161}}},
 
-{{{11416}},
+{{{11417}},
 
 {{ -699}},
 
@@ -155,11 +155,11 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{ -125}},
 
-{{-9293}},
+{{-9294}},
 
 {{  -17}},
 
-{{-12747}},
+{{-12749}},
 
 {{ 2195}}},
 
@@ -177,9 +177,9 @@ const vector< vector< vector< vector< int16_t> > > > SeparableConv2D_2_w_p =
 
 {{  852}},
 
-{{ 8686}}}};
+{{ 8687}}}};
 
 const uint16_t shape_SeparableConv2D_2_b_d = 8;
 const vector< int16_t> SeparableConv2D_2_b_d = {    0,     0,     0,     0,     0,     0,     0,     0};
 const uint16_t shape_SeparableConv2D_2_b_p = 8;
-const vector< int16_t> SeparableConv2D_2_b_p = { 5112,  1686,  2084,  3071,  8223,   583,  7140,  5866};
+const vector< int16_t> SeparableConv2D_2_b_p = { 5113,  1686,  2084,  3071,  8224,   583,  7141,  5866};
