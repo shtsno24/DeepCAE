@@ -125,7 +125,7 @@ int network(int16_t* input_data, int16_t* output_data){
 
 int main(void){
 	double start, end, sum_time = 0;
-	int32_t times = 10000;
+	int32_t times = 5000;
 	int16_t output_buffer[1][28][28];
 	vector< vector< vector< int16_t> > > input_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
 	vector< vector< vector< int16_t> > > output_img(1, vector< vector< int16_t> >(28, vector< int16_t>(28)));
@@ -146,7 +146,7 @@ int main(void){
 		time_file << end - start << endl;
 		sum_time += end - start;
 	}
-	cout << "end_time_fix16_cpp : " << sum_time / (double)times << " [s]" << endl;
+	cout << "end_time_fix16_cpp_Sep : " << sum_time / (double)times << " [s]" << endl;
 	time_file.close();	
 
 	for(int depth = 0; depth < SeparableConv2D_4_depth; depth++){

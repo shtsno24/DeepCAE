@@ -119,7 +119,7 @@ int network(int16_t* input_data, int16_t* output_data){
 
 int main(void){
 	double start, end, sum_time = 0;
-	int32_t times = 10000;
+	int32_t times = 5000;
 	FILE* fp;
 
 	int16_t output_buffer[1][28][28];
@@ -135,7 +135,7 @@ int main(void){
 		sum_time += end - start;
 	}
 
-	printf("end_time_fix16_c : %lf [s]\r\n", sum_time / (double)times);
+	printf("end_time_fix16_c_Sep : %lf [s]\r\n", sum_time / (double)times);
 	fclose(fp);
 
 	fp = fopen("template_input_fix16_Sep.tsv", "w");

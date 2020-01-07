@@ -7,12 +7,19 @@
  */
 #include <stdint.h>
 #include <stdio.h>
+#include <sys/time.h>
 
 #include "./../test_data/test_data.h"
 #include "./../layers_c/array_printf_float32.h"
 #include "./../arrays_c/arrays_float32.h"
 #include "./../layers_c/layers.h"
 #include "./../weights_c/weights_float32.h"
+
+double gettimeofday_sec(){
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+    return tv.tv_sec + tv.tv_usec * 1e-6;
+}
 
 int network(float* input_data, float* output_data){
 
@@ -115,15 +122,33 @@ int network(float* input_data, float* output_data){
 }
 
 int main(void){
+	double start, end, sum_time = 0;
+	int32_t times = 5000;
+	FILE* fp;
+
 	float output_buffer[1][28][28];
 
-	network((float*)test_input_float32, (float*)output_buffer);
 
-	FILE* fp = fopen("template_input_float32.tsv", "w");
+	fp = fopen("time_output_float32_c_Sep.tsv", "w");
+	for(int32_t i = 0; i < times; i++){
+
+		start = gettimeofday_sec();
+		network((float*)test_input_float32, (float*)output_buffer);
+		end = gettimeofday_sec();
+
+		fprintf(fp, "%lf\t\n", end - start);
+		sum_time += end - start;
+	}
+
+	printf("end_time_float32_c_Sep : %lf [s]\r\n", sum_time / (double)times);
+	fclose(fp);
+
+
+	fp = fopen("template_input_float32_Sep.tsv", "w");
 	array_fprintf_2D_float32(input_0_height, input_0_width, test_input_float32[0], '\t', fp);
 	fclose(fp);
 
-	fp = fopen("template_output_float32.tsv", "w");
+	fp = fopen("template_output_float32_c_Sep.tsv", "w");
 	array_fprintf_2D_float32(SeparableConv2D_4_height, SeparableConv2D_4_width, output_buffer[0], '\t', fp);
 	fclose(fp);
 	return(0);
