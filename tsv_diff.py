@@ -11,7 +11,7 @@ source_array = source_array.reshape((1,) + source_array.shape)
 source_array = (source_array - np.min(source_array)) / (np.max(source_array) - np.min(source_array))
 # source_array = (source_array * 255).astype(np.uint8)
 source_array = (source_array * 255).astype(np.float32)
-print(source_array.shape, source_array.dtype, "\n-------------------")
+print(source_array.shape, source_array.dtype, np.max(source_array), np.min(source_array),"\n-------------------")
 
 
 # target_file = input("target_file name : ")
@@ -22,7 +22,7 @@ target_array = target_array.reshape((1,) + target_array.shape)
 target_array = (target_array - np.min(target_array)) / (np.max(target_array) - np.min(target_array))
 # target_array = (target_array * 255).astype(np.uint8)
 target_array = (target_array * 255).astype(np.float32)
-print(target_array.shape, target_array.dtype, "\n-------------------")
+print(target_array.shape, target_array.dtype, np.max(target_array), np.min(target_array), "\n-------------------")
 
 
 diff_array = np.sqrt((source_array - target_array)**2).astype(np.float32)
